@@ -1,0 +1,333 @@
+[
+  {
+    "case": "swissmetro_nested",
+    "data": "Swissmetro",
+    "model": "Nested logit",
+    "n_obs": 10719,
+    "n_alternatives": 3,
+    "n_parameters": 5,
+    "source": "biogeme.data.swissmetro/data/swissmetro.dat",
+    "nests": {
+      "PUBLIC": {
+        "alternatives": [
+          "TRAIN",
+          "SM"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "PRIVATE": {
+        "alternatives": [
+          "CAR"
+        ],
+        "fixed": true,
+        "init": 1.0
+      }
+    },
+    "parameters": [
+      "ASC_TRAIN",
+      "B_TIME",
+      "B_COST",
+      "ASC_CAR",
+      "LAMBDA_PUBLIC"
+    ],
+    "consistent": true,
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.0678339172154665,
+        "estimate_s": 0.05628169234842062,
+        "covariance_s": 0.01155222486704588,
+        "loglike": -8669.496582288439,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 4.24578954000026,
+        "estimate_s": 4.245716929901391,
+        "covariance_s": 7.159030064940453e-05,
+        "loglike": -8669.496592552528,
+        "ll_diff": -1.0264089723932557e-05,
+        "max_param_diff": 0.0003248987527123548,
+        "max_prob_diff": 0.00010566801778133517,
+        "max_cov_diff": 8.458137239370292e-06,
+        "max_se_diff": 5.354678702156057e-05,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 2.0885600061155856,
+        "estimate_s": 1.114,
+        "covariance_s": 0.008,
+        "loglike": -8669.4966,
+        "ll_diff": -1.7711561667965725e-05,
+        "max_param_diff": 5.4194175167542394e-05,
+        "max_prob_diff": 2.9708964725871922e-05,
+        "max_cov_diff": 4.995998943532862e-05,
+        "max_se_diff": 0.0006668923361985435,
+        "message": "apollo_version=0.3.8"
+      }
+    ]
+  },
+  {
+    "case": "lpmc_nested",
+    "data": "LPMC London",
+    "model": "Nested logit",
+    "n_obs": 81086,
+    "n_alternatives": 4,
+    "n_parameters": 7,
+    "source": "Biogeme data page lpmc.dat",
+    "nests": {
+      "ACTIVE": {
+        "alternatives": [
+          "walk",
+          "cycle"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "MOTORIZED": {
+        "alternatives": [
+          "pt",
+          "drive"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_TIME",
+      "B_COST",
+      "ASC_CYCLE",
+      "ASC_PT",
+      "ASC_DRIVE",
+      "LAMBDA_ACTIVE",
+      "LAMBDA_MOTORIZED"
+    ],
+    "consistent": true,
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.32505515730008483,
+        "estimate_s": 0.28234224021434784,
+        "covariance_s": 0.04271291708573699,
+        "loglike": -74975.97607461535,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 22.91758793918416,
+        "estimate_s": 22.917513539083302,
+        "covariance_s": 7.364992052316666e-05,
+        "loglike": -74975.97607583526,
+        "ll_diff": -1.21991615742445e-06,
+        "max_param_diff": 3.176661159898231e-05,
+        "max_prob_diff": 8.658293207841616e-06,
+        "max_cov_diff": 0.002666744687687737,
+        "max_se_diff": 0.023759767082724127,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 22.768574164714664,
+        "estimate_s": 14.745,
+        "covariance_s": 0.008,
+        "loglike": -74975.9761,
+        "ll_diff": -2.5384651962667704e-05,
+        "max_param_diff": 3.801796681202063e-05,
+        "max_prob_diff": 0.00010116037126384203,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "apollo_version=0.3.8"
+      }
+    ]
+  },
+  {
+    "case": "nhts_2022_nested",
+    "data": "NHTS 2022",
+    "model": "Nested logit",
+    "n_obs": 27375,
+    "n_alternatives": 5,
+    "n_parameters": 18,
+    "source": "NHTS 2022 official public-use CSV zip",
+    "nests": {
+      "ACTIVE": {
+        "alternatives": [
+          "WALK",
+          "BIKE"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "MOTORIZED": {
+        "alternatives": [
+          "AUTO",
+          "TRANSIT",
+          "OTHER"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "ASC_WALK",
+      "B_LOG_MILES_WALK",
+      "B_VEH_PER_ADULT_WALK",
+      "B_URBAN_WALK",
+      "ASC_BIKE",
+      "B_LOG_MILES_BIKE",
+      "B_VEH_PER_ADULT_BIKE",
+      "B_URBAN_BIKE",
+      "ASC_TRANSIT",
+      "B_LOG_MILES_TRANSIT",
+      "B_VEH_PER_ADULT_TRANSIT",
+      "B_URBAN_TRANSIT",
+      "ASC_OTHER",
+      "B_LOG_MILES_OTHER",
+      "B_VEH_PER_ADULT_OTHER",
+      "B_URBAN_OTHER",
+      "LAMBDA_ACTIVE",
+      "LAMBDA_MOTORIZED"
+    ],
+    "consistent": true,
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.37735869362950325,
+        "estimate_s": 0.3144038817845285,
+        "covariance_s": 0.06295481184497476,
+        "loglike": -19574.078199124124,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 66.19869240326807,
+        "estimate_s": 66.19859990430996,
+        "covariance_s": 9.113876149058342e-05,
+        "loglike": -19574.078207421993,
+        "ll_diff": -8.297869499074295e-06,
+        "max_param_diff": 0.00034299858399933214,
+        "max_prob_diff": 3.792933698304468e-05,
+        "max_cov_diff": 0.44918316731265395,
+        "max_se_diff": 0.5031465212239024,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 13.11841217475012,
+        "estimate_s": 11.021,
+        "covariance_s": 0.008,
+        "loglike": -19668.7909,
+        "ll_diff": -94.71270087587618,
+        "max_param_diff": 5.492398105147869,
+        "max_prob_diff": 0.2940772750318365,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "apollo_version=0.3.8"
+      }
+    ]
+  },
+  {
+    "case": "parking_nested",
+    "data": "Parking Spain",
+    "model": "Nested logit",
+    "n_obs": 1576,
+    "n_alternatives": 3,
+    "n_parameters": 6,
+    "source": "Biogeme data page parking.dat",
+    "nests": {
+      "FACILITY": {
+        "alternatives": [
+          "FSP",
+          "PSP"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "PUP_NEST": {
+        "alternatives": [
+          "PUP"
+        ],
+        "fixed": true,
+        "init": 1.0
+      }
+    },
+    "parameters": [
+      "B_ACCESS_TIME",
+      "B_SEARCH_TIME",
+      "B_FEE",
+      "ASC_PSP",
+      "ASC_PUP",
+      "LAMBDA_FACILITY"
+    ],
+    "consistent": true,
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.03300962410867214,
+        "estimate_s": 0.028894674964249134,
+        "covariance_s": 0.004114949144423008,
+        "loglike": -1089.138081472267,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 5.472017616964877,
+        "estimate_s": 5.471943837124854,
+        "covariance_s": 7.331976667046547e-05,
+        "loglike": -1089.13808178231,
+        "ll_diff": -3.1004310585558414e-07,
+        "max_param_diff": 0.00011310882475967787,
+        "max_prob_diff": 9.641343501232136e-06,
+        "max_cov_diff": 1.8694340731886805e-06,
+        "max_se_diff": 6.352988612623456e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.2484759739600122,
+        "estimate_s": 0.484,
+        "covariance_s": 0.008,
+        "loglike": -1089.1381,
+        "ll_diff": -1.8527732891016058e-05,
+        "max_param_diff": 4.769907740298507e-05,
+        "max_prob_diff": 7.380846414872799e-05,
+        "max_cov_diff": 4.780081992594373e-05,
+        "max_se_diff": 0.00025821214812325743,
+        "message": "apollo_version=0.3.8"
+      }
+    ]
+  }
+]

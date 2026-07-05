@@ -1,15 +1,18 @@
 {\scriptsize
 \setlength{\tabcolsep}{4pt}
 \begin{table}[H]
-\caption{Real-data nested-logit-family runtime and consistency benchmarks. Runtime columns report total remote wall-clock seconds for each aligned estimator.}
+\caption{Real-data nested-logit-family runtime and consistency benchmarks. Runtime columns report total remote wall-clock seconds for each aligned estimator. Consistency is evaluated against the aligned Biogeme implementation; Apollo is reported where an aligned wrapper completes.}
 \label{tab:nested_real}
 \centering
 \begin{tabular}{llrrrrl}
 \toprule
 Data & Model & $N$ & TorchDCM & Biogeme & Apollo & Consistent? \\
 \midrule
-Swissmetro & Nested logit & 10719 & 0.078 & 2.968 & 2.083 & Yes \\
+Swissmetro & Nested logit & 10719 & 0.068 & 4.246 & 2.089 & Yes \\
 Swissmetro & Cross-nested logit & 10719 & 1.106 & 3.839 & -- & Yes \\
+LPMC London & Nested logit & 81086 & 0.325 & 22.918 & 22.769 & Yes \\
+NHTS 2022 & Nested logit & 27375 & 0.377 & 66.199 & 13.118 & Yes \\
+Parking Spain & Nested logit & 1576 & 0.033 & 5.472 & 1.248 & Yes \\
 \bottomrule
 \end{tabular}
 \end{table}

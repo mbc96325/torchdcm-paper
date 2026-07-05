@@ -47,7 +47,13 @@ apollo_probabilities <- function(apollo_beta, apollo_inputs, functionality = "es
     if (!is.null(item$asc)) {
       utility <- utility + get(item$asc)
     }
-    utility <- utility + get("B_TIME") * get(item$time) + get("B_COST") * get(item$cost)
+    if (!is.null(item$variables)) {
+      for (param_name in names(item$variables)) {
+        utility <- utility + get(param_name) * get(item$variables[[param_name]])
+      }
+    } else {
+      utility <- utility + get("B_TIME") * get(item$time) + get("B_COST") * get(item$cost)
+    }
     V[[alt]] <- utility
     av[[alt]] <- get(item$availability)
     alternatives[[alt]] <- item$code
@@ -134,7 +140,9 @@ out <- list(
   se = as.list(model$se),
   robust_se = as.list(model$robse),
   covariance = unname(covariance),
+  covariance_names = names(estimates),
   robust_covariance = unname(robust_covariance),
+  robust_covariance_names = names(estimates),
   timing = list(
     estimate_seconds = estimate_seconds,
     covariance_seconds = covariance_seconds

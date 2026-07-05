@@ -16,9 +16,9 @@ ModeCanada retains attempted failures for \texttt{gmnl} and \texttt{xlogit}; the
 \input{tables/nested_real}
 
 Table~\ref{tab:nested_real} reports the current real-data nested-logit-family benchmark.
-The Swissmetro nested-logit row is compared with both Biogeme and Apollo.
-The cross-nested row is currently compared with Biogeme under fixed allocation weights and common nest constraints.
-Both rows are consistent under the prespecified tolerance rule.
+The table now includes all real-data cases for which we define an interpretable nested-logit specification: Swissmetro, LPMC London, NHTS 2022, and Parking Spain, plus the Swissmetro cross-nested row.
+The consistency flag is evaluated against Biogeme, which is the common nested-logit reference across these rows; Apollo runtimes are reported where the aligned wrapper completes, but Apollo is not used to determine the final consistency flag.
+All rows are consistent with Biogeme under the prespecified likelihood, parameter, and probability tolerances.
 
 \input{tables/mixed_real}
 
