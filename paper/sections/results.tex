@@ -10,6 +10,7 @@ Each row uses an actual public dataset and an aligned model specification.
 The columns report total remote wall-clock runtime for TorchDCM and every available benchmark estimator; the final column reports whether all successful aligned external estimators agree with TorchDCM under the prespecified tolerance rule.
 The table includes Swissmetro, NHTS 2022, four Biogeme public MNL datasets, and eleven R \texttt{mlogit} package datasets.
 Biogeme and Apollo are now run for every MNL row, while \texttt{mlogit}, \texttt{gmnl}, and \texttt{xlogit} are included where aligned package wrappers are available.
+\texttt{xlogit} is especially fast on small standard MNL rows because the wrapper passes a prebuilt long-format numeric design matrix directly to a specialized in-process MNL solver; the comparison therefore separates this low-overhead standard-MNL path from broader package coverage such as symbolic specification, ragged choice sets, and non-MNL models.
 ModeCanada retains attempted failures for \texttt{gmnl} and \texttt{xlogit}; these failures are not treated as consistency failures for the successful aligned estimators.
 
 \input{tables/nested_real}
