@@ -14,14 +14,6 @@
 | HC | Nested logit | 250 | 0.076 | 30.457 | 1.153 | Yes |
 | Heating | Nested logit | 900 | 0.087 | 7.588 | 1.137 | Yes |
 | Mode | Nested logit | 453 | 0.043 | 7.045 | 1.139 | Yes |
-| Telephone service | Nested logit | 434 | NA | NA | 1.252 | NA |
-| ModeCanada | Nested logit | 4324 | NA | NA | 1.448 | NA |
-| NOx | Nested logit | 632 | NA | NA | NA | NA |
-| RiskyTransport | Nested logit | 1793 | NA | NA | 1.288 | NA |
-| Train | Nested logit | 2929 | NA | NA | NA | NA |
-| Car | Nested logit | 4654 | NA | NA | NA | NA |
-| Game | Nested logit | 91 | NA | NA | NA | NA |
-| Game2 | Nested logit | 91 | NA | NA | NA | NA |
 
 ## Nest specifications
 
@@ -37,7 +29,3 @@
 - `mlogit_hc_nested`: CURRENT=gcc,ecc,erc; NEW=gc,ec,er; HPC_NEST=hpc
 - `mlogit_heating_nested`: GAS=gc,gr; ELECTRIC=ec,er; HEATPUMP=hp
 - `mlogit_mode_nested`: PRIVATE=car,carpool; TRANSIT=bus,rail
-
-## Attempted unavailable nested specifications
-
-- Telephone service, ModeCanada, NOx, RiskyTransport, Train, Car, Game, and Game2 are listed in the paper table with NA entries where the aligned backend did not produce a finite full-estimation result, timed out, or the nested-logit specification was not applicable.
