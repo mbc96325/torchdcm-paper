@@ -1,0 +1,45 @@
+The computational results use two complementary benchmark families.
+The first family uses public empirical datasets aligned with Biogeme, Apollo, and R package examples.
+The second family is a pure synthetic controlled benchmark that varies the number of samples, alternatives, variables, and feature correlations under a known MNL data-generating process.
+The empirical results are organized by model family: MNL in Table~\ref{tab:mnl_real}, nested-logit-family models in Table~\ref{tab:nested_real}, and mixed-logit models in Table~\ref{tab:mixed_real}.
+
+\input{tables/mnl_real}
+
+Table~\ref{tab:mnl_real} reports the main real-data MNL benchmark.
+Each row uses an actual public dataset and an aligned model specification.
+The columns report total remote wall-clock runtime for TorchDCM and every available benchmark estimator; the final column reports whether all successful aligned external estimators agree with TorchDCM under the prespecified tolerance rule.
+The table includes Swissmetro, NHTS 2022, four Biogeme public MNL datasets, and eleven R \texttt{mlogit} package datasets.
+Biogeme and Apollo are now run for every MNL row, while \texttt{mlogit}, \texttt{gmnl}, and \texttt{xlogit} are included where aligned package wrappers are available.
+ModeCanada retains attempted failures for \texttt{gmnl} and \texttt{xlogit}; these failures are not treated as consistency failures for the successful aligned estimators.
+
+\input{tables/nested_real}
+
+Table~\ref{tab:nested_real} reports the current real-data nested-logit-family benchmark.
+The Swissmetro nested-logit row is compared with both Biogeme and Apollo.
+The cross-nested row is currently compared with Biogeme under fixed allocation weights and common nest constraints.
+Both rows are consistent under the prespecified tolerance rule.
+
+\input{tables/mixed_real}
+
+Table~\ref{tab:mixed_real} reports the current real-data mixed-logit benchmark.
+These rows use Swissmetro with shared parameters and shared antithetic draws, so they validate the mixed-logit likelihood and probability kernels rather than full simulated maximum-likelihood estimation.
+TorchDCM matches both Biogeme and Apollo to numerical tolerance in the available shared-draw replay rows.
+
+\input{tables/benchmark_cases}
+
+Table~\ref{tab:benchmark_cases} records the corresponding parameter counts and alignment modes.
+The raw numerical-difference audit, including likelihood, parameter, probability, covariance, and standard-error differences, is retained in the generated validation artifacts rather than repeated in the paper-facing runtime tables.
+
+\input{tables/synthetic_controlled}
+
+Table~\ref{tab:synthetic_controlled} shows the pure synthetic scaling results using total runtime only.
+The synthetic cases are not derived from Swissmetro or any other public empirical dataset; covariates, utility parameters, and choices are generated directly from a synthetic MNL data-generating process.
+The sample-size sweep shows that TorchDCM remains fast as $N$ grows: the $N=100{,}000$ case has 400,000 long rows and completes in 0.068 seconds including covariance calculation.
+The variable-count sweep shows the effect of increasing the number of observed variables: the $K=32$ case estimates 36 total parameters and completes in 0.113 seconds including covariance.
+The alternative-count sweep is also included because choice-set width is a central computational dimension for DCM estimators: the $J=20$ case has 400,000 long rows and completes in 0.409 seconds including covariance.
+These synthetic experiments complement the public-data estimator comparisons by isolating controlled scaling behavior.
+
+Ordered response models are validated on the Biogeme Optima data.
+TorchDCM completes ordered logit full estimation in 0.042 seconds compared with 2.898 seconds for Biogeme.
+For ordered probit, TorchDCM completes estimation in 0.054 seconds compared with 3.475 seconds for Biogeme.
+Both ordered-response rows are marked consistent with the Biogeme reference implementation.

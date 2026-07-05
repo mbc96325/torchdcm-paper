@@ -1,0 +1,19 @@
+Discrete choice software has a long tradition of emphasizing model specification, estimation, and econometric reporting.
+Biogeme is a Python-based reference platform for discrete choice models and is widely used for transportation and choice-modeling research \citep{bierlaire2023biogeme}.
+Apollo is a flexible R package that supports a broad set of discrete choice models, including advanced structures such as mixed logit, latent class, and hybrid choice models \citep{hess2019apollo}.
+TorchDCM does not replace these tools; instead, it uses them as reference implementations in a benchmark system and focuses on PyTorch-native computation.
+
+R packages provide another important software line for random utility modeling.
+The \texttt{mlogit} package provides an established interface for multinomial logit and related random utility models in R \citep{croissant2020mlogit}.
+The \texttt{gmnl} package extends this ecosystem toward generalized multinomial logit and heterogeneous preference models \citep{sarrias2017gmnl}.
+These packages are useful baselines because they are widely cited, stable, and attached to public example datasets.
+TorchDCM therefore includes validation wrappers that compare parameters, covariance matrices, standard errors, and t-statistics against these packages on their canonical data examples.
+
+Python choice-modeling packages increasingly target performance and machine-learning integration.
+The \texttt{xlogit} package provides GPU-accelerated estimation for mixed logit models and is an important Python reference for simulation-based choice modeling \citep{arteaga2022xlogit}.
+Other packages such as PyLogit and ML-oriented choice libraries broaden the Python ecosystem, but they do not provide the same combination of PyTorch-native tensors, broad econometric inference outputs, and cross-package benchmark reports targeted by TorchDCM.
+The closest conceptual relationship is therefore not a single package, but the combination of econometric model interfaces, tensor differentiation, and reproducible software benchmarking.
+
+Software papers in operations research often contribute by turning complex algorithms into open, modular, and benchmarked tools.
+Recent IJOC-style software papers follow this pattern by identifying an implementation gap, documenting package design choices, and reporting reproducible computational comparisons.
+TorchDCM follows the same software contribution logic: the paper is not only about a new estimator, but about an extensible implementation and a benchmark system that allows researchers to verify estimator behavior across packages.

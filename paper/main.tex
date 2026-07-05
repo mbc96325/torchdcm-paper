@@ -1,0 +1,83 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{caption}
+\usepackage{graphicx}
+\usepackage{pdflscape}
+\usepackage{float}
+\usepackage{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{amsmath,amssymb}
+\usepackage{xcolor}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=blue,
+  citecolor=blue,
+  urlcolor=blue
+}
+\emergencystretch=2em
+
+\title{TorchDCM: A PyTorch-First Package for Discrete Choice Model Estimation, Inference, and Benchmarking}
+\author{Baichuan Mo}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\input{sections/abstract}
+\end{abstract}
+
+\section{Introduction}
+\label{sec:introduction}
+\input{sections/introduction}
+
+\section{Related Software}
+\label{sec:related}
+\input{sections/related_software}
+
+\section{Package Design}
+\label{sec:design}
+\input{sections/package_design}
+
+\section{Implementation}
+\label{sec:implementation}
+\input{sections/implementation}
+
+\section{Benchmark Data and Protocol}
+\label{sec:benchmark_protocol}
+\input{sections/benchmark_protocol}
+
+\section{Computational Results}
+\label{sec:results}
+\input{sections/results}
+
+\section{Discussion and Limitations}
+\label{sec:discussion}
+\input{sections/discussion}
+
+\section{Conclusion}
+\label{sec:conclusion}
+\input{sections/conclusion}
+
+\section*{Reproducibility Statement}
+\input{sections/reproducibility}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\appendix
+\section{Claim-Evidence Map}
+\label{app:claim_evidence}
+\input{sections/claim_evidence}
+
+\section{Reviewer-Facing Self-Review}
+\label{app:self_review}
+\input{sections/self_review}
+
+\end{document}

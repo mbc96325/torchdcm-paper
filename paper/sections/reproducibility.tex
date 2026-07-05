@@ -1,0 +1,18 @@
+The TorchDCM repository separates installable package code from heavyweight validation.
+Package code is stored under \texttt{torchdcm/}, public small datasets under \texttt{datasets/small/}, documentation under \texttt{docs/}, and benchmark wrappers and generated results under \texttt{validation/}.
+The paper-facing solver matrix can be run on the remote benchmark machine with:
+
+\begin{verbatim}
+cd /home/baichuan-mo/torchdcm
+.venv/bin/python validation/benchmarks/run_solver_attempt_matrix.py \
+  --profile full \
+  --python /home/baichuan-mo/torchdcm/.venv/bin/python
+\end{verbatim}
+
+The paper-facing real-data benchmark tables are constructed from the remote
+solver-attempt matrix in
+\path{validation/generated/solver_attempt_matrix_full.json}, with detailed
+case-level audits retained in the generated validation files. Table-specific
+case scale and alignment details are recorded in
+\path{paper/tables/benchmark_cases.tex}. The broader Markdown benchmark
+summary is maintained in \path{docs/model-family-benchmark-comparison.md}.

@@ -1,0 +1,23 @@
+\begin{table}[H]
+\caption{Pure synthetic controlled MNL runtime benchmarks. These cases are generated from a synthetic data-generating process and are not based on Swissmetro or any public empirical dataset. The benchmark varies sample size $N$, number of alternatives $J$, number of variables $K$, and feature correlation $\rho$, and reports total TorchDCM runtime.}
+\label{tab:synthetic_controlled}
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{llrrrrrrl}
+\toprule
+Sweep & Case & $N$ & $J$ & $K$ & $\rho$ & Params & Total (s) & Consistent? \\
+\midrule
+Sample size & $N=1{,}000$ & 1000 & 4 & 6 & 0.30 & 9 & 0.021 & Yes \\
+Sample size & $N=10{,}000$ & 10000 & 4 & 6 & 0.30 & 9 & 0.012 & Yes \\
+Sample size & $N=100{,}000$ & 100000 & 4 & 6 & 0.30 & 9 & 0.068 & Yes \\
+Alternatives & $J=3$ & 20000 & 3 & 6 & 0.30 & 8 & 0.014 & Yes \\
+Alternatives & $J=20$ & 20000 & 20 & 6 & 0.30 & 25 & 0.409 & Yes \\
+Variables & $K=4$ & 20000 & 5 & 4 & 0.30 & 8 & 0.021 & Yes \\
+Variables & $K=32$ & 20000 & 5 & 32 & 0.30 & 36 & 0.113 & Yes \\
+Correlation & $\rho=0.00$ & 20000 & 5 & 12 & 0.00 & 16 & 0.031 & Yes \\
+Correlation & $\rho=0.98$ & 20000 & 5 & 12 & 0.98 & 16 & 0.054 & Yes \\
+\bottomrule
+\end{tabular}
+}
+\end{table}

@@ -1,0 +1,17 @@
+The current results support the main software claim that TorchDCM can combine PyTorch-native likelihood computation with econometric outputs and external estimator parity checks.
+The strongest evidence comes from full-estimation MNL and ordered-model cases, where the benchmark suite reports runtime splits and a prespecified consistency flag against reference estimators.
+Nested and cross-nested logit results extend this evidence to more structured substitution patterns, while mixed-logit fixed replay verifies the simulation likelihood kernels under shared draws.
+
+The main limitation is that full mixed-logit estimation has not yet been completed across Biogeme, Apollo, and other mixed-logit packages.
+This limitation is a scope boundary rather than a contradiction of the current evidence: the present mixed-logit results validate the probability and log-likelihood kernels, but they do not validate optimizer convergence, simulated covariance, or random-draw conventions across packages.
+The next experimental step is therefore to estimate mixed-logit models end to end with deterministic shared draws and compare runtime plus consistency under the same rule.
+
+A second limitation is that covariance comparisons for constrained models require careful interpretation.
+For nested and cross-nested logit, different packages may report covariance on transformed or constrained parameter scales, and numerical differences can be larger than likelihood or probability differences.
+The manuscript should therefore avoid claiming universal covariance equivalence until the transformation convention is audited and documented.
+The raw covariance and standard-error audits remain useful internally, but the paper-facing table should report only the final consistency flag.
+
+The benchmark system is also still expanding in dataset coverage and controlled synthetic coverage.
+The current public data suite includes several Biogeme and R package examples, plus processed large-data candidates, and the current synthetic suite covers pure MNL runtime scaling under controlled dimensions.
+More Apollo examples, additional public large-scale choice datasets, and synthetic known-truth nested/mixed-logit cases should be added before final submission.
+This expansion will make the empirical section closer to IJOC software-paper standards, where reproducibility, public data, and baseline breadth are central acceptance signals.

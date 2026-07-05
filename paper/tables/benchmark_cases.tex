@@ -1,0 +1,44 @@
+{\scriptsize
+\setlength{\tabcolsep}{4pt}
+\begin{longtable}{@{}llrrp{0.32\linewidth}@{}}
+\caption{Benchmark case scale and alignment mode. The runtime table reports only estimator wall-clock time and consistency; this table records sample size, parameter count, and whether the row is full estimation or a shared-parameter replay.}
+\label{tab:benchmark_cases}\\
+\toprule
+Case & Model & $N$ & $K$ & Alignment mode \\
+\midrule
+\endfirsthead
+\caption[]{Benchmark case scale and alignment mode, continued.}\\
+\toprule
+Case & Model & $N$ & $K$ & Alignment mode \\
+\midrule
+\endhead
+\midrule
+\multicolumn{5}{r}{Continued on next page}\\
+\endfoot
+\bottomrule
+\endlastfoot
+Swissmetro & MNL & 10719 & 4 & Full estimation with shared zero initial values. \\
+Swissmetro & Nested logit & 10719 & 5 & Full estimation with shared zero initial values and common nest constraints. \\
+Swissmetro & Cross-nested logit & 10719 & 6 & Full estimation with fixed allocation weights and common nest constraints. \\
+Swissmetro & Mixed logit replay & 10719 & 5 & Fixed-parameter likelihood/probability replay with 64 shared antithetic draws and panel likelihood. \\
+Swissmetro & WTP mixed replay & 10719 & 5 & Fixed-parameter WTP-space likelihood/probability replay with 64 shared antithetic draws and panel likelihood. \\
+Optima & Ordered logit & 1822 & 9 & Full estimation on the aligned Biogeme Optima ordered-response specification. \\
+Optima & Ordered probit & 1822 & 9 & Full estimation on the aligned Biogeme Optima ordered-response specification. \\
+Airline itinerary & MNL & 3609 & 5 & Full estimation on the Biogeme airline itinerary choice data. \\
+Parking Spain & MNL & 1576 & 5 & Full estimation on the Biogeme parking choice data. \\
+Telephone service & MNL & 434 & 5 & Full estimation on the Biogeme telephone-service choice data. \\
+LPMC London & MNL & 81086 & 5 & Full estimation on the London Passenger Mode Choice data. \\
+NHTS 2022 & MNL & 27375 & 16 & Full estimation on a processed public-use trip-mode choice benchmark. \\
+Fishing & MNL & 1182 & 5 & Full estimation against R \texttt{mlogit}, \texttt{gmnl}, and \texttt{xlogit}. \\
+ModeCanada & MNL & 4324 & 3 & Full estimation against R \texttt{mlogit}. \\
+Catsup & MNL & 2798 & 3 & Full estimation against R \texttt{mlogit}. \\
+Cracker & MNL & 3292 & 3 & Full estimation against R \texttt{mlogit}. \\
+Electricity & MNL & 4308 & 6 & Full estimation against R \texttt{mlogit}. \\
+HC & MNL & 250 & 2 & Full estimation against R \texttt{mlogit}. \\
+Heating & MNL & 900 & 2 & Full estimation against R \texttt{mlogit}. \\
+Mode & MNL & 453 & 2 & Full estimation against R \texttt{mlogit}. \\
+NOx & MNL & 632 & 3 & Full estimation against R \texttt{mlogit}. \\
+RiskyTransport & MNL & 1793 & 7 & Full estimation against R \texttt{mlogit}. \\
+Train & MNL & 2929 & 4 & Full estimation against R \texttt{mlogit}. \\
+\end{longtable}
+}

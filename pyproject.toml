@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "torchdcm-paper"
+version = "0.1.0"
+description = "Validation, benchmarks, figures, and manuscript source for the TorchDCM software paper."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Baichuan Mo"}]
+dependencies = [
+    "numpy>=1.23",
+    "pandas>=1.5",
+    "scipy>=1.10",
+    "torch>=2.1",
+    "torchdcm @ git+https://github.com/mbc96325/torchdcm.git",
+]
+
+[project.optional-dependencies]
+bench = [
+    "biogeme>=3.2",
+    "xlogit>=0.2",
+    "pytest>=7",
+]
+
+[tool.setuptools]
+py-modules = []
+

@@ -1,0 +1,197 @@
+suppressPackageStartupMessages(library(mlogit))
+suppressPackageStartupMessages(library(jsonlite))
+
+args <- commandArgs(trailingOnly = TRUE)
+get_arg <- function(flag, default = NULL) {
+  idx <- match(flag, args)
+  if (is.na(idx)) return(default)
+  args[[idx + 1]]
+}
+
+dataset <- get_arg("--dataset")
+data_out <- get_arg("--data-output")
+result_out <- get_arg("--result-output")
+
+if (is.null(dataset) || is.null(data_out) || is.null(result_out)) {
+  stop("Usage: run_mlogit_dataset_mnl.R --dataset DATASET --data-output data.csv --result-output result.json")
+}
+
+wide_to_long <- function(df, alternatives, choice_col, variables, column_fun) {
+  rows <- list()
+  cursor <- 1
+  for (i in seq_len(nrow(df))) {
+    chosen <- as.character(df[[choice_col]][[i]])
+    for (alt in alternatives) {
+      row <- data.frame(obs_id = i, alt = as.character(alt), choice = chosen == as.character(alt))
+      for (var in variables) {
+        row[[var]] <- df[[column_fun(var, alt)]][[i]]
+      }
+      rows[[cursor]] <- row
+      cursor <- cursor + 1
+    }
+  }
+  do.call(rbind, rows)
+}
+
+fit_long <- function(aligned, variables, availability_col = NULL) {
+  if (!is.null(availability_col)) {
+    aligned <- aligned[aligned[[availability_col]], ]
+  }
+  formula_text <- paste("choice ~ 0 +", paste(variables, collapse = " + "), "| 0")
+  mdata <- mlogit.data(aligned, shape = "long", chid.var = "obs_id", alt.var = "alt", choice = "choice")
+  estimate_start <- proc.time()[["elapsed"]]
+  model <- mlogit(as.formula(formula_text), mdata, print.level = 0)
+  estimate_seconds <- proc.time()[["elapsed"]] - estimate_start
+  covariance_start <- proc.time()[["elapsed"]]
+  covariance <- vcov(model)
+  covariance_seconds <- proc.time()[["elapsed"]] - covariance_start
+  list(model = model, estimate_seconds = estimate_seconds, covariance_seconds = covariance_seconds, covariance = covariance)
+}
+
+make_case <- function(dataset) {
+  if (dataset == "car") {
+    data(Car, package = "mlogit")
+    alternatives <- as.character(1:6)
+    variables <- c("price", "range", "cost", "station")
+    aligned <- wide_to_long(Car, alternatives, "choice", variables, function(var, alt) paste0(var, alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "catsup") {
+    data(Catsup, package = "mlogit")
+    alternatives <- c("heinz41", "heinz32", "heinz28", "hunts32")
+    variables <- c("disp", "feat", "price")
+    aligned <- wide_to_long(Catsup, alternatives, "choice", variables, function(var, alt) paste0(var, ".", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "cracker") {
+    data(Cracker, package = "mlogit")
+    alternatives <- c("sunshine", "kleebler", "nabisco", "private")
+    variables <- c("disp", "feat", "price")
+    aligned <- wide_to_long(Cracker, alternatives, "choice", variables, function(var, alt) paste0(var, ".", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "electricity") {
+    data(Electricity, package = "mlogit")
+    alternatives <- as.character(1:4)
+    variables <- c("pf", "cl", "loc", "wk", "tod", "seas")
+    aligned <- wide_to_long(Electricity, alternatives, "choice", variables, function(var, alt) paste0(var, alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "fishing") {
+    data(Fishing, package = "mlogit")
+    alternatives <- c("beach", "pier", "boat", "charter")
+    variables <- c("price", "catch")
+    aligned <- wide_to_long(Fishing, alternatives, "mode", variables, function(var, alt) paste0(var, ".", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "game") {
+    data(Game, package = "mlogit")
+    alternatives <- c("Xbox", "PlayStation", "PSPortable", "GameCube", "GameBoy", "PC")
+    rows <- list()
+    cursor <- 1
+    for (i in seq_len(nrow(Game))) {
+      for (alt in alternatives) {
+        rows[[cursor]] <- data.frame(
+          obs_id = i,
+          alt = alt,
+          choice = as.logical(Game[[paste0("ch.", alt)]][[i]]),
+          own = Game[[paste0("own.", alt)]][[i]]
+        )
+        cursor <- cursor + 1
+      }
+    }
+    return(list(aligned = do.call(rbind, rows), variables = c("own")))
+  }
+  if (dataset == "game2") {
+    data(Game2, package = "mlogit")
+    aligned <- data.frame(obs_id = Game2$chid, alt = Game2$platform, choice = as.logical(Game2$ch), own = Game2$own)
+    return(list(aligned = aligned, variables = c("own")))
+  }
+  if (dataset == "hc") {
+    data(HC, package = "mlogit")
+    alternatives <- c("gcc", "ecc", "erc", "hpc", "gc", "ec", "er")
+    variables <- c("ich", "och")
+    aligned <- wide_to_long(HC, alternatives, "depvar", variables, function(var, alt) paste0(var, ".", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "heating") {
+    data(Heating, package = "mlogit")
+    alternatives <- c("gc", "gr", "ec", "er", "hp")
+    variables <- c("ic", "oc")
+    aligned <- wide_to_long(Heating, alternatives, "depvar", variables, function(var, alt) paste0(var, ".", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "japanese_fdi") {
+    data(JapaneseFDI, package = "mlogit")
+    variables <- c("wage", "unemp", "elig", "area", "scrate", "ctaxrate", "gdp", "harris", "krugman", "domind", "japind", "network")
+    aligned <- data.frame(obs_id = JapaneseFDI$firm, alt = JapaneseFDI$region, choice = as.logical(JapaneseFDI$choice))
+    for (var in variables) aligned[[var]] <- JapaneseFDI[[var]]
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "mode") {
+    data(Mode, package = "mlogit")
+    alternatives <- c("car", "carpool", "bus", "rail")
+    variables <- c("cost", "time")
+    aligned <- wide_to_long(Mode, alternatives, "choice", variables, function(var, alt) paste0(var, ".", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "modecanada") {
+    data(ModeCanada, package = "mlogit")
+    variables <- c("cost", "ivt", "ovt", "freq")
+    aligned <- data.frame(obs_id = ModeCanada$case, alt = ModeCanada$alt, choice = as.logical(ModeCanada$choice))
+    for (var in variables) aligned[[var]] <- ModeCanada[[var]]
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "nox") {
+    data(NOx, package = "mlogit")
+    variables <- c("post", "vcost", "kcost")
+    aligned <- data.frame(obs_id = NOx$chid, alt = NOx$alt, choice = as.logical(NOx$choice), availability = as.logical(NOx$available))
+    for (var in variables) aligned[[var]] <- NOx[[var]]
+    return(list(aligned = aligned, variables = variables, availability_col = "availability"))
+  }
+  if (dataset == "risky_transport") {
+    data(RiskyTransport, package = "mlogit")
+    variables <- c("cost", "risk", "seats", "noise", "crowdness", "convloc", "clientele")
+    aligned <- data.frame(obs_id = RiskyTransport$chid, alt = RiskyTransport$mode, choice = as.logical(RiskyTransport$choice))
+    for (var in variables) aligned[[var]] <- RiskyTransport[[var]]
+    return(list(aligned = aligned, variables = variables))
+  }
+  if (dataset == "train") {
+    data(Train, package = "mlogit")
+    alternatives <- c("A", "B")
+    variables <- c("price", "time", "change", "comfort")
+    aligned <- wide_to_long(Train, alternatives, "choice", variables, function(var, alt) paste0(var, "_", alt))
+    return(list(aligned = aligned, variables = variables))
+  }
+  stop(paste("Unsupported dataset:", dataset))
+}
+
+case <- make_case(dataset)
+aligned <- case$aligned
+variables <- case$variables
+availability_col <- case$availability_col
+
+for (var in variables) {
+  aligned[[var]] <- as.numeric(aligned[[var]])
+}
+aligned <- aligned[complete.cases(aligned[, c("obs_id", "alt", "choice", variables)]), ]
+
+fit <- fit_long(aligned, variables, availability_col)
+write.csv(aligned, data_out, row.names = FALSE)
+
+payload <- list(
+  backend = "mlogit",
+  dataset = dataset,
+  n_obs = length(unique(aligned$obs_id)),
+  n_rows = nrow(aligned),
+  n_parameters = length(variables),
+  variables = variables,
+  loglike = as.numeric(logLik(fit$model)),
+  estimate_seconds = fit$estimate_seconds,
+  covariance_seconds = fit$covariance_seconds,
+  total_seconds = fit$estimate_seconds + fit$covariance_seconds,
+  params = as.list(coef(fit$model)),
+  covariance_names = colnames(fit$covariance),
+  covariance = unname(fit$covariance)
+)
+write(toJSON(payload, auto_unbox = TRUE, digits = 16), result_out)

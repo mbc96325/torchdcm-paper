@@ -1,0 +1,32 @@
+Discrete choice models provide a statistical language for understanding decisions among finite alternatives.
+They are routinely used to study travel mode choice, route choice, product demand, pricing, and service operations, where researchers need both interpretable utility parameters and reliable counterfactual predictions \citep{mcfadden1974conditional,train2009discrete}.
+As empirical choice data become larger and model structures become more heterogeneous, the computational requirements of choice modeling increasingly resemble those of modern differentiable systems: likelihoods must be vectorized, simulation draws must be reproducible, and gradients, Hessians, predictions, and post-estimation quantities must remain aligned.
+
+Existing software serves important parts of this workflow, but no single open package currently combines PyTorch-native computation with econometric model abstractions and a systematic estimator benchmark suite.
+Biogeme provides a mature Python environment for discrete choice model specification and estimation \citep{bierlaire2023biogeme}; Apollo provides a flexible R framework for a broad range of choice models \citep{hess2019apollo}; and R packages such as \texttt{mlogit} and \texttt{gmnl} provide widely used estimators for random utility models \citep{croissant2020mlogit,sarrias2017gmnl}.
+These packages remain essential reference implementations, yet their computational backends and interfaces are not designed around PyTorch tensors, automatic differentiation pipelines, or direct integration with modern machine-learning workflows.
+Conversely, PyTorch provides efficient tensor computation and automatic differentiation \citep{paszke2019pytorch}, but it does not itself provide the data structures, model syntax, inference outputs, and benchmark discipline expected in discrete choice research.
+
+TorchDCM addresses this gap by treating software design and estimator validation as a single contribution.
+The package keeps the model implementation in a pure Python/PyTorch library while placing heavyweight validation, reference-estimator wrappers, and public benchmark reports in a separate validation layer.
+This separation is deliberate: the user-facing package should remain lightweight and installable, while the benchmark system can depend on Biogeme, Apollo, R packages, and large public datasets.
+The result is a package that is both usable as a modeling library and auditable as an estimator implementation.
+
+The design of TorchDCM follows three principles.
+First, the package uses discrete-choice-native abstractions, including choice datasets, utility specifications, beta parameters, nests, random coefficients, thresholds, latent classes, and post-estimation results.
+Second, the likelihood kernels are written as vectorized PyTorch computations, allowing a common implementation strategy for ragged choice sets, availability masks, panel likelihoods, simulation draws, and Hessian-based inference.
+Third, every implemented estimator is developed together with benchmark cases that compare log likelihoods, parameters, probabilities, covariance matrices, standard errors, willingness-to-pay measures, elasticities, and runtime splits against external reference software.
+
+This paper makes three contributions.
+First, we introduce TorchDCM as an open-source PyTorch-first package for discrete choice estimation and inference.
+Second, we document the package architecture and implementation choices needed to support both standard and advanced choice models, including multinomial, nested, cross-nested, mixed, WTP-space, ordered, latent class, and hybrid-choice components.
+Third, we build a reproducible benchmark suite on public datasets aligned with Biogeme, Apollo, and R package examples, and we report estimator parity and runtime results across model families.
+The current benchmark suite establishes full-estimation parity for MNL, nested logit, cross-nested logit, ordered logit, and ordered probit models, and it establishes shared-draw likelihood parity for mixed-logit models.
+
+The rest of the paper is organized as follows.
+Section~\ref{sec:related} positions TorchDCM relative to existing choice-modeling software.
+Section~\ref{sec:design} describes the package design.
+Section~\ref{sec:implementation} presents implementation details for data handling, likelihood computation, inference, and simulation.
+Section~\ref{sec:benchmark_protocol} describes the benchmark data and alignment protocol.
+Section~\ref{sec:results} reports computational results.
+Sections~\ref{sec:discussion} and~\ref{sec:conclusion} discuss current limitations and future work.
