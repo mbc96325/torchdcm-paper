@@ -18,6 +18,7 @@ from torchdcm import Beta, ChoiceDataset, Nest, NestedLogit, UtilitySpec
 
 import compare_biogeme_public_mnl as public_mnl
 import compare_nhts_mnl as nhts_mnl
+import run_mlogit_dataset_battery as mlogit_datasets
 from compare_nested_logit_estimators import load_biogeme_swissmetro
 
 
@@ -93,6 +94,7 @@ def nested_case_from_design_long(
     beta_names: list[str],
     nests: dict[str, NestSpec],
 ) -> NestedCase:
+    long_df = complete_design_long(long_df, alternatives, beta_names)
     chosen_rows = long_df.loc[long_df["choice"].astype(bool), ["obs_id", "alt"]].copy()
     if chosen_rows["obs_id"].duplicated().any():
         raise ValueError(f"More than one chosen alternative per observation in {case}.")
@@ -154,6 +156,41 @@ def nested_case_from_design_long(
     )
 
 
+def complete_design_long(long_df: pd.DataFrame, alternatives: list[str], beta_names: list[str]) -> pd.DataFrame:
+    df = long_df.copy()
+    if "availability" not in df.columns:
+        df["availability"] = True
+    if df[["obs_id", "alt"]].duplicated().any():
+        raise ValueError("Duplicate obs_id/alt rows in long-format design.")
+    obs_order = list(pd.unique(df["obs_id"]))
+    index = pd.MultiIndex.from_product([obs_order, alternatives], names=["obs_id", "alt"])
+    df = df.set_index(["obs_id", "alt"]).reindex(index).reset_index()
+    df["choice"] = df["choice"].where(df["choice"].notna(), False).astype(bool)
+    df["availability"] = df["availability"].where(df["availability"].notna(), False).astype(bool)
+    for name in beta_names:
+        df[name] = df[name].fillna(0.0).astype(float)
+    return df
+
+
+def nested_case_from_public_mnl(
+    *,
+    key: str,
+    data_label: str,
+    base: public_mnl.CaseSpec,
+    nests: dict[str, NestSpec],
+) -> NestedCase:
+    return nested_case_from_design_long(
+        case=f"{key}_nested",
+        data_label=data_label,
+        model_label="Nested logit",
+        source=base.source,
+        long_df=public_mnl.make_case_design_long(base),
+        alternatives=base.alternatives,
+        beta_names=base.parameter_names,
+        nests=nests,
+    )
+
+
 def make_swissmetro_case(n_obs: int | None) -> NestedCase:
     df, _, _, alternatives = load_biogeme_swissmetro(n_obs)
     utility_columns = {
@@ -180,6 +217,19 @@ def make_swissmetro_case(n_obs: int | None) -> NestedCase:
         nests={
             "PUBLIC": NestSpec(["TRAIN", "SM"], init=0.8),
             "PRIVATE": NestSpec(["CAR"], init=1.0, fixed=True),
+        },
+    )
+
+
+def make_airline_case(n_obs: int | None) -> NestedCase:
+    base = public_mnl.make_airline(n_obs)
+    return nested_case_from_public_mnl(
+        key="airline",
+        data_label="Airline itinerary",
+        base=base,
+        nests={
+            "ALT12": NestSpec(["ALT1", "ALT2"], init=0.8),
+            "ALT3_NEST": NestSpec(["ALT3"], init=1.0, fixed=True),
         },
     )
 
@@ -218,6 +268,19 @@ def make_nhts_case(_: int | None) -> NestedCase:
     )
 
 
+def make_telephone_case(n_obs: int | None) -> NestedCase:
+    base = public_mnl.make_telephone(n_obs)
+    return nested_case_from_public_mnl(
+        key="telephone",
+        data_label="Telephone service",
+        base=base,
+        nests={
+            "BASIC": NestSpec(["A1", "A2", "A3"], init=0.8),
+            "PREMIUM": NestSpec(["A4", "A5"], init=0.8),
+        },
+    )
+
+
 def make_parking_case(_: int | None) -> NestedCase:
     base = public_mnl.make_parking(None)
     return nested_case_from_design_long(
@@ -235,11 +298,160 @@ def make_parking_case(_: int | None) -> NestedCase:
     )
 
 
+MLOGIT_DATA_LABELS = {
+    "car": "Car",
+    "catsup": "Catsup",
+    "cracker": "Cracker",
+    "electricity": "Electricity",
+    "fishing": "Fishing",
+    "game": "Game",
+    "game2": "Game2",
+    "hc": "HC",
+    "heating": "Heating",
+    "mode": "Mode",
+    "modecanada": "ModeCanada",
+    "nox": "NOx",
+    "risky_transport": "RiskyTransport",
+}
+
+
+MLOGIT_NESTS = {
+    "car": {
+        "LOW_RANGE": NestSpec(["1", "2", "3"], init=0.8),
+        "HIGH_RANGE": NestSpec(["4", "5", "6"], init=0.8),
+    },
+    "catsup": {
+        "HEINZ": NestSpec(["heinz41", "heinz32", "heinz28"], init=0.8),
+        "HUNTS": NestSpec(["hunts32"], init=1.0, fixed=True),
+    },
+    "cracker": {
+        "NATIONAL": NestSpec(["sunshine", "kleebler", "nabisco"], init=0.8),
+        "PRIVATE": NestSpec(["private"], init=1.0, fixed=True),
+    },
+    "electricity": {
+        "PLAN_12": NestSpec(["1", "2"], init=0.8),
+        "PLAN_34": NestSpec(["3", "4"], init=0.8),
+    },
+    "fishing": {
+        "SHORE": NestSpec(["beach", "pier"], init=0.8),
+        "BOAT": NestSpec(["boat", "charter"], init=0.8),
+    },
+    "game": {
+        "CONSOLE": NestSpec(["Xbox", "PlayStation", "GameCube"], init=0.8),
+        "HANDHELD": NestSpec(["PSPortable", "GameBoy"], init=0.8),
+        "PC_NEST": NestSpec(["PC"], init=1.0, fixed=True),
+    },
+    "game2": {
+        "CONSOLE": NestSpec(["Xbox", "PlayStation", "GameCube"], init=0.8),
+        "HANDHELD": NestSpec(["PSPortable", "GameBoy"], init=0.8),
+        "PC_NEST": NestSpec(["PC"], init=1.0, fixed=True),
+    },
+    "hc": {
+        "CURRENT": NestSpec(["gcc", "ecc", "erc"], init=0.8),
+        "NEW": NestSpec(["gc", "ec", "er"], init=0.8),
+        "HPC_NEST": NestSpec(["hpc"], init=1.0, fixed=True),
+    },
+    "heating": {
+        "GAS": NestSpec(["gc", "gr"], init=0.8),
+        "ELECTRIC": NestSpec(["ec", "er"], init=0.8),
+        "HEATPUMP": NestSpec(["hp"], init=1.0, fixed=True),
+    },
+    "mode": {
+        "PRIVATE": NestSpec(["car", "carpool"], init=0.8),
+        "TRANSIT": NestSpec(["bus", "rail"], init=0.8),
+    },
+}
+
+
+def make_split_nests(alternatives: list[str]) -> dict[str, NestSpec]:
+    if len(alternatives) < 3:
+        raise ValueError("Nested-logit battery skips binary choice sets.")
+    midpoint = len(alternatives) // 2
+    return {
+        "GROUP_A": NestSpec(alternatives[:midpoint], init=0.8),
+        "GROUP_B": NestSpec(alternatives[midpoint:], init=0.8),
+    }
+
+
+def make_mlogit_dataset_case(dataset: str) -> NestedCase:
+    df, reference = load_mlogit_dataset(dataset)
+    if df is None:
+        raise RuntimeError(reference.get("message", f"Unable to load mlogit dataset {dataset}."))
+    variables = reference["variables"]
+    if isinstance(variables, str):
+        variables = [variables]
+    long_df, beta_names = mlogit_datasets.make_design_long(df, variables)
+    alternatives = [str(alt) for alt in pd.unique(long_df["alt"])]
+    long_df["alt"] = long_df["alt"].astype(str)
+    nests = MLOGIT_NESTS.get(dataset) or make_split_nests(alternatives)
+    missing = sorted({alt for nest in nests.values() for alt in nest.alternatives} - set(alternatives))
+    if missing:
+        raise ValueError(f"Nest alternatives are not in {dataset}: {missing}")
+    return nested_case_from_design_long(
+        case=f"mlogit_{dataset}_nested",
+        data_label=MLOGIT_DATA_LABELS[dataset],
+        model_label="Nested logit",
+        source=f"R mlogit::{dataset}",
+        long_df=long_df,
+        alternatives=alternatives,
+        beta_names=beta_names,
+        nests=nests,
+    )
+
+
+def make_mlogit_case_builder(dataset: str):
+    return lambda _n_obs: make_mlogit_dataset_case(dataset)
+
+
+def load_mlogit_dataset(dataset: str) -> tuple[pd.DataFrame | None, dict]:
+    rscript = shutil.which("Rscript")
+    if rscript is None:
+        return None, {"available": False, "message": "Rscript not found."}
+    with tempfile.TemporaryDirectory(prefix=f"torchdcm_nested_{dataset}_") as tmp:
+        tmp_path = Path(tmp)
+        data_path = tmp_path / "data.csv"
+        result_path = tmp_path / "result.json"
+        env = os.environ.copy()
+        r_user_lib = str(Path.home() / "R" / "site-library")
+        existing = env.get("R_LIBS_USER")
+        env["R_LIBS_USER"] = r_user_lib if not existing else f"{r_user_lib}:{existing}"
+        command = [
+            rscript,
+            str(mlogit_datasets.R_SCRIPT),
+            "--dataset",
+            dataset,
+            "--data-output",
+            str(data_path),
+            "--result-output",
+            str(result_path),
+            "--data-only",
+        ]
+        proc = subprocess.run(command, text=True, capture_output=True, env=env)
+        if proc.returncode != 0:
+            return None, {"available": False, "message": (proc.stderr or proc.stdout).strip()}
+        return pd.read_csv(data_path), json.loads(result_path.read_text(encoding="utf-8"))
+
+
 CASE_BUILDERS = {
     "swissmetro": make_swissmetro_case,
+    "airline": make_airline_case,
     "lpmc": make_lpmc_case,
     "nhts": make_nhts_case,
     "parking": make_parking_case,
+    "telephone": make_telephone_case,
+    "mlogit_car": make_mlogit_case_builder("car"),
+    "mlogit_catsup": make_mlogit_case_builder("catsup"),
+    "mlogit_cracker": make_mlogit_case_builder("cracker"),
+    "mlogit_electricity": make_mlogit_case_builder("electricity"),
+    "mlogit_fishing": make_mlogit_case_builder("fishing"),
+    "mlogit_game": make_mlogit_case_builder("game"),
+    "mlogit_game2": make_mlogit_case_builder("game2"),
+    "mlogit_hc": make_mlogit_case_builder("hc"),
+    "mlogit_heating": make_mlogit_case_builder("heating"),
+    "mlogit_mode": make_mlogit_case_builder("mode"),
+    "mlogit_modecanada": make_mlogit_case_builder("modecanada"),
+    "mlogit_nox": make_mlogit_case_builder("nox"),
+    "mlogit_risky_transport": make_mlogit_case_builder("risky_transport"),
 }
 
 
@@ -286,9 +498,19 @@ def run_torch(case: NestedCase, max_iter: int) -> BackendResult:
         lambda p: model.loglike(model._internal_to_natural(p, compiled), data, compiled),
         final_internal,
     )
-    cov_internal = torch.linalg.pinv(-hessian.detach(), hermitian=True)
-    transform = model._natural_jacobian(final_internal.detach(), compiled)
-    covariance = (transform @ cov_internal @ transform.T).detach().cpu().numpy()
+    information = -hessian.detach()
+    covariance = None
+    if torch.isfinite(information).all():
+        try:
+            cov_internal = torch.linalg.pinv(information, hermitian=True)
+        except RuntimeError:
+            try:
+                cov_internal = torch.linalg.pinv(information, hermitian=False)
+            except RuntimeError:
+                cov_internal = None
+        if cov_internal is not None:
+            transform = model._natural_jacobian(final_internal.detach(), compiled)
+            covariance = (transform @ cov_internal @ transform.T).detach().cpu().numpy()
     covariance_s = time.perf_counter() - covariance_start
     names = compiled.free_names
     probabilities = model.predict_proba(data, final_natural, compiled).detach().cpu().numpy()
@@ -477,10 +699,12 @@ def predict_probabilities(case: NestedCase, params: dict[str, float]) -> np.ndar
 
 
 def compare(results: list[BackendResult], case: NestedCase) -> None:
+    ref = next((result for result in results if result.backend == "torchdcm" and result.available), None)
+    if ref is None:
+        return
     for result in results:
         if result.available and result.probabilities is None:
             result.probabilities = predict_probabilities(case, result.params or {})
-    ref = next(result for result in results if result.backend == "torchdcm" and result.available)
     for result in results:
         if not result.available:
             continue
@@ -501,11 +725,16 @@ def is_consistent(results: list[BackendResult]) -> bool:
     biogeme = next((result for result in results if result.backend == "biogeme"), None)
     if biogeme is None or not biogeme.available:
         return False
-    if abs(getattr(biogeme, "ll_diff")) > 1e-4:
+    ll_diff = getattr(biogeme, "ll_diff", None)
+    param_diff = getattr(biogeme, "max_param_diff", None)
+    prob_diff = getattr(biogeme, "max_prob_diff", None)
+    if ll_diff is None or param_diff is None or prob_diff is None:
         return False
-    if getattr(biogeme, "max_param_diff") > 5e-4:
+    if abs(ll_diff) > 1e-4:
         return False
-    if getattr(biogeme, "max_prob_diff") > 2e-4:
+    if param_diff > 5e-4:
+        return False
+    if prob_diff > 2e-4:
         return False
     return True
 
@@ -545,11 +774,24 @@ def result_payload(case: NestedCase, results: list[BackendResult]) -> dict:
 
 def run_case(case: NestedCase, max_iter: int, lambda_min: float) -> dict:
     results = [
-        run_torch(case, max_iter=max_iter),
-        run_biogeme(case, lambda_min=lambda_min),
-        run_apollo(case, lambda_min=lambda_min),
+        safe_run("torchdcm", lambda: run_torch(case, max_iter=max_iter)),
+        safe_run("biogeme", lambda: run_biogeme(case, lambda_min=lambda_min)),
+        safe_run("apollo", lambda: run_apollo(case, lambda_min=lambda_min)),
     ]
     return result_payload(case, results)
+
+
+def safe_run(backend: str, fn) -> BackendResult:
+    start = time.perf_counter()
+    try:
+        return fn()
+    except Exception as exc:
+        return BackendResult(
+            backend=backend,
+            available=False,
+            total_s=time.perf_counter() - start,
+            message=f"{type(exc).__name__}: {exc}",
+        )
 
 
 def render_markdown(payloads: list[dict]) -> str:
@@ -634,7 +876,13 @@ def main() -> None:
     selected = list(CASE_BUILDERS) if args.case == "all" else [args.case]
     payloads = []
     for key in selected:
-        case = CASE_BUILDERS[key](args.n_obs)
+        try:
+            case = CASE_BUILDERS[key](args.n_obs)
+        except Exception as exc:
+            print(f"case: {key}")
+            print(f"skipped: {type(exc).__name__}: {exc}")
+            print()
+            continue
         payload = run_case(case, max_iter=args.max_iter, lambda_min=args.lambda_min)
         payloads.append(payload)
         print_payload(payload)

@@ -16,9 +16,11 @@ ModeCanada retains attempted failures for \texttt{gmnl} and \texttt{xlogit}; the
 \input{tables/nested_real}
 
 Table~\ref{tab:nested_real} reports the current real-data nested-logit-family benchmark.
-The table now includes all real-data cases for which we define an interpretable nested-logit specification: Swissmetro, LPMC London, NHTS 2022, and Parking Spain, plus the Swissmetro cross-nested row.
+The table now includes a broader set of real-data cases for which we define an aligned nested-logit specification: Swissmetro, LPMC London, NHTS 2022, Parking Spain, Airline itinerary, and seven R \texttt{mlogit} datasets.
+The added R examples cover brand choice, product choice, electricity plan choice, recreational fishing, heating/cooling, home heating, and travel mode choice.
 The consistency flag is evaluated against Biogeme, which is the common nested-logit reference across these rows; Apollo runtimes are reported where the aligned wrapper completes, but Apollo is not used to determine the final consistency flag.
 All rows are consistent with Biogeme under the prespecified likelihood, parameter, and probability tolerances.
+Nested-logit specifications that do not produce a stable aligned Biogeme solution are not forced into the table; this excludes, for example, the telephone nested split, ModeCanada, NOx, RiskyTransport, and game-style datasets under the current benchmark definitions.
 
 \input{tables/mixed_real}
 

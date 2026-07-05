@@ -7,6 +7,9 @@ get_arg <- function(flag, default = NULL) {
   if (is.na(idx)) return(default)
   args[[idx + 1]]
 }
+has_flag <- function(flag) {
+  flag %in% args
+}
 
 dataset <- get_arg("--dataset")
 data_out <- get_arg("--data-output")
@@ -175,6 +178,21 @@ for (var in variables) {
   aligned[[var]] <- as.numeric(aligned[[var]])
 }
 aligned <- aligned[complete.cases(aligned[, c("obs_id", "alt", "choice", variables)]), ]
+
+if (has_flag("--data-only")) {
+  write.csv(aligned, data_out, row.names = FALSE)
+  payload <- list(
+    backend = "mlogit",
+    dataset = dataset,
+    data_only = TRUE,
+    n_obs = length(unique(aligned$obs_id)),
+    n_rows = nrow(aligned),
+    n_parameters = length(variables),
+    variables = variables
+  )
+  write(toJSON(payload, auto_unbox = TRUE, digits = 16), result_out)
+  quit(status = 0)
+}
 
 fit <- fit_long(aligned, variables, availability_col)
 write.csv(aligned, data_out, row.names = FALSE)
