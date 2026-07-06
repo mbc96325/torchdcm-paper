@@ -16,18 +16,23 @@ output_path <- get_arg("--output")
 
 suppressPackageStartupMessages(library(apollo))
 suppressPackageStartupMessages(library(jsonlite))
+options(expressions = 500000)
 
 spec <- fromJSON(spec_path, simplifyVector = FALSE)
 database <- read.csv(data_path)
 panel_mode <- isTRUE(spec$panel)
+if (!panel_mode) {
+  database$apollo_row_id <- seq_len(nrow(database))
+}
 
 apollo_initialise()
 
 apollo_control <- list(
   modelName = spec$model_name,
   modelDescr = "TorchDCM MMNL benchmark",
-  indivID = spec$panel_id_col,
+  indivID = if (panel_mode) spec$panel_id_col else "apollo_row_id",
   mixing = TRUE,
+  panelData = panel_mode,
   nCores = 1,
   analyticGrad = FALSE,
   noDiagnostics = TRUE
@@ -36,12 +41,21 @@ apollo_control <- list(
 apollo_beta <- unlist(spec$parameters)
 apollo_fixed <- c()
 
-apollo_draws <- list(
-  interDrawsType = "halton",
-  interNDraws = spec$n_draws,
-  interUnifDraws = c(),
-  interNormDraws = c("draws_time")
-)
+if (panel_mode) {
+  apollo_draws <- list(
+    interDrawsType = "halton",
+    interNDraws = spec$n_draws,
+    interUnifDraws = c(),
+    interNormDraws = c("draws_time")
+  )
+} else {
+  apollo_draws <- list(
+    intraDrawsType = "halton",
+    intraNDraws = spec$n_draws,
+    intraUnifDraws = c(),
+    intraNormDraws = c("draws_time")
+  )
+}
 
 apollo_randCoeff <- function(apollo_beta, apollo_inputs) {
   apollo_attach(apollo_beta, apollo_inputs)
@@ -99,6 +113,7 @@ out <- list(
   apollo_version = as.character(packageVersion("apollo")),
   loglike = as.numeric(model$maximum),
   estimates = as.list(model$estimate),
+  parameter_names = names(model$estimate),
   se = as.list(model$se),
   robust_se = as.list(model$robse),
   covariance = covariance,

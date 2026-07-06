@@ -1,10 +1,10 @@
 The current results support the main software claim that TorchDCM can combine PyTorch-native likelihood computation with econometric outputs and external estimator parity checks.
 The strongest evidence comes from full-estimation MNL and ordered-model cases, where the benchmark suite reports runtime splits and a prespecified consistency flag against reference estimators.
-Nested and cross-nested logit results extend this evidence to more structured substitution patterns, while mixed-logit fixed replay verifies the simulation likelihood kernels under shared draws.
+Nested and cross-nested logit results extend this evidence to more structured substitution patterns, while the mixed-logit results now include both a Swissmetro full-estimation comparison against Biogeme and fixed replay checks for simulation likelihood kernels under shared draws.
 
-The main limitation is that full mixed-logit estimation has not yet been completed across Biogeme, Apollo, and other mixed-logit packages.
-This limitation is a scope boundary rather than a contradiction of the current evidence: the present mixed-logit results validate the probability and log-likelihood kernels, but they do not validate optimizer convergence, simulated covariance, or random-draw conventions across packages.
-The next experimental step is therefore to estimate mixed-logit models end to end with deterministic shared draws and compare runtime plus consistency under the same rule.
+The main limitation is now breadth rather than existence of mixed-logit full estimation.
+The current full mixed-logit row aligns TorchDCM and Biogeme under shared simulation draws and a common starting point, but Apollo full estimation remains unavailable in the current wrapper because \texttt{apollo\_validateInputs} overflows on this benchmark.
+The next experimental step is therefore to broaden full mixed-logit comparisons to additional public datasets and additional mixed-logit packages, while documenting draw conventions and optimizer initialization explicitly.
 
 A second limitation is that covariance comparisons for constrained models require careful interpretation.
 For nested and cross-nested logit, different packages may report covariance on transformed or constrained parameter scales, and numerical differences can be larger than likelihood or probability differences.

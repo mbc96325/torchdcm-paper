@@ -24,8 +24,9 @@ All reported rows are consistent with Biogeme under the prespecified likelihood,
 \input{tables/mixed_real}
 
 Table~\ref{tab:mixed_real} reports the current real-data mixed-logit benchmark.
-These rows use Swissmetro with shared parameters and shared antithetic draws, so they validate the mixed-logit likelihood and probability kernels rather than full simulated maximum-likelihood estimation.
-TorchDCM matches both Biogeme and Apollo to numerical tolerance in the available shared-draw replay rows.
+The first row is a Swissmetro mixed-logit full-estimation comparison with a normal random time coefficient, 32 shared antithetic draws, and a shared $\sigma=1.0$ initial value for TorchDCM and Biogeme.
+Under this aligned shared-draw setup, TorchDCM matches Biogeme's log likelihood and parameters to numerical tolerance while completing total estimation and covariance calculation in 0.273 seconds versus 12.974 seconds for Biogeme.
+Apollo full estimation is attempted but marked unavailable because the current Apollo wrapper overflows during \texttt{apollo\_validateInputs}; the replay rows still validate the mixed-logit and WTP-space mixed-logit likelihood/probability kernels against both Biogeme and Apollo under shared parameters and draws.
 
 \input{tables/benchmark_cases}
 

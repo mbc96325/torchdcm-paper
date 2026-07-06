@@ -7,7 +7,7 @@ TorchDCM is PyTorch-first and exposes discrete-choice abstractions. & Package de
 TorchDCM matches reference estimators for MNL full estimation. & Swissmetro, public Biogeme MNL battery, Fishing, and ModeCanada benchmark rows are marked consistent under the prespecified tolerance rule. & Supported \\
 TorchDCM matches reference estimators for nested and cross-nested logit. & Swissmetro nested and cross-nested full-estimation rows are marked consistent under the prespecified tolerance rule. & Supported \\
 TorchDCM validates mixed-logit kernels. & Shared-draw fixed replay against Biogeme and Apollo gives machine-precision probability and likelihood agreement. & Supported \\
-TorchDCM has completed full mixed-logit estimator parity. & Current results only include fixed replay for mixed and WTP mixed logit. & Needs new experiment \\
+TorchDCM has an initial full mixed-logit estimator parity result. & Swissmetro mixed logit with a normal random time coefficient matches Biogeme under shared draws and a shared $\sigma=1.0$ initial value; Apollo full estimation is attempted but unavailable in the current wrapper. & Supported with scope limit \\
 TorchDCM provides faster runtime on current benchmark cases. & Tables report lower TorchDCM total or estimation time than Biogeme/Apollo/mlogit in most econometric-reference cases, with \texttt{xlogit} faster on Fishing MNL. & Supported with nuance \\
 TorchDCM scales on pure synthetic MNL data. & Synthetic benchmark table reports runtime splits as $N$, $J$, $K$, and feature correlation vary. & Supported for MNL \\
 \bottomrule

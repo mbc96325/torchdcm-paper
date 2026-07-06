@@ -5,8 +5,8 @@ Dimension & Reviewer-facing question & Current status \\
 \midrule
 Contribution & Does the paper provide new software infrastructure rather than only a reimplementation? & Pass; clarify PyTorch-first plus benchmark-system contribution. \\
 Writing clarity & Can a reader reproduce the package workflow and benchmark protocol? & Partial; add more API examples and exact environment details before submission. \\
-Experimental strength & Are strong baselines included? & Partial; Biogeme, Apollo, SciPy, mlogit, gmnl, and xlogit are included, but mixed-logit full estimation is pending. \\
-Evaluation completeness & Are all major model-family claims supported by full estimation? & Needs revision; mixed and WTP mixed currently use fixed replay. \\
+Experimental strength & Are strong baselines included? & Partial; Biogeme, Apollo, SciPy, mlogit, gmnl, and xlogit are included, and mixed-logit full estimation is now aligned against Biogeme, but Apollo full mixed-logit still needs wrapper repair. \\
+Evaluation completeness & Are all major model-family claims supported by full estimation? & Improved; standard mixed logit has one full-estimation row, while WTP mixed still uses fixed replay. \\
 Method soundness & Are hidden assumptions documented? & Partial; add constrained-parameter covariance convention and draw-generation details. \\
 \bottomrule
 \end{tabularx}

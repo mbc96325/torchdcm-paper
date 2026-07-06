@@ -11,7 +11,8 @@ Small public datasets are committed to the repository, while large processed art
 The numerical metrics are chosen to match the Apollo benchmark plan used to guide the project, but the paper tables report a single consistency flag rather than every raw difference.
 A full-estimation case is marked consistent when all directly comparable quantities satisfy the following prespecified tolerances: absolute log-likelihood difference at most $10^{-4}$, maximum absolute parameter difference at most $5\times10^{-4}$, maximum probability difference at most $2\times10^{-4}$, and maximum standard-error difference at most $3\times10^{-2}$ when the same covariance definition is available.
 Willingness-to-pay and elasticity checks use the same relative numerical scale when the model specification supports them.
-For simulation-based models that have not yet been fully estimated across all backends, the suite uses fixed-parameter replay with shared draws and marks consistency for the likelihood/probability kernel rather than for the complete simulated estimator.
+For simulation-based models, the suite distinguishes full simulated maximum-likelihood estimation from fixed-parameter replay.
+The Swissmetro mixed-logit full-estimation row uses a relaxed consistency rule against Biogeme under shared draws and a shared nonzero variance initial value, while simulation-based rows that are not yet fully estimated across backends use fixed-parameter replay with shared draws and mark consistency for the likelihood/probability kernel rather than for the complete simulated estimator.
 
 The runtime metrics distinguish estimator work from reporting work.
 Total runtime includes backend overhead when the benchmark script can measure it, while estimation time isolates parameter optimization and covariance time isolates Hessian or covariance calculations.

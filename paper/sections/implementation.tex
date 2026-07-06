@@ -12,7 +12,7 @@ After estimation, the package computes covariance matrices from observed informa
 Simulation-based models use explicit draw tensors.
 Mixed logit and WTP-space mixed logit average probabilities over deterministic or seeded simulation draws, and panel likelihoods share draws consistently across observations belonging to the same individual.
 This design is essential for cross-package validation: when TorchDCM, Biogeme, and Apollo receive the same parameters and the same draw matrix, probability and likelihood differences should isolate implementation errors rather than random simulation noise.
-The current benchmark suite uses this design to verify mixed-logit likelihood kernels before extending the comparison to full simulated maximum-likelihood estimation.
+The current benchmark suite uses this design both for mixed-logit likelihood-kernel replay and for an aligned Swissmetro mixed-logit full-estimation comparison against Biogeme.
 
 The validation layer is implemented as executable benchmark scripts rather than static tables.
 Each benchmark case records data source, model specification, starting values, availability rules, scaling choices, covariance definition, backend availability, runtime split, and numerical differences.

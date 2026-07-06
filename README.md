@@ -43,7 +43,7 @@ The paper-facing benchmark tables are generated from the validation artifacts:
 
 - Table 1: real-data MNL comparisons.
 - Table 2: real-data nested-logit-family comparisons.
-- Table 3: real-data mixed-logit replay comparisons.
+- Table 3: real-data mixed-logit full-estimation and replay comparisons.
 - Synthetic controlled MNL benchmarks vary sample size, number of variables,
   number of alternatives, and feature correlation.
 
@@ -62,4 +62,3 @@ latexmk -pdf -interaction=nonstopmode main.tex
 ```
 
 The local manuscript PDF is `paper/main.pdf`.
-

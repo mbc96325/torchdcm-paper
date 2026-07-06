@@ -21,7 +21,7 @@ This paper makes three contributions.
 First, we introduce TorchDCM as an open-source PyTorch-first package for discrete choice estimation and inference.
 Second, we document the package architecture and implementation choices needed to support both standard and advanced choice models, including multinomial, nested, cross-nested, mixed, WTP-space, ordered, latent class, and hybrid-choice components.
 Third, we build a reproducible benchmark suite on public datasets aligned with Biogeme, Apollo, and R package examples, and we report estimator parity and runtime results across model families.
-The current benchmark suite establishes full-estimation parity for MNL, nested logit, cross-nested logit, ordered logit, and ordered probit models, and it establishes shared-draw likelihood parity for mixed-logit models.
+The current benchmark suite establishes full-estimation parity for MNL, nested logit, cross-nested logit, ordered logit, ordered probit, and an aligned Swissmetro mixed-logit case against Biogeme, and it establishes shared-draw likelihood parity for additional mixed-logit kernels.
 
 The rest of the paper is organized as follows.
 Section~\ref{sec:related} positions TorchDCM relative to existing choice-modeling software.

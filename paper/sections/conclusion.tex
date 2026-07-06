@@ -1,7 +1,7 @@
 This paper introduces TorchDCM, a PyTorch-first package for discrete choice model estimation, inference, and estimator benchmarking.
 The key idea is to pair tensor-native likelihood computation with econometric abstractions and a validation layer that compares against mature reference packages.
-Current public benchmarks show full-estimation numerical parity for MNL, nested logit, cross-nested logit, ordered logit, and ordered probit, and shared-draw likelihood parity for mixed-logit models.
+Current public benchmarks show full-estimation numerical parity for MNL, nested logit, cross-nested logit, ordered logit, ordered probit, and an aligned Swissmetro mixed-logit case against Biogeme, plus shared-draw likelihood parity for additional mixed-logit replay cases.
 The strongest immediate evidence is that TorchDCM matches reference estimators on likelihoods, parameters, probabilities, covariance outputs, and standard errors while often reducing core runtime by one to two orders of magnitude on the tested cases.
 
-Future work will focus on completing full mixed-logit estimation benchmarks, broadening Apollo and R package comparisons, and expanding the public dataset suite.
+Future work will focus on broadening full mixed-logit estimation benchmarks across more datasets and packages, resolving the current Apollo full-estimation wrapper limitation, and expanding the public dataset suite.
 These extensions will strengthen the package as open infrastructure for researchers who need differentiable choice models, econometric inference, and reproducible cross-estimator validation.
