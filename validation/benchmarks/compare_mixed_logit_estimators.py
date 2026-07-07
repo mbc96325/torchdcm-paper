@@ -46,6 +46,11 @@ def raise_stack_limit_for_child() -> None:
         pass
 
 
+def sync_torch_device(device: torch.device) -> None:
+    if device.type == "cuda":
+        torch.cuda.synchronize(device)
+
+
 def default_params(names: list[str], sigma: float, random_names: list[str], correlated: bool) -> dict[str, float]:
     params = {
         "ASC_TRAIN": 0.3,
@@ -181,9 +186,10 @@ def run_torch_fit(
     correlated: bool,
     error_component_public: bool,
     sigma_init: float = 0.1,
+    device: str = "cpu",
 ) -> BackendResult:
     params = {f"SIGMA_{name}": sigma_init for name in random_names}
-    model = make_torch_model(spec, params, draws, panel, random_names, correlated, error_component_public, max_iter=max_iter)
+    model = make_torch_model(spec, params, draws, panel, random_names, correlated, error_component_public, max_iter=max_iter, device=device)
     data = data.to(device=model.device, dtype=model.dtype)
     compiled = model.compile(data)
     internal_initial = torch.cat(
@@ -208,12 +214,15 @@ def run_torch_fit(
         loss.backward()
         return loss
 
+    sync_torch_device(model.device)
     estimate_start = time.perf_counter()
     optimizer.step(closure)
+    sync_torch_device(model.device)
     estimate_seconds = time.perf_counter() - estimate_start
     final_internal = internal_params.detach().clone().requires_grad_(True)
     final_natural = model._internal_to_natural(final_internal, compiled)
     ll = model.loglike(final_natural, data, compiled)
+    sync_torch_device(model.device)
     covariance_start = time.perf_counter()
     hessian_internal = torch.autograd.functional.hessian(
         lambda p: model.loglike(model._internal_to_natural(p, compiled), data, compiled),
@@ -225,6 +234,7 @@ def run_torch_fit(
         covariance = (transform_jac @ cov_internal @ transform_jac.T).detach().cpu().numpy()
     except RuntimeError:
         covariance = None
+    sync_torch_device(model.device)
     covariance_seconds = time.perf_counter() - covariance_start
     return BackendResult(
         backend="torchdcm_fit",
@@ -842,6 +852,8 @@ def main() -> None:
     parser.add_argument("--error-component-public", action="store_true")
     parser.add_argument("--mode", choices=["fixed", "fit", "fit-replay", "full-estimation"], default="fixed")
     parser.add_argument("--max-iter", type=int, default=40)
+    parser.add_argument("--torch-device", default="cpu")
+    parser.add_argument("--torch-only", action="store_true")
     parser.add_argument("--json-output", type=Path, default=None)
     parser.add_argument("--md-output", type=Path, default=None)
     args = parser.parse_args()
@@ -887,6 +899,7 @@ def main() -> None:
             args.correlated,
             args.error_component_public,
             sigma_init=args.sigma,
+            device=args.torch_device,
         )
         params = torch_result.params
         apollo_result = run_apollo_fixed(
@@ -920,30 +933,34 @@ def main() -> None:
             args.correlated,
             args.error_component_public,
             sigma_init=args.sigma,
+            device=args.torch_device,
         )
         torch_result.backend = "torchdcm_full"
-        biogeme_result = run_biogeme_estimate(
-            df,
-            alternatives,
-            initial_params,
-            draws.detach().cpu().numpy(),
-            args.panel,
-            random_names,
-            args.correlated,
-            args.error_component_public,
-        )
-        if biogeme_result.available:
-            biogeme_result.probabilities = predict_with_torch_model(
-                data, spec, biogeme_result.params, draws, args.panel, random_names, args.correlated, args.error_component_public
+        if args.torch_only:
+            results = [torch_result]
+        else:
+            biogeme_result = run_biogeme_estimate(
+                df,
+                alternatives,
+                initial_params,
+                draws.detach().cpu().numpy(),
+                args.panel,
+                random_names,
+                args.correlated,
+                args.error_component_public,
             )
-        apollo_result = run_apollo_estimate(
-            df,
-            alternatives,
-            initial_params,
-            args.n_draws,
-            args.panel,
-        )
-        results = [torch_result, biogeme_result, apollo_result]
+            if biogeme_result.available:
+                biogeme_result.probabilities = predict_with_torch_model(
+                    data, spec, biogeme_result.params, draws, args.panel, random_names, args.correlated, args.error_component_public, args.torch_device
+                )
+            apollo_result = run_apollo_estimate(
+                df,
+                alternatives,
+                initial_params,
+                args.n_draws,
+                args.panel,
+            )
+            results = [torch_result, biogeme_result, apollo_result]
         reference = "torchdcm_full"
     display_mode = "fit-replay" if args.mode == "fit" else args.mode
     print_results(
@@ -981,10 +998,11 @@ def predict_with_torch_model(
     random_names: list[str],
     correlated: bool,
     error_component_public: bool,
+    device: str = "cpu",
 ) -> np.ndarray:
-    model = make_torch_model(spec, params, draws, panel, random_names, correlated, error_component_public)
+    model = make_torch_model(spec, params, draws, panel, random_names, correlated, error_component_public, device=device)
     compiled = model.compile(data)
-    vector = torch.as_tensor([params[name] for name in compiled.free_names], dtype=torch.float64)
+    vector = torch.as_tensor([params[name] for name in compiled.free_names], dtype=torch.float64, device=model.device)
     return model.predict_proba(data, vector, compiled).detach().cpu().numpy()
 
 
