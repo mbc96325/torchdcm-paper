@@ -1,16 +1,17 @@
 {\scriptsize
 \setlength{\tabcolsep}{4pt}
 \begin{table}[H]
-\caption{Real-data mixed-logit runtime and consistency benchmarks. Runtime columns report total remote wall-clock seconds. The full-estimation row compares TorchDCM with Biogeme using identical antithetic simulation draws and a shared $\sigma=1.0$ initial value; Apollo full-estimation runtime is reported using Apollo's own Halton draws and is not used for strict shared-draw consistency. Replay rows validate likelihood/probability kernels under shared parameters and draws.}
+\caption{Real-data mixed-logit runtime and consistency benchmarks. Runtime columns report total remote wall-clock seconds. Full-estimation rows compare TorchDCM with Biogeme using identical antithetic simulation draws and a shared $\sigma=1.0$ initial value; Apollo full-estimation runtime is reported using Apollo's own Halton draws and is not used for strict shared-draw consistency. Replay rows validate likelihood/probability kernels under shared parameters and draws.}
 \label{tab:mixed_real}
 \centering
 \begin{tabular}{llrrrrl}
 \toprule
 Data & Model & $N$ & TorchDCM & Biogeme & Apollo & Consistent? \\
 \midrule
-Swissmetro & Mixed logit full estimation & 10719 & 0.276 & 12.959 & 12.386 & Yes \\
-Swissmetro & Mixed logit replay & 10719 & 0.016 & 13.073 & 0.585 & Yes \\
-Swissmetro & WTP-space mixed logit replay & 10719 & 0.017 & 13.644 & 0.590 & Yes \\
+Swissmetro & Mixed full, 1 RC & 10719 & 0.276 & 12.959 & 12.386 & Yes \\
+Swissmetro & Mixed full, 2 RC & 10719 & 0.313 & 15.821 & 16.277 & Yes \\
+Swissmetro & Mixed replay & 10719 & 0.016 & 13.073 & 0.585 & Yes \\
+Swissmetro & WTP mixed replay & 10719 & 0.017 & 13.644 & 0.590 & Yes \\
 \bottomrule
 \end{tabular}
 \end{table}

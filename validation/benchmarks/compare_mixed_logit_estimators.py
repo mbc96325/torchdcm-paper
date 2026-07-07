@@ -535,11 +535,12 @@ def run_biogeme_estimate(
             available=False,
             message="Aligned Biogeme full estimation currently supports observation-level likelihood only.",
         )
-    if correlated or error_component_public or random_names != ["B_TIME"]:
+    supported_random_names = {"B_TIME", "B_COST"}
+    if correlated or error_component_public or not set(random_names).issubset(supported_random_names) or "B_TIME" not in random_names:
         return BackendResult(
             backend="biogeme_full",
             available=False,
-            message="Aligned Biogeme full estimation currently supports one normal random B_TIME coefficient.",
+            message="Aligned Biogeme full estimation currently supports independent normal B_TIME and optional B_COST coefficients.",
         )
     try:
         import biogeme.biogeme as bio
@@ -558,15 +559,16 @@ def run_biogeme_estimate(
     for alt in alternatives:
         wide_df[f"avail_{alt.lower()}"] = wide_df[f"avail_{alt.lower()}"].astype(int)
     draw_columns = {
-        f"DRAW_B_TIME_{draw_index}": float(draws[draw_index, 0])
+        f"DRAW_{name}_{draw_index}": float(draws[draw_index, random_index])
         for draw_index in range(draws.shape[0])
+        for random_index, name in enumerate(random_names)
     }
     if draw_columns:
         import pandas as pd
 
         wide_df = pd.concat([wide_df, pd.DataFrame(draw_columns, index=wide_df.index)], axis=1)
 
-    names = ["ASC_TRAIN", "B_TIME", "B_COST", "ASC_CAR", "SIGMA_B_TIME"]
+    names = ["ASC_TRAIN", "B_TIME", "B_COST", "ASC_CAR", *[f"SIGMA_{name}" for name in random_names]]
     try:
         database = db.Database("torchdcm_mixed_full_shared_draws", wide_df.drop(columns=["choice"]))
         betas = {
@@ -574,14 +576,20 @@ def run_biogeme_estimate(
             "B_TIME": BioBeta("B_TIME", initial_values["B_TIME"], None, None, 0),
             "B_COST": BioBeta("B_COST", initial_values["B_COST"], None, None, 0),
             "ASC_CAR": BioBeta("ASC_CAR", initial_values["ASC_CAR"], None, None, 0),
-            "SIGMA_B_TIME": BioBeta("SIGMA_B_TIME", initial_values["SIGMA_B_TIME"], 0.0, None, 0),
         }
+        for name in random_names:
+            sigma_name = f"SIGMA_{name}"
+            betas[sigma_name] = BioBeta(sigma_name, initial_values[sigma_name], 0.0, None, 0)
         choice = Variable("choice_code")
         availability = {code_by_alt[alt]: Variable(f"avail_{alt.lower()}") for alt in alternatives}
         chosen_probs_by_draw = []
         for draw_index in range(draws.shape[0]):
-            b_time = betas["B_TIME"] + betas["SIGMA_B_TIME"] * Variable(f"DRAW_B_TIME_{draw_index}")
+            b_time = betas["B_TIME"]
+            if "B_TIME" in random_names:
+                b_time = b_time + betas["SIGMA_B_TIME"] * Variable(f"DRAW_B_TIME_{draw_index}")
             b_cost = betas["B_COST"]
+            if "B_COST" in random_names:
+                b_cost = b_cost + betas["SIGMA_B_COST"] * Variable(f"DRAW_B_COST_{draw_index}")
             utility = {
                 code_by_alt["TRAIN"]: betas["ASC_TRAIN"] + b_time * Variable("time_train") + b_cost * Variable("cost_train"),
                 code_by_alt["SM"]: b_time * Variable("time_sm") + b_cost * Variable("cost_sm"),
@@ -900,7 +908,8 @@ def main() -> None:
         if args.panel:
             raise ValueError("--mode full-estimation currently supports observation-level likelihood; omit --panel.")
         initial_params = {name: 0.0 for name in base_spec.parameter_names}
-        initial_params["SIGMA_B_TIME"] = args.sigma
+        for name in random_names:
+            initial_params[f"SIGMA_{name}"] = args.sigma
         torch_result = run_torch_fit(
             data,
             spec,

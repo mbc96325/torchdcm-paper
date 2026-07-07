@@ -39,17 +39,21 @@ apollo_control <- list(
 
 apollo_beta <- unlist(spec$parameters)
 apollo_fixed <- c()
+random_cost <- "SIGMA_B_COST" %in% names(apollo_beta)
 
 apollo_draws <- list(
   interDrawsType = "halton",
   interNDraws = spec$n_draws,
   interUnifDraws = c(),
-  interNormDraws = c("draws_time")
+  interNormDraws = if (random_cost) c("draws_time", "draws_cost") else c("draws_time")
 )
 
 apollo_randCoeff <- function(apollo_beta, apollo_inputs) {
   randcoeff <- list()
   randcoeff[["B_TIME_RND"]] <- B_TIME + SIGMA_B_TIME * draws_time
+  if (random_cost) {
+    randcoeff[["B_COST_RND"]] <- B_COST + SIGMA_B_COST * draws_cost
+  }
   return(randcoeff)
 }
 
@@ -59,9 +63,10 @@ apollo_probabilities <- function(apollo_beta, apollo_inputs, functionality = "es
 
   P <- list()
   V <- list()
-  V[["TRAIN"]] <- ASC_TRAIN + B_TIME_RND * time_train + B_COST * cost_train
-  V[["SM"]] <- B_TIME_RND * time_sm + B_COST * cost_sm
-  V[["CAR"]] <- ASC_CAR + B_TIME_RND * time_car + B_COST * cost_car
+  b_cost_current <- if (random_cost) B_COST_RND else B_COST
+  V[["TRAIN"]] <- ASC_TRAIN + B_TIME_RND * time_train + b_cost_current * cost_train
+  V[["SM"]] <- B_TIME_RND * time_sm + b_cost_current * cost_sm
+  V[["CAR"]] <- ASC_CAR + B_TIME_RND * time_car + b_cost_current * cost_car
 
   mnl_settings <- list(
     alternatives = c(TRAIN = 1, SM = 2, CAR = 3),
