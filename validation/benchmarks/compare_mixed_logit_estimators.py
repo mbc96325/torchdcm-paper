@@ -345,11 +345,10 @@ def run_apollo_estimate(
     script = Path(__file__).resolve().parent / "apollo" / "R" / "run_mixed_estimate.R"
     if not script.exists():
         return BackendResult(backend="apollo_full", available=False, message=f"Missing script: {script}")
-    apollo_panel = True if not panel else panel
     with tempfile.TemporaryDirectory(prefix="torchdcm_apollo_mixed_full_") as tmp:
         tmp_path = Path(tmp)
         data_path, spec_path = write_apollo_estimate_inputs(
-            df, alternatives, initial_values, n_draws, apollo_panel, tmp_path
+            df, alternatives, initial_values, n_draws, panel, tmp_path
         )
         output_path = tmp_path / "apollo_result.json"
         cmd = [
@@ -390,9 +389,7 @@ def run_apollo_estimate(
             params={name: float(payload["estimates"][name]) for name in param_names if name in payload["estimates"]},
             covariance=covariance_array,
             message=(
-                "Apollo uses package Halton draws"
-                + (" and panel likelihood" if apollo_panel != panel else "")
-                + "; runtime is comparable but not strict shared-draw parity."
+                "Apollo uses package Halton draws; runtime is comparable but not strict shared-draw parity."
             ),
         )
 

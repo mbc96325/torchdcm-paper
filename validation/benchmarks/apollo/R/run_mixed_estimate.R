@@ -32,7 +32,6 @@ apollo_control <- list(
   modelDescr = "TorchDCM MMNL benchmark",
   indivID = if (panel_mode) spec$panel_id_col else "apollo_row_id",
   mixing = TRUE,
-  panelData = panel_mode,
   nCores = 1,
   analyticGrad = FALSE,
   noDiagnostics = TRUE
@@ -41,25 +40,14 @@ apollo_control <- list(
 apollo_beta <- unlist(spec$parameters)
 apollo_fixed <- c()
 
-if (panel_mode) {
-  apollo_draws <- list(
-    interDrawsType = "halton",
-    interNDraws = spec$n_draws,
-    interUnifDraws = c(),
-    interNormDraws = c("draws_time")
-  )
-} else {
-  apollo_draws <- list(
-    intraDrawsType = "halton",
-    intraNDraws = spec$n_draws,
-    intraUnifDraws = c(),
-    intraNormDraws = c("draws_time")
-  )
-}
+apollo_draws <- list(
+  interDrawsType = "halton",
+  interNDraws = spec$n_draws,
+  interUnifDraws = c(),
+  interNormDraws = c("draws_time")
+)
 
 apollo_randCoeff <- function(apollo_beta, apollo_inputs) {
-  apollo_attach(apollo_beta, apollo_inputs)
-  on.exit(apollo_detach(apollo_beta, apollo_inputs))
   randcoeff <- list()
   randcoeff[["B_TIME_RND"]] <- B_TIME + SIGMA_B_TIME * draws_time
   return(randcoeff)

@@ -3,7 +3,7 @@ The strongest evidence comes from full-estimation MNL and ordered-model cases, w
 Nested and cross-nested logit results extend this evidence to more structured substitution patterns, while the mixed-logit results now include both a Swissmetro full-estimation comparison against Biogeme and fixed replay checks for simulation likelihood kernels under shared draws.
 
 The main limitation is now breadth rather than existence of mixed-logit full estimation.
-The current full mixed-logit row aligns TorchDCM and Biogeme under shared simulation draws and a common starting point, but Apollo full estimation remains unavailable in the current wrapper because \texttt{apollo\_validateInputs} overflows on this benchmark.
+The current full mixed-logit row aligns TorchDCM and Biogeme under shared simulation draws and a common starting point, and it also reports Apollo full-estimation runtime under Apollo's native Halton draw convention.
 The next experimental step is therefore to broaden full mixed-logit comparisons to additional public datasets and additional mixed-logit packages, while documenting draw conventions and optimizer initialization explicitly.
 
 A second limitation is that covariance comparisons for constrained models require careful interpretation.
