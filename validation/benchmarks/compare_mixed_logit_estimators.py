@@ -857,6 +857,12 @@ def main() -> None:
     parser.add_argument("--json-output", type=Path, default=None)
     parser.add_argument("--md-output", type=Path, default=None)
     args = parser.parse_args()
+    torch_device = torch.device(args.torch_device)
+    if not args.torch_only and torch_device.type != "cpu":
+        raise ValueError(
+            "Mixed-logit estimator comparisons must use --torch-device cpu because Biogeme and Apollo run on CPU. "
+            "Use --torch-only for CUDA scaling/profile runs."
+        )
 
     df, data, base_spec, alternatives = load_biogeme_swissmetro(args.n_obs)
     initial_values = make_initial_values(base_spec.parameter_names, mode="zero", seed=args.seed, scale=0.1)

@@ -1,6 +1,9 @@
 The benchmark protocol follows the principle that estimator comparisons are meaningful only when data, specifications, starting values, and post-estimation definitions are aligned.
 For each case, the validation layer records the public data source, alternatives, variables, availability filters, scaling transformations, initial parameter values, covariance definition, and reference backend.
 When a backend exposes separate timing, the protocol reports parameter-estimation time and covariance/Hessian time separately.
+Estimator comparisons use the same compute device whenever the compared packages expose a meaningful device choice.
+Because Biogeme, Apollo, \texttt{mlogit}, and \texttt{gmnl} run on CPU in the current benchmark harness, the paper-facing cross-estimator runtime tables run TorchDCM on CPU as well.
+TorchDCM CUDA runs are retained only as separate Torch-only scaling profiles, not as cross-estimator runtime entries.
 
 The benchmark suite currently uses three groups of public data.
 The first group contains public Biogeme datasets, including airline itinerary choice, parking choice, telephone service choice, Swissmetro, Optima, and London Passenger Mode Choice.

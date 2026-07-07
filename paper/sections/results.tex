@@ -25,8 +25,9 @@ All reported rows are consistent with Biogeme under the prespecified likelihood,
 
 Table~\ref{tab:mixed_real} reports the current real-data mixed-logit benchmark.
 The first two rows are Swissmetro mixed-logit full-estimation comparisons with 32 draws and a shared $\sigma=1.0$ initial value for TorchDCM and Biogeme: one model has a normal random time coefficient, and the larger model has independent normal random time and cost coefficients.
-Under these aligned shared-draw setups, TorchDCM matches Biogeme's log likelihood and parameters to numerical tolerance while completing total estimation and covariance calculation in 0.276 and 0.313 seconds, compared with 12.959 and 15.821 seconds for Biogeme.
-Apollo full estimation completes in 12.386 and 16.277 seconds using Apollo's own Halton draws, so it is reported as a runtime reference but not used for strict shared-draw consistency; the replay rows still validate the mixed-logit and WTP-space mixed-logit likelihood/probability kernels against both Biogeme and Apollo under shared parameters and draws.
+These full-estimation comparisons run all estimators on CPU to avoid mixing TorchDCM's CUDA path with CPU-only reference packages.
+Under these aligned shared-draw setups, TorchDCM matches Biogeme's log likelihood and parameters to numerical tolerance while completing total estimation and covariance calculation in 0.292 and 0.315 seconds, compared with 12.921 and 15.873 seconds for Biogeme.
+Apollo full estimation completes in 13.119 and 16.213 seconds using Apollo's own Halton draws, so it is reported as a runtime reference but not used for strict shared-draw consistency; the replay rows still validate the mixed-logit and WTP-space mixed-logit likelihood/probability kernels against both Biogeme and Apollo under shared parameters and draws.
 
 \input{tables/benchmark_cases}
 
