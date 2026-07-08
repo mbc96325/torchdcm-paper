@@ -27,8 +27,8 @@ Table~\ref{tab:mixed_real} reports the current real-data mixed-logit benchmark.
 Each runnable row uses 2--4 independent normal random coefficients, 32 shared antithetic draws, a shared $\sigma=1.0$ initial value, and CPU execution for both TorchDCM and Biogeme.
 The battery includes Swissmetro, four Biogeme/LPMC public datasets, and fifteen \texttt{mlogit} package datasets; four rows are skipped because the exported data or the requested 2--4 random-coefficient specification is not numerically usable under the current harness.
 Seven full-estimation rows match Biogeme under the shared-draw consistency rule: Swissmetro, Airline, \texttt{mlogit::Catsup}, \texttt{mlogit::Heating}, \texttt{mlogit::Mode}, \texttt{mlogit::ModeCanada}, and \texttt{mlogit::Nox}.
-The remaining completed rows are retained as diagnostics rather than forced into agreement: both estimators solve the same simulated-likelihood specification, but the nonconvex mixed-logit objective, package-specific optimizer behavior, or non-finite covariance/probability values lead to different full-estimation solutions.
-The generated validation artifacts record the exact utility specification, random-coefficient set, likelihood differences, parameter differences, and probability differences for each dataset.
+The remaining completed rows are retained as objective diagnostics rather than forced into agreement: both estimators solve the same simulated-likelihood specification, and the comparison records the final simulated log likelihood/objective reached by each optimizer.
+The generated validation artifacts record the exact utility specification, random-coefficient set, final objective values, likelihood differences, parameter differences, and probability differences for each dataset.
 
 \input{tables/benchmark_cases}
 
