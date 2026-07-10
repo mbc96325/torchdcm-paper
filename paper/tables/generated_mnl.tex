@@ -1,0 +1,20 @@
+\begin{table}[H]
+\caption{Generated MNL full-estimation runtime and consistency benchmarks. Runtime columns report total remote wall-clock seconds for aligned full estimation and covariance calculation where available. Synthetic cases vary sample size $N$, number of alternatives $J$, number of observed variables $K$, and equicorrelation $\rho$.}
+\label{tab:generated_mnl}
+\centering
+\scriptsize
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrrrll}
+\toprule
+Case & $N$ & $J$ & $K$ & $\rho$ & TorchDCM & SciPy & Biogeme & Apollo & R packages & Consistent? \\
+\midrule
+Base & 1000 & 3 & 4 & 0.0 & 0.140 & 0.260 & 1.147 & 1.084 & 0.522/0.665/0.005 & Yes \\
+Large $N$ & 10000 & 3 & 4 & 0.0 & 0.012 & 9.685 & 0.808 & 1.769 & 0.733/1.381/0.035 & Yes \\
+Large $J$ & 3000 & 8 & 4 & 0.0 & 0.012 & 1.012 & 2.044 & 1.678 & 0.705/1.888/0.051 & Yes \\
+Large $K$ & 3000 & 4 & 12 & 0.0 & 0.009 & 2.364 & 2.219 & 1.946 & 0.655/2.048/0.053 & Yes \\
+High $\rho$ & 3000 & 4 & 6 & 0.8 & 0.007 & 1.061 & 1.531 & 1.326 & 0.601/1.218/0.023 & Yes \\
+\bottomrule
+\end{tabular}
+}
+\caption*{\footnotesize Notes: the R package column reports \texttt{mlogit}/\texttt{gmnl}/\texttt{xlogit} total seconds. ``Consistent'' requires all successful external estimators to match TorchDCM under the same likelihood, parameter, and probability tolerances used for the real-data MNL benchmark.}
+\end{table}

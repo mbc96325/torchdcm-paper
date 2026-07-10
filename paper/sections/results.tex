@@ -44,6 +44,20 @@ The variable-count sweep shows the effect of increasing the number of observed v
 The alternative-count sweep is also included because choice-set width is a central computational dimension for DCM estimators: the $J=20$ case has 400,000 long rows and completes in 0.409 seconds including covariance.
 These synthetic experiments complement the public-data estimator comparisons by isolating controlled scaling behavior.
 
+\input{tables/generated_mnl}
+
+Table~\ref{tab:generated_mnl} extends the synthetic benchmark from TorchDCM-only scaling to full-estimation cross-estimator comparisons.
+All rows use generated MNL data, shared zero initial values, and aligned generic long-format specifications for SciPy, Biogeme, Apollo, \texttt{mlogit}, \texttt{gmnl}, and \texttt{xlogit}.
+The five cases vary one design dimension at a time: baseline scale, larger $N$, larger $J$, larger $K$, and high feature correlation $\rho$.
+All successful estimators match TorchDCM under the same likelihood, parameter, and probability tolerances used for the real-data MNL benchmark.
+
+\input{tables/generated_nl_mixl}
+
+Table~\ref{tab:generated_nl_mixl} reports the corresponding generated nested-logit and mixed-logit comparisons.
+Nested-logit cases use generated two-nest specifications, while mixed-logit cases use 2--4 independent normal random coefficients with 32 simulation draws.
+As in the real-data NL and MixL tables, consistency is evaluated against Biogeme; Apollo is included as an additional runtime and final-objective diagnostic.
+The generated nested-logit large-$J$ row highlights a backend-overhead case: Biogeme remains numerically consistent but spends over 1000 seconds in total remote wall-clock time, including the observed JAX/XLA CPU compilation and symbolic-estimation overhead.
+
 Ordered response models are validated on the Biogeme Optima data.
 TorchDCM completes ordered logit full estimation in 0.042 seconds compared with 2.898 seconds for Biogeme.
 For ordered probit, TorchDCM completes estimation in 0.054 seconds compared with 3.475 seconds for Biogeme.

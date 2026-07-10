@@ -1,0 +1,2428 @@
+[
+  {
+    "case": "gen_mnl_base",
+    "family": "MNL",
+    "generated": {
+      "model": "mnl",
+      "N": 1000,
+      "J": 3,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "n_obs": 1000,
+    "n_alternatives": 3,
+    "n_variables": 4,
+    "rho": 0.0,
+    "n_parameters": 6,
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.1396184260956943,
+        "estimate_s": 0.13864909205585718,
+        "covariance_s": 0.000969334039837122,
+        "loglike": -687.3869398297702,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "scipy_bfgs",
+        "available": true,
+        "total_s": 0.2596649397164583,
+        "estimate_s": 0.25880360463634133,
+        "covariance_s": 0.0008613350801169872,
+        "loglike": -687.3869398294456,
+        "ll_diff": 3.2457592169521376e-10,
+        "max_param_diff": 1.2626680456762074e-06,
+        "max_prob_diff": 1.0968680978495904e-06,
+        "max_cov_diff": 5.361984835305922e-09,
+        "max_se_diff": 2.6114734444360188e-08,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 1.1466469340957701,
+        "estimate_s": 1.1465766839683056,
+        "covariance_s": 6.643962115049362e-05,
+        "loglike": -687.3869398294465,
+        "ll_diff": 3.2366642699344084e-10,
+        "max_param_diff": 1.2677564976693034e-06,
+        "max_prob_diff": 1.0914899155611835e-06,
+        "max_cov_diff": 5.421199574320856e-09,
+        "max_se_diff": 2.6403130889973703e-08,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.0839577331207693,
+        "estimate_s": 0.359,
+        "covariance_s": 0,
+        "loglike": -687.3869398294498,
+        "ll_diff": 3.2036950869951397e-10,
+        "max_param_diff": 1.3627750978795206e-06,
+        "max_prob_diff": 1.1327759965040762e-06,
+        "max_cov_diff": 5.87193694709387e-09,
+        "max_se_diff": 2.8598379261945972e-08,
+        "message": "apollo_version=0.3.8"
+      },
+      {
+        "backend": "mlogit",
+        "available": true,
+        "total_s": 0.5220135487616062,
+        "estimate_s": 0.02200000000000002,
+        "covariance_s": 0.0,
+        "loglike": -687.3869398294464,
+        "ll_diff": 3.2378011383116245e-10,
+        "max_param_diff": 1.2681786079049573e-06,
+        "max_prob_diff": 1.0973583773887796e-06,
+        "max_cov_diff": 5.358666137558754e-09,
+        "max_se_diff": 2.6098571234700607e-08,
+        "message": ""
+      },
+      {
+        "backend": "gmnl",
+        "available": true,
+        "total_s": 0.6653893231414258,
+        "estimate_s": 0.049000000000000044,
+        "covariance_s": 0.0,
+        "loglike": -687.3869398294465,
+        "ll_diff": 3.2366642699344084e-10,
+        "max_param_diff": 1.2681785981349947e-06,
+        "max_prob_diff": 1.0973583783879803e-06,
+        "max_cov_diff": 5.42253208307697e-09,
+        "max_se_diff": 2.6409620670908573e-08,
+        "message": ""
+      },
+      {
+        "backend": "xlogit",
+        "available": true,
+        "total_s": 0.004817152861505747,
+        "estimate_s": 0.004816662985831499,
+        "covariance_s": 4.898756742477417e-07,
+        "loglike": -687.3869398296399,
+        "ll_diff": 1.3028511602897197e-10,
+        "max_param_diff": 1.6354515206540299e-06,
+        "max_prob_diff": 9.310928501538029e-07,
+        "max_cov_diff": 4.32936837942155e-09,
+        "max_se_diff": 2.233211147950609e-08,
+        "message": ""
+      }
+    ],
+    "true_parameters": {
+      "B_X1": -0.25,
+      "B_X2": -0.5333333333333334,
+      "B_X3": -0.8166666666666668,
+      "B_X4": -1.1,
+      "ASC_ALT2": -0.35,
+      "ASC_ALT3": -0.7
+    }
+  },
+  {
+    "case": "gen_mnl_N",
+    "family": "MNL",
+    "generated": {
+      "model": "mnl",
+      "N": 10000,
+      "J": 3,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "n_obs": 10000,
+    "n_alternatives": 3,
+    "n_variables": 4,
+    "rho": 0.0,
+    "n_parameters": 6,
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.011686657089740038,
+        "estimate_s": 0.009090031031519175,
+        "covariance_s": 0.0025966260582208633,
+        "loglike": -7155.201826469792,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "scipy_bfgs",
+        "available": true,
+        "total_s": 9.68450232129544,
+        "estimate_s": 9.681369098369032,
+        "covariance_s": 0.0031332229264080524,
+        "loglike": -7155.201826469696,
+        "ll_diff": 9.549694368615746e-11,
+        "max_param_diff": 1.4269757686591333e-07,
+        "max_prob_diff": 1.8861079537080272e-07,
+        "max_cov_diff": 4.6562216972703685e-11,
+        "max_se_diff": 1.0335762939961413e-09,
+        "message": "Desired error not necessarily achieved due to precision loss."
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 0.8078715750016272,
+        "estimate_s": 0.8077997658401728,
+        "covariance_s": 6.814906373620033e-05,
+        "loglike": -7155.20182646973,
+        "ll_diff": 6.184563972055912e-11,
+        "max_param_diff": 1.4790045699264454e-07,
+        "max_prob_diff": 2.1695833818391463e-07,
+        "max_cov_diff": 5.1442825043171436e-11,
+        "max_se_diff": 1.0201980024659996e-09,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.7693803748115897,
+        "estimate_s": 0.851,
+        "covariance_s": 0,
+        "loglike": -7155.201826469748,
+        "ll_diff": 4.3655745685100555e-11,
+        "max_param_diff": 1.498148192169424e-07,
+        "max_prob_diff": 2.0928295535460606e-07,
+        "max_cov_diff": 3.1404561893697e-11,
+        "max_se_diff": 5.969676454553596e-10,
+        "message": "apollo_version=0.3.8"
+      },
+      {
+        "backend": "mlogit",
+        "available": true,
+        "total_s": 0.7326840329915285,
+        "estimate_s": 0.16999999999999993,
+        "covariance_s": 0.0010000000000000009,
+        "loglike": -7155.201826469731,
+        "ll_diff": 6.093614501878619e-11,
+        "max_param_diff": 1.47899111513361e-07,
+        "max_prob_diff": 2.1676222944355672e-07,
+        "max_cov_diff": 4.982902697230063e-11,
+        "max_se_diff": 9.96957572052537e-10,
+        "message": ""
+      },
+      {
+        "backend": "gmnl",
+        "available": true,
+        "total_s": 1.3807073282077909,
+        "estimate_s": 0.681,
+        "covariance_s": 0.0,
+        "loglike": -7155.201826469731,
+        "ll_diff": 6.093614501878619e-11,
+        "max_param_diff": 1.4789910873780343e-07,
+        "max_prob_diff": 2.1676222539124268e-07,
+        "max_cov_diff": 5.133200960648343e-11,
+        "max_se_diff": 1.0192379787388184e-09,
+        "message": ""
+      },
+      {
+        "backend": "xlogit",
+        "available": true,
+        "total_s": 0.03524306509643793,
+        "estimate_s": 0.035242574755102396,
+        "covariance_s": 4.903413355350494e-07,
+        "loglike": -7155.201826469793,
+        "ll_diff": -9.094947017729282e-13,
+        "max_param_diff": 1.9402250039934898e-07,
+        "max_prob_diff": 1.67222175884163e-07,
+        "max_cov_diff": 5.057546503990651e-11,
+        "max_se_diff": 1.214751538941572e-09,
+        "message": ""
+      }
+    ],
+    "true_parameters": {
+      "B_X1": -0.25,
+      "B_X2": -0.5333333333333334,
+      "B_X3": -0.8166666666666668,
+      "B_X4": -1.1,
+      "ASC_ALT2": -0.35,
+      "ASC_ALT3": -0.7
+    }
+  },
+  {
+    "case": "gen_mnl_J",
+    "family": "MNL",
+    "generated": {
+      "model": "mnl",
+      "N": 3000,
+      "J": 8,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "n_obs": 3000,
+    "n_alternatives": 8,
+    "n_variables": 4,
+    "rho": 0.0,
+    "n_parameters": 11,
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.01249040151014924,
+        "estimate_s": 0.01003926433622837,
+        "covariance_s": 0.00245113717392087,
+        "loglike": -4345.618118153204,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "scipy_bfgs",
+        "available": true,
+        "total_s": 1.0124439992941916,
+        "estimate_s": 1.0098394444212317,
+        "covariance_s": 0.0026045548729598522,
+        "loglike": -4345.6181181531365,
+        "ll_diff": 6.730260793119669e-11,
+        "max_param_diff": 4.770061348691179e-07,
+        "max_prob_diff": 2.0664272992743093e-07,
+        "max_cov_diff": 1.6895039004968804e-09,
+        "max_se_diff": 1.010249259247864e-08,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 2.0437238542363048,
+        "estimate_s": 2.043644794728607,
+        "covariance_s": 7.509905844926834e-05,
+        "loglike": -4345.618118153443,
+        "ll_diff": -2.3919710656628013e-10,
+        "max_param_diff": 6.568387306837842e-07,
+        "max_prob_diff": 3.986533008148996e-07,
+        "max_cov_diff": 3.37692801499756e-09,
+        "max_se_diff": 2.0192550201358905e-08,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.6775110932067037,
+        "estimate_s": 0.908,
+        "covariance_s": 0,
+        "loglike": -4345.618118153163,
+        "ll_diff": 4.092726157978177e-11,
+        "max_param_diff": 6.740096918922411e-07,
+        "max_prob_diff": 2.948619276521569e-07,
+        "max_cov_diff": 1.6372967183431175e-09,
+        "max_se_diff": 9.790316515823072e-09,
+        "message": "apollo_version=0.3.8"
+      },
+      {
+        "backend": "mlogit",
+        "available": true,
+        "total_s": 0.704592211637646,
+        "estimate_s": 0.15500000000000003,
+        "covariance_s": 0.0010000000000000009,
+        "loglike": -4345.618118153136,
+        "ll_diff": 6.821210263296962e-11,
+        "max_param_diff": 6.568387307392953e-07,
+        "max_prob_diff": 3.986533009259219e-07,
+        "max_cov_diff": 1.6893325419098382e-09,
+        "max_se_diff": 1.0101467939893638e-08,
+        "message": ""
+      },
+      {
+        "backend": "gmnl",
+        "available": true,
+        "total_s": 1.8876689518801868,
+        "estimate_s": 1.211,
+        "covariance_s": 0.0,
+        "loglike": -4345.6181181531365,
+        "ll_diff": 6.730260793119669e-11,
+        "max_param_diff": 4.767896705226704e-07,
+        "max_prob_diff": 2.0659466593020426e-07,
+        "max_cov_diff": 1.6892398955331567e-09,
+        "max_se_diff": 1.0100913952482138e-08,
+        "message": ""
+      },
+      {
+        "backend": "xlogit",
+        "available": true,
+        "total_s": 0.05064682802185416,
+        "estimate_s": 0.05064648808911443,
+        "covariance_s": 3.3993273973464966e-07,
+        "loglike": -4345.618118153197,
+        "ll_diff": 6.366462912410498e-12,
+        "max_param_diff": 4.911724429956799e-07,
+        "max_prob_diff": 3.0425856073490465e-07,
+        "max_cov_diff": 1.5846742104294598e-09,
+        "max_se_diff": 9.716717222496563e-09,
+        "message": ""
+      }
+    ],
+    "true_parameters": {
+      "B_X1": -0.25,
+      "B_X2": -0.5333333333333334,
+      "B_X3": -0.8166666666666668,
+      "B_X4": -1.1,
+      "ASC_ALT2": -0.09999999999999998,
+      "ASC_ALT3": -0.19999999999999998,
+      "ASC_ALT4": -0.3,
+      "ASC_ALT5": -0.39999999999999997,
+      "ASC_ALT6": -0.49999999999999994,
+      "ASC_ALT7": -0.6,
+      "ASC_ALT8": -0.7
+    }
+  },
+  {
+    "case": "gen_mnl_K",
+    "family": "MNL",
+    "generated": {
+      "model": "mnl",
+      "N": 3000,
+      "J": 4,
+      "K": 12,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "n_obs": 3000,
+    "n_alternatives": 4,
+    "n_variables": 12,
+    "rho": 0.0,
+    "n_parameters": 15,
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.008659191895276308,
+        "estimate_s": 0.006221895106136799,
+        "covariance_s": 0.002437296789139509,
+        "loglike": -1980.6139874661894,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "scipy_bfgs",
+        "available": true,
+        "total_s": 2.363639913033694,
+        "estimate_s": 2.3610457573086023,
+        "covariance_s": 0.002594155725091696,
+        "loglike": -1980.613987465664,
+        "ll_diff": 5.254605639493093e-10,
+        "max_param_diff": 1.2972899061103327e-06,
+        "max_prob_diff": 9.822955586713533e-07,
+        "max_cov_diff": 1.3421451502265702e-09,
+        "max_se_diff": 9.40071345767457e-09,
+        "message": "Desired error not necessarily achieved due to precision loss."
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 2.219036752358079,
+        "estimate_s": 2.218943302053958,
+        "covariance_s": 8.90498049557209e-05,
+        "loglike": -1980.6139876560235,
+        "ll_diff": -1.89834054253879e-07,
+        "max_param_diff": 1.7313994664203136e-05,
+        "max_prob_diff": 7.035492998186399e-06,
+        "max_cov_diff": 7.399221183847227e-08,
+        "max_se_diff": 4.876448961715907e-07,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.9456674298271537,
+        "estimate_s": 1.17,
+        "covariance_s": 0,
+        "loglike": -1980.6139874656762,
+        "ll_diff": 5.131823854753748e-10,
+        "max_param_diff": 1.3316148072539669e-06,
+        "max_prob_diff": 9.39183387282938e-07,
+        "max_cov_diff": 1.3329839107512065e-09,
+        "max_se_diff": 9.33654589752031e-09,
+        "message": "apollo_version=0.3.8"
+      },
+      {
+        "backend": "mlogit",
+        "available": true,
+        "total_s": 0.6545230909250677,
+        "estimate_s": 0.10699999999999998,
+        "covariance_s": 0.0,
+        "loglike": -1980.6139874656692,
+        "ll_diff": 5.20230969414115e-10,
+        "max_param_diff": 1.297457201454577e-06,
+        "max_prob_diff": 9.821764158646218e-07,
+        "max_cov_diff": 1.3438342461383201e-09,
+        "max_se_diff": 9.412544313414095e-09,
+        "message": ""
+      },
+      {
+        "backend": "gmnl",
+        "available": true,
+        "total_s": 2.048383398912847,
+        "estimate_s": 1.3800000000000001,
+        "covariance_s": 0.0009999999999998899,
+        "loglike": -1980.6139874656692,
+        "ll_diff": 5.20230969414115e-10,
+        "max_param_diff": 1.2974572024537778e-06,
+        "max_prob_diff": 9.821764183071124e-07,
+        "max_cov_diff": 1.3439357873096247e-09,
+        "max_se_diff": 9.41325552228367e-09,
+        "message": ""
+      },
+      {
+        "backend": "xlogit",
+        "available": true,
+        "total_s": 0.052802205085754395,
+        "estimate_s": 0.052801755256950855,
+        "covariance_s": 4.498288035392761e-07,
+        "loglike": -1980.6139874744667,
+        "ll_diff": -8.27731128083542e-09,
+        "max_param_diff": 3.318701253807177e-06,
+        "max_prob_diff": 3.971709867933715e-06,
+        "max_cov_diff": 5.112084772856962e-09,
+        "max_se_diff": 4.4516593106225244e-08,
+        "message": ""
+      }
+    ],
+    "true_parameters": {
+      "B_X1": -0.25,
+      "B_X2": -0.32727272727272727,
+      "B_X3": -0.40454545454545454,
+      "B_X4": -0.48181818181818187,
+      "B_X5": -0.5590909090909091,
+      "B_X6": -0.6363636363636365,
+      "B_X7": -0.7136363636363637,
+      "B_X8": -0.790909090909091,
+      "B_X9": -0.8681818181818183,
+      "B_X10": -0.9454545454545455,
+      "B_X11": -1.022727272727273,
+      "B_X12": -1.1,
+      "ASC_ALT2": -0.2333333333333333,
+      "ASC_ALT3": -0.4666666666666666,
+      "ASC_ALT4": -0.7
+    }
+  },
+  {
+    "case": "gen_mnl_rho",
+    "family": "MNL",
+    "generated": {
+      "model": "mnl",
+      "N": 3000,
+      "J": 4,
+      "K": 6,
+      "rho": 0.8,
+      "random_coefficients": 0
+    },
+    "n_obs": 3000,
+    "n_alternatives": 4,
+    "n_variables": 6,
+    "rho": 0.8,
+    "n_parameters": 9,
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.0067567420192062855,
+        "estimate_s": 0.005244790110737085,
+        "covariance_s": 0.0015119519084692001,
+        "loglike": -1318.1956621271663,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "scipy_bfgs",
+        "available": true,
+        "total_s": 1.0612860331311822,
+        "estimate_s": 1.0594706130214036,
+        "covariance_s": 0.0018154201097786427,
+        "loglike": -1318.1956621269073,
+        "ll_diff": 2.589786163298413e-10,
+        "max_param_diff": 1.3390795567946867e-06,
+        "max_prob_diff": 6.552103872237147e-07,
+        "max_cov_diff": 2.2838065813490793e-09,
+        "max_se_diff": 1.2752239458846404e-08,
+        "message": "Desired error not necessarily achieved due to precision loss."
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 1.531488609034568,
+        "estimate_s": 1.531369439791888,
+        "covariance_s": 0.0001146998256444931,
+        "loglike": -1318.195662488532,
+        "ll_diff": -3.6136566450295504e-07,
+        "max_param_diff": 2.9152813808996925e-05,
+        "max_prob_diff": 1.0434623659349995e-05,
+        "max_cov_diff": 2.065246557988315e-07,
+        "max_se_diff": 1.210181231864338e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.3255543047562242,
+        "estimate_s": 0.572,
+        "covariance_s": 0,
+        "loglike": -1318.1956621272031,
+        "ll_diff": -3.6834535421803594e-11,
+        "max_param_diff": 1.1737218936769267e-06,
+        "max_prob_diff": 9.362191268902365e-07,
+        "max_cov_diff": 1.6596039369154436e-09,
+        "max_se_diff": 1.016114420382408e-08,
+        "message": "apollo_version=0.3.8"
+      },
+      {
+        "backend": "mlogit",
+        "available": true,
+        "total_s": 0.6007152278907597,
+        "estimate_s": 0.07399999999999995,
+        "covariance_s": 0.0010000000000000009,
+        "loglike": -1318.1956621269069,
+        "ll_diff": 2.594333636807278e-10,
+        "max_param_diff": 1.3340204264578048e-06,
+        "max_prob_diff": 6.549156884028129e-07,
+        "max_cov_diff": 2.2694882743923284e-09,
+        "max_se_diff": 1.2672289412263282e-08,
+        "message": ""
+      },
+      {
+        "backend": "gmnl",
+        "available": true,
+        "total_s": 1.2181364591233432,
+        "estimate_s": 0.572,
+        "covariance_s": 0.0,
+        "loglike": -1318.1956621269069,
+        "ll_diff": 2.594333636807278e-10,
+        "max_param_diff": 1.3340204251255372e-06,
+        "max_prob_diff": 6.549156876256568e-07,
+        "max_cov_diff": 2.268908956548632e-09,
+        "max_se_diff": 1.2669054638703159e-08,
+        "message": ""
+      },
+      {
+        "backend": "xlogit",
+        "available": true,
+        "total_s": 0.02292999066412449,
+        "estimate_s": 0.022929660975933075,
+        "covariance_s": 3.296881914138794e-07,
+        "loglike": -1318.1956621606125,
+        "ll_diff": -3.344621291034855e-08,
+        "max_param_diff": 1.2356048335271375e-05,
+        "max_prob_diff": 1.0596969818532642e-05,
+        "max_cov_diff": 2.015863680669694e-08,
+        "max_se_diff": 1.2402938318056833e-07,
+        "message": ""
+      }
+    ],
+    "true_parameters": {
+      "B_X1": -0.25,
+      "B_X2": -0.42000000000000004,
+      "B_X3": -0.5900000000000001,
+      "B_X4": -0.76,
+      "B_X5": -0.93,
+      "B_X6": -1.1,
+      "ASC_ALT2": -0.2333333333333333,
+      "ASC_ALT3": -0.4666666666666666,
+      "ASC_ALT4": -0.7
+    }
+  },
+  {
+    "case": "gen_nl_base",
+    "data": "gen_nl_base",
+    "model": "Generated nested logit",
+    "n_obs": 1000,
+    "n_alternatives": 4,
+    "n_parameters": 9,
+    "source": "synthetic N=1000 J=4 K=4 rho=0.0",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.022002127021551132,
+        "estimate_s": 0.017322923056781292,
+        "covariance_s": 0.00467920396476984,
+        "loglike": -903.0713393922998,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 15.22662566229701,
+        "estimate_s": 15.226549852173775,
+        "covariance_s": 7.501011714339256e-05,
+        "loglike": -903.0713395621934,
+        "ll_diff": -1.69893610291183e-07,
+        "max_param_diff": 3.9184553762505736e-05,
+        "max_prob_diff": 1.8472597015151138e-05,
+        "max_cov_diff": 7.544479436617096e-07,
+        "max_se_diff": 3.6308286648911725e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.316534475889057,
+        "estimate_s": 0.571,
+        "covariance_s": 0.008,
+        "loglike": -903.0713,
+        "ll_diff": 3.939229986826831e-05,
+        "max_param_diff": 5.0977958656384104e-05,
+        "max_prob_diff": 4.607759343855378e-05,
+        "max_cov_diff": 4.974320063262866e-05,
+        "max_se_diff": 0.00047204386305121915,
+        "message": "apollo_version=0.3.8"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 1000,
+      "J": 4,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit"
+  },
+  {
+    "case": "gen_nl_N",
+    "data": "gen_nl_N",
+    "model": "Generated nested logit",
+    "n_obs": 5000,
+    "n_alternatives": 4,
+    "n_parameters": 9,
+    "source": "synthetic N=5000 J=4 K=4 rho=0.0",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.055520875845104456,
+        "estimate_s": 0.046411257702857256,
+        "covariance_s": 0.0091096181422472,
+        "loglike": -4570.47596662984,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 15.245303153060377,
+        "estimate_s": 15.245083784684539,
+        "covariance_s": 0.00021834811195731163,
+        "loglike": -4570.47596967976,
+        "ll_diff": -3.0499204513034783e-06,
+        "max_param_diff": 9.469238541071068e-05,
+        "max_prob_diff": 2.5063977326267306e-05,
+        "max_cov_diff": 6.564418968302461e-07,
+        "max_se_diff": 6.371097714161222e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.929703771136701,
+        "estimate_s": 1.142,
+        "covariance_s": 0.008,
+        "loglike": -4570.476,
+        "ll_diff": -3.3370160053891595e-05,
+        "max_param_diff": 4.9498688407700886e-05,
+        "max_prob_diff": 5.916316711929159e-05,
+        "max_cov_diff": 4.9512798340283864e-05,
+        "max_se_diff": 0.000836576465968495,
+        "message": "apollo_version=0.3.8"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 5000,
+      "J": 4,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit"
+  },
+  {
+    "case": "gen_nl_J",
+    "data": "gen_nl_J",
+    "model": "Generated nested logit",
+    "n_obs": 2500,
+    "n_alternatives": 8,
+    "n_parameters": 13,
+    "source": "synthetic N=2500 J=8 K=4 rho=0.0",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2",
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT5",
+          "ALT6",
+          "ALT7",
+          "ALT8"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.07779437629505992,
+        "estimate_s": 0.06682133907452226,
+        "covariance_s": 0.010973037220537663,
+        "loglike": -3611.336255768815,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 1031.681123869028,
+        "estimate_s": 1031.681048349943,
+        "covariance_s": 7.51386396586895e-05,
+        "loglike": -3611.336256251323,
+        "ll_diff": -4.825078576686792e-07,
+        "max_param_diff": 5.73457605873573e-05,
+        "max_prob_diff": 1.587345501175008e-05,
+        "max_cov_diff": 0.004012803377373507,
+        "max_se_diff": 0.06334493249056015,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.4680234366096556,
+        "estimate_s": 0.705,
+        "covariance_s": 0.009,
+        "loglike": -3611.3363,
+        "ll_diff": -4.423118480190169e-05,
+        "max_param_diff": 4.723072027423836e-05,
+        "max_prob_diff": 5.152133011288029e-05,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "apollo_version=0.3.8"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 2500,
+      "J": 8,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit"
+  },
+  {
+    "case": "gen_nl_K",
+    "data": "gen_nl_K",
+    "model": "Generated nested logit",
+    "n_obs": 2500,
+    "n_alternatives": 4,
+    "n_parameters": 13,
+    "source": "synthetic N=2500 J=4 K=8 rho=0.0",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.03738197172060609,
+        "estimate_s": 0.028753251768648624,
+        "covariance_s": 0.008628719951957464,
+        "loglike": -1899.718214730285,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 35.24988692905754,
+        "estimate_s": 35.2498041591607,
+        "covariance_s": 8.240994065999985e-05,
+        "loglike": -1899.7182154901557,
+        "ll_diff": -7.59870772526483e-07,
+        "max_param_diff": 7.241152063397482e-05,
+        "max_prob_diff": 2.997611287414159e-05,
+        "max_cov_diff": 6.550993469226288e-07,
+        "max_se_diff": 4.9352439768779455e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.965572888031602,
+        "estimate_s": 1.199,
+        "covariance_s": 0.008,
+        "loglike": -1899.7182,
+        "ll_diff": 1.4730284874531208e-05,
+        "max_param_diff": 4.994256852186574e-05,
+        "max_prob_diff": 4.5966874135383584e-05,
+        "max_cov_diff": 4.9432814083749926e-05,
+        "max_se_diff": 0.0006729174874385638,
+        "message": "apollo_version=0.3.8"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 2500,
+      "J": 4,
+      "K": 8,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit"
+  },
+  {
+    "case": "gen_nl_rho",
+    "data": "gen_nl_rho",
+    "model": "Generated nested logit",
+    "n_obs": 2500,
+    "n_alternatives": 4,
+    "n_parameters": 11,
+    "source": "synthetic N=2500 J=4 K=6 rho=0.8",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.0398685447871685,
+        "estimate_s": 0.03231963701546192,
+        "covariance_s": 0.007548907771706581,
+        "loglike": -1076.914060265033,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 29.7933431728743,
+        "estimate_s": 29.793263223953545,
+        "covariance_s": 7.961876690387726e-05,
+        "loglike": -1076.9140616071054,
+        "ll_diff": -1.342072437182651e-06,
+        "max_param_diff": 9.412845734013686e-05,
+        "max_prob_diff": 5.4271820844387086e-05,
+        "max_cov_diff": 1.6770387351126154e-06,
+        "max_se_diff": 1.0308705281944497e-05,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.7824779311195016,
+        "estimate_s": 1.034,
+        "covariance_s": 0.008,
+        "loglike": -1076.9141,
+        "ll_diff": -3.973496700382384e-05,
+        "max_param_diff": 4.932771784038614e-05,
+        "max_prob_diff": 5.423356054168327e-05,
+        "max_cov_diff": 4.910250259357955e-05,
+        "max_se_diff": 0.00028237741717747344,
+        "message": "apollo_version=0.3.8"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 2500,
+      "J": 4,
+      "K": 6,
+      "rho": 0.8,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit"
+  },
+  {
+    "case": "gen_mixl_base",
+    "dataset_id": "gen_mixl_base",
+    "source": "synthetic N=1000 J=3 K=4 rho=0.0",
+    "model_name": "Generated mixed logit",
+    "n_obs": 1000,
+    "n_rows": 3000,
+    "n_alternatives": 3,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "parameter_names": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3"
+    ],
+    "random_coefficients": [
+      "B_X1",
+      "B_X2"
+    ],
+    "sigma_init": 1.0,
+    "specification": {
+      "alternatives": [
+        "ALT1",
+        "ALT2",
+        "ALT3"
+      ],
+      "availability": {
+        "ALT1": "avail_alt1",
+        "ALT2": "avail_alt2",
+        "ALT3": "avail_alt3"
+      },
+      "utilities": {
+        "ALT1": [
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt1",
+            "random": false
+          }
+        ],
+        "ALT2": [
+          {
+            "parameter": "ASC_ALT2",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt2",
+            "random": false
+          }
+        ],
+        "ALT3": [
+          {
+            "parameter": "ASC_ALT3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt3",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.06212577084079385,
+        "estimate_s": 0.05501496000215411,
+        "covariance_s": 0.007110810838639736,
+        "loglike": -709.7691071982355,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_X1": -0.2463097445093792,
+          "B_X2": -0.5542224839730511,
+          "B_X3": -0.7689292117060987,
+          "B_X4": -1.1180418293470287,
+          "ASC_ALT2": -0.4345920673533877,
+          "ASC_ALT3": -0.8741459538183458,
+          "SIGMA_B_X1": 8.476662380796897e-10,
+          "SIGMA_B_X2": 0.49398697801404184
+        },
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 20.893273337278515,
+        "estimate_s": 20.893199758138508,
+        "covariance_s": 6.959913298487663e-05,
+        "loglike": -709.7691071973857,
+        "ll_diff": 8.498091119690798e-10,
+        "max_param_diff": 2.1016391821282454e-07,
+        "max_prob_diff": 8.059709807883841e-08,
+        "params": {
+          "B_X1": -0.24630976366021515,
+          "B_X2": -0.5542224741940607,
+          "B_X3": -0.7689292552315435,
+          "B_X4": -1.1180419417267506,
+          "ASC_ALT2": -0.43459200436519624,
+          "ASC_ALT3": -0.8741458848430192,
+          "SIGMA_B_X1": 0.0,
+          "SIGMA_B_X2": 0.49398718817796006
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.9872489939443767,
+        "estimate_s": 1.27,
+        "covariance_s": 0,
+        "loglike": -709.2259060260395,
+        "ll_diff": 0.5432011721959498,
+        "max_param_diff": 0.2594649935430457,
+        "max_prob_diff": 0.04120107398376455,
+        "params": {
+          "B_X1": -0.26100040440950556,
+          "B_X2": -0.5658158655696344,
+          "B_X3": -0.7814162831125206,
+          "B_X4": -1.1382996134730732,
+          "ASC_ALT2": -0.4496006860257951,
+          "ASC_ALT3": -0.8931172669227396,
+          "SIGMA_B_X1": -0.2594649926953795,
+          "SIGMA_B_X2": 0.4437569899320347
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32"
+      }
+    ],
+    "generated": {
+      "model": "mixl",
+      "N": 1000,
+      "J": 3,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 2
+    },
+    "family": "Mixed logit"
+  },
+  {
+    "case": "gen_mixl_N",
+    "dataset_id": "gen_mixl_N",
+    "source": "synthetic N=3000 J=3 K=4 rho=0.0",
+    "model_name": "Generated mixed logit",
+    "n_obs": 3000,
+    "n_rows": 9000,
+    "n_alternatives": 3,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "parameter_names": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3"
+    ],
+    "random_coefficients": [
+      "B_X1",
+      "B_X2"
+    ],
+    "sigma_init": 1.0,
+    "specification": {
+      "alternatives": [
+        "ALT1",
+        "ALT2",
+        "ALT3"
+      ],
+      "availability": {
+        "ALT1": "avail_alt1",
+        "ALT2": "avail_alt2",
+        "ALT3": "avail_alt3"
+      },
+      "utilities": {
+        "ALT1": [
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt1",
+            "random": false
+          }
+        ],
+        "ALT2": [
+          {
+            "parameter": "ASC_ALT2",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt2",
+            "random": false
+          }
+        ],
+        "ALT3": [
+          {
+            "parameter": "ASC_ALT3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt3",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.09198837401345372,
+        "estimate_s": 0.07946838019415736,
+        "covariance_s": 0.01251999381929636,
+        "loglike": -2165.015470796502,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_X1": -0.2505616651226129,
+          "B_X2": -0.5009036071057935,
+          "B_X3": -0.8138386997325215,
+          "B_X4": -1.073348943484003,
+          "ASC_ALT2": -0.3898866727778712,
+          "ASC_ALT3": -0.708963962280737,
+          "SIGMA_B_X1": 1.3777408892342322e-05,
+          "SIGMA_B_X2": 5.957988902666227e-06
+        },
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 19.721031413879246,
+        "estimate_s": 19.720953945070505,
+        "covariance_s": 7.294910028576851e-05,
+        "loglike": -2165.0154707952242,
+        "ll_diff": 1.2778400559909642e-09,
+        "max_param_diff": 1.3143775539303451e-05,
+        "max_prob_diff": 5.133596892026304e-08,
+        "params": {
+          "B_X1": -0.25056164660121216,
+          "B_X2": -0.500903538279345,
+          "B_X3": -0.8138386321017055,
+          "B_X4": -1.0733488629936052,
+          "ASC_ALT2": -0.389886634496097,
+          "ASC_ALT3": -0.7089639104646076,
+          "SIGMA_B_X1": 6.336333530388707e-07,
+          "SIGMA_B_X2": 1.1091508500435084e-06
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 4.317673897370696,
+        "estimate_s": 3.557,
+        "covariance_s": 0,
+        "loglike": -2164.9093826224557,
+        "ll_diff": 0.10608817404636284,
+        "max_param_diff": 0.0746551508750208,
+        "max_prob_diff": 0.008164493489436375,
+        "params": {
+          "B_X1": -0.2515626886769206,
+          "B_X2": -0.5031474006183896,
+          "B_X3": -0.8162797525277796,
+          "B_X4": -1.0766116931665464,
+          "ASC_ALT2": -0.39157425622922337,
+          "ASC_ALT3": -0.7112651847479308,
+          "SIGMA_B_X1": 0.07466892828391314,
+          "SIGMA_B_X2": -0.07108119622067387
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32"
+      }
+    ],
+    "generated": {
+      "model": "mixl",
+      "N": 3000,
+      "J": 3,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 2
+    },
+    "family": "Mixed logit"
+  },
+  {
+    "case": "gen_mixl_J",
+    "dataset_id": "gen_mixl_J",
+    "source": "synthetic N=1500 J=5 K=4 rho=0.0",
+    "model_name": "Generated mixed logit",
+    "n_obs": 1500,
+    "n_rows": 7500,
+    "n_alternatives": 5,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "parameter_names": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5"
+    ],
+    "random_coefficients": [
+      "B_X1",
+      "B_X2"
+    ],
+    "sigma_init": 1.0,
+    "specification": {
+      "alternatives": [
+        "ALT1",
+        "ALT2",
+        "ALT3",
+        "ALT4",
+        "ALT5"
+      ],
+      "availability": {
+        "ALT1": "avail_alt1",
+        "ALT2": "avail_alt2",
+        "ALT3": "avail_alt3",
+        "ALT4": "avail_alt4",
+        "ALT5": "avail_alt5"
+      },
+      "utilities": {
+        "ALT1": [
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt1",
+            "random": false
+          }
+        ],
+        "ALT2": [
+          {
+            "parameter": "ASC_ALT2",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt2",
+            "random": false
+          }
+        ],
+        "ALT3": [
+          {
+            "parameter": "ASC_ALT3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt3",
+            "random": false
+          }
+        ],
+        "ALT4": [
+          {
+            "parameter": "ASC_ALT4",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt4",
+            "random": false
+          }
+        ],
+        "ALT5": [
+          {
+            "parameter": "ASC_ALT5",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt5",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt5",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt5",
+            "random": false
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt5",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.07676048902794719,
+        "estimate_s": 0.06488533085212111,
+        "covariance_s": 0.011875158175826073,
+        "loglike": -1620.9078998398245,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_X1": -0.21042826847896012,
+          "B_X2": -0.5082911099159978,
+          "B_X3": -0.7430833879006287,
+          "B_X4": -1.1523296452839202,
+          "ASC_ALT2": -0.28686083710695454,
+          "ASC_ALT3": -0.25655444332724037,
+          "ASC_ALT4": -0.505094279121017,
+          "ASC_ALT5": -0.6796110464607071,
+          "SIGMA_B_X1": 5.0198505431791295e-06,
+          "SIGMA_B_X2": 4.572628113171154e-05
+        },
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 48.59299030713737,
+        "estimate_s": 48.59290467714891,
+        "covariance_s": 8.147023618221283e-05,
+        "loglike": -1620.9078999893236,
+        "ll_diff": -1.4949910109862685e-07,
+        "max_param_diff": 0.00022823161234815148,
+        "max_prob_diff": 1.035441319607866e-05,
+        "params": {
+          "B_X1": -0.21042737956620852,
+          "B_X2": -0.5082876011898116,
+          "B_X3": -0.7430812518435802,
+          "B_X4": -1.1523264937968392,
+          "ASC_ALT2": -0.2868720365816546,
+          "ASC_ALT3": -0.256566315390625,
+          "ASC_ALT4": -0.5051296200676954,
+          "ASC_ALT5": -0.6796236246597626,
+          "SIGMA_B_X1": 0.0,
+          "SIGMA_B_X2": 0.00027395789347986303
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 4.7361251949332654,
+        "estimate_s": 3.9980000000000007,
+        "covariance_s": 0,
+        "loglike": -1620.9002775533852,
+        "ll_diff": 0.0076222864393002965,
+        "max_param_diff": 0.035736972708885956,
+        "max_prob_diff": 0.000621964649815121,
+        "params": {
+          "B_X1": -0.21054864528573164,
+          "B_X2": -0.5086063612066392,
+          "B_X3": -0.7432996635367995,
+          "B_X4": -1.1527014286949377,
+          "ASC_ALT2": -0.28692625281125944,
+          "ASC_ALT3": -0.25650853202893525,
+          "ASC_ALT4": -0.5051475403164262,
+          "ASC_ALT5": -0.679694129547867,
+          "SIGMA_B_X1": 0.008927815327700806,
+          "SIGMA_B_X2": 0.03578269899001767
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32"
+      }
+    ],
+    "generated": {
+      "model": "mixl",
+      "N": 1500,
+      "J": 5,
+      "K": 4,
+      "rho": 0.0,
+      "random_coefficients": 2
+    },
+    "family": "Mixed logit"
+  },
+  {
+    "case": "gen_mixl_K",
+    "dataset_id": "gen_mixl_K",
+    "source": "synthetic N=1500 J=4 K=8 rho=0.0",
+    "model_name": "Generated mixed logit",
+    "n_obs": 1500,
+    "n_rows": 6000,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "parameter_names": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4"
+    ],
+    "random_coefficients": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4"
+    ],
+    "sigma_init": 1.0,
+    "specification": {
+      "alternatives": [
+        "ALT1",
+        "ALT2",
+        "ALT3",
+        "ALT4"
+      ],
+      "availability": {
+        "ALT1": "avail_alt1",
+        "ALT2": "avail_alt2",
+        "ALT3": "avail_alt3",
+        "ALT4": "avail_alt4"
+      },
+      "utilities": {
+        "ALT1": [
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt1",
+            "random": false
+          }
+        ],
+        "ALT2": [
+          {
+            "parameter": "ASC_ALT2",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt2",
+            "random": false
+          }
+        ],
+        "ALT3": [
+          {
+            "parameter": "ASC_ALT3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt3",
+            "random": false
+          }
+        ],
+        "ALT4": [
+          {
+            "parameter": "ASC_ALT4",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt4",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.16951894387602806,
+        "estimate_s": 0.15192759595811367,
+        "covariance_s": 0.01759134791791439,
+        "loglike": -1160.91430793346,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_X1": -0.2538007608367034,
+          "B_X2": -0.3072574049802692,
+          "B_X3": -0.4884735865429636,
+          "B_X4": -0.6546754091774789,
+          "B_X5": -0.63420693616414,
+          "B_X6": -0.8976647683359087,
+          "B_X7": -0.9197070419772935,
+          "B_X8": -1.0243920571295373,
+          "ASC_ALT2": 0.038799150182952505,
+          "ASC_ALT3": -0.24512204694330852,
+          "ASC_ALT4": -0.6109351485534408,
+          "SIGMA_B_X1": 2.9418069943796937e-10,
+          "SIGMA_B_X2": 4.028666390373445e-09,
+          "SIGMA_B_X3": 0.13718573458203617,
+          "SIGMA_B_X4": 0.06418946951856472
+        },
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 60.48553234804422,
+        "estimate_s": 60.485439768992364,
+        "covariance_s": 8.748937398195267e-05,
+        "loglike": -1160.9143079717187,
+        "ll_diff": -3.825880412478e-08,
+        "max_param_diff": 1.0704101586545e-05,
+        "max_prob_diff": 7.343474739518463e-06,
+        "params": {
+          "B_X1": -0.2537982819013963,
+          "B_X2": -0.30725582812027974,
+          "B_X3": -0.48847106893414877,
+          "B_X4": -0.6546647050758924,
+          "B_X5": -0.6342016050742761,
+          "B_X6": -0.8976582358024459,
+          "B_X7": -0.919700096931627,
+          "B_X8": -1.0243839334602616,
+          "ASC_ALT2": 0.03880007829431829,
+          "ASC_ALT3": -0.24511958373517775,
+          "ASC_ALT4": -0.6109282374012129,
+          "SIGMA_B_X1": 0.0,
+          "SIGMA_B_X2": 1.1102230246251565e-16,
+          "SIGMA_B_X3": 0.13718835711873367,
+          "SIGMA_B_X4": 0.06418283344643698
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 8.611793151125312,
+        "estimate_s": 7.868,
+        "covariance_s": 0,
+        "loglike": -1160.8371053843512,
+        "ll_diff": 0.07720254910873336,
+        "max_param_diff": 0.048957026907982926,
+        "max_prob_diff": 0.0062792664933574716,
+        "params": {
+          "B_X1": -0.25378278136857535,
+          "B_X2": -0.3064934487945403,
+          "B_X3": -0.48682763270139906,
+          "B_X4": -0.6523751175664226,
+          "B_X5": -0.6328355116021175,
+          "B_X6": -0.8957005299056182,
+          "B_X7": -0.9182907864336713,
+          "B_X8": -1.0222312598035919,
+          "ASC_ALT2": 0.03830130360419393,
+          "ASC_ALT3": -0.24463283686258136,
+          "ASC_ALT4": -0.6102042322240762,
+          "SIGMA_B_X1": -0.048957026613802225,
+          "SIGMA_B_X2": 0.0392158383326151,
+          "SIGMA_B_X3": 0.08846299306354187,
+          "SIGMA_B_X4": 0.03564519485039976
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32"
+      }
+    ],
+    "generated": {
+      "model": "mixl",
+      "N": 1500,
+      "J": 4,
+      "K": 8,
+      "rho": 0.0,
+      "random_coefficients": 4
+    },
+    "family": "Mixed logit"
+  },
+  {
+    "case": "gen_mixl_rho",
+    "dataset_id": "gen_mixl_rho",
+    "source": "synthetic N=1500 J=4 K=6 rho=0.8",
+    "model_name": "Generated mixed logit",
+    "n_obs": 1500,
+    "n_rows": 6000,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "parameter_names": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4"
+    ],
+    "random_coefficients": [
+      "B_X1",
+      "B_X2",
+      "B_X3"
+    ],
+    "sigma_init": 1.0,
+    "specification": {
+      "alternatives": [
+        "ALT1",
+        "ALT2",
+        "ALT3",
+        "ALT4"
+      ],
+      "availability": {
+        "ALT1": "avail_alt1",
+        "ALT2": "avail_alt2",
+        "ALT3": "avail_alt3",
+        "ALT4": "avail_alt4"
+      },
+      "utilities": {
+        "ALT1": [
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt1",
+            "random": false
+          }
+        ],
+        "ALT2": [
+          {
+            "parameter": "ASC_ALT2",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt2",
+            "random": false
+          }
+        ],
+        "ALT3": [
+          {
+            "parameter": "ASC_ALT3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt3",
+            "random": false
+          }
+        ],
+        "ALT4": [
+          {
+            "parameter": "ASC_ALT4",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt4",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt4",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.0838334932923317,
+        "estimate_s": 0.07013510400429368,
+        "covariance_s": 0.013698389288038015,
+        "loglike": -676.4615272903372,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_X1": -0.25774830924052733,
+          "B_X2": -0.36502417405368615,
+          "B_X3": -0.7603872393604062,
+          "B_X4": -0.7097837451257379,
+          "B_X5": -0.9657111138960868,
+          "B_X6": -1.1266956870370537,
+          "ASC_ALT2": -0.33563129218226245,
+          "ASC_ALT3": -0.3810590104102764,
+          "ASC_ALT4": -0.7655212896368241,
+          "SIGMA_B_X1": 1.2099345523857843e-09,
+          "SIGMA_B_X2": 5.0414822203938955e-05,
+          "SIGMA_B_X3": 5.64843568912297e-08
+        },
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 54.08697043498978,
+        "estimate_s": 54.08688057586551,
+        "covariance_s": 8.517876267433167e-05,
+        "loglike": -676.4615275412236,
+        "ll_diff": -2.508863872208167e-07,
+        "max_param_diff": 0.0005235048729740639,
+        "max_prob_diff": 1.1097494433287558e-05,
+        "params": {
+          "B_X1": -0.25774480549324036,
+          "B_X2": -0.3649998156142874,
+          "B_X3": -0.7603784372843873,
+          "B_X4": -0.7097747398506198,
+          "B_X5": -0.9657008391828767,
+          "B_X6": -1.1266835680145335,
+          "ASC_ALT2": -0.33562667231984694,
+          "ASC_ALT3": -0.38105280677775155,
+          "ASC_ALT4": -0.7655126757391252,
+          "SIGMA_B_X1": 0.0,
+          "SIGMA_B_X2": 0.0005739196951780028,
+          "SIGMA_B_X3": 1.1212869791565541e-05
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 5.606406770646572,
+        "estimate_s": 4.867,
+        "covariance_s": 0,
+        "loglike": -676.4496508533997,
+        "ll_diff": 0.011876436937541257,
+        "max_param_diff": 0.06454465965274872,
+        "max_prob_diff": 0.0005373960086619556,
+        "params": {
+          "B_X1": -0.2579605741448208,
+          "B_X2": -0.36575307872972235,
+          "B_X3": -0.7609764799290861,
+          "B_X4": -0.7102234642190542,
+          "B_X5": -0.965933717586876,
+          "B_X6": -1.1275601713010144,
+          "ASC_ALT2": -0.33602915652051163,
+          "ASC_ALT3": -0.38144258243684126,
+          "ASC_ALT4": -0.7660933697349619,
+          "SIGMA_B_X1": -0.02625572498676892,
+          "SIGMA_B_X2": -0.06449424483054478,
+          "SIGMA_B_X3": -0.03196909746171382
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32"
+      }
+    ],
+    "generated": {
+      "model": "mixl",
+      "N": 1500,
+      "J": 4,
+      "K": 6,
+      "rho": 0.8,
+      "random_coefficients": 3
+    },
+    "family": "Mixed logit"
+  }
+]
