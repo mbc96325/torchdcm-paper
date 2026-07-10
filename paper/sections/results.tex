@@ -65,6 +65,14 @@ These rows are stress tests rather than consistency tests: a timeout indicates t
 TorchDCM completes all three stress cases in under seven seconds.
 In the largest MNL stress case, both Biogeme and Apollo exceed the 300-second timeout, while TorchDCM completes in 6.224 seconds.
 
+\input{tables/torch_device_stress}
+
+Table~\ref{tab:torch_device_stress} isolates the effect of the TorchDCM execution device on generated mixed-logit simulated-likelihood estimation.
+The same TorchDCM code path is run with \texttt{device='cpu'} and \texttt{device='cuda'} using identical initialization and draws.
+On the 50k-observation stress row, the GPU result is numerically indistinguishable from the CPU result while reducing model-path runtime from 124.860 seconds to 4.205 seconds.
+On the 100k-observation, 512-draw row, the CPU worker exceeds the 300-second wall-clock budget whereas the GPU completes the same model path in 9.155 seconds.
+This experiment is reported separately from the cross-estimator stress table because it targets hardware acceleration within TorchDCM rather than agreement with an external reference estimator.
+
 Ordered response models are validated on the Biogeme Optima data.
 TorchDCM completes ordered logit full estimation in 0.042 seconds compared with 2.898 seconds for Biogeme.
 For ordered probit, TorchDCM completes estimation in 0.054 seconds compared with 3.475 seconds for Biogeme.
