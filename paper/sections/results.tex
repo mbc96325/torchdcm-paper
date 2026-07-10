@@ -58,6 +58,13 @@ Nested-logit cases use generated two-nest specifications, while mixed-logit case
 As in the real-data NL and MixL tables, consistency is evaluated against Biogeme; Apollo is included as an additional runtime and final-objective diagnostic.
 The generated nested-logit large-$J$ row highlights a backend-overhead case: Biogeme remains numerically consistent but spends over 1000 seconds in total remote wall-clock time, including the observed JAX/XLA CPU compilation and symbolic-estimation overhead.
 
+\input{tables/generated_stress}
+
+Table~\ref{tab:generated_stress} pushes the generated cases to larger $N$, $J$, and $K$ values and imposes a 300-second wall-clock timeout on Biogeme and Apollo.
+These rows are stress tests rather than consistency tests: a timeout indicates that the external backend did not finish the aligned full-estimation run within the budget.
+TorchDCM completes all three stress cases in under seven seconds.
+In the largest MNL stress case, both Biogeme and Apollo exceed the 300-second timeout, while TorchDCM completes in 6.224 seconds.
+
 Ordered response models are validated on the Biogeme Optima data.
 TorchDCM completes ordered logit full estimation in 0.042 seconds compared with 2.898 seconds for Biogeme.
 For ordered probit, TorchDCM completes estimation in 0.054 seconds compared with 3.475 seconds for Biogeme.

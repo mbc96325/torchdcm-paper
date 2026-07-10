@@ -2,11 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import multiprocessing as mp
 import os
+import signal
 import shutil
 import subprocess
 import tempfile
 import time
+import warnings
 from dataclasses import dataclass
 from pathlib import Path
 from types import SimpleNamespace
@@ -14,6 +17,7 @@ from typing import Callable
 
 import numpy as np
 import pandas as pd
+from pandas.errors import PerformanceWarning
 import torch
 
 from torchdcm import Beta, ChoiceDataset, MixedLogit, MultinomialLogit, RandomCoefficient, UtilitySpec
@@ -33,6 +37,7 @@ ROOT = Path(__file__).resolve().parents[1]
 GENERATED = ROOT / "generated"
 APOLLO_MNL_SCRIPT = ROOT / "benchmarks" / "apollo" / "R" / "run_generic_mnl.R"
 APOLLO_MIXED_SCRIPT = ROOT / "benchmarks" / "apollo" / "R" / "run_generic_mixed_estimate.R"
+warnings.filterwarnings("ignore", category=PerformanceWarning)
 
 
 @dataclass(frozen=True)
@@ -82,6 +87,12 @@ def generated_specs(profile: str) -> list[GeneratedSpec]:
             GeneratedSpec("gen_nl_base", "nl", 400, 4, 3, 0.0),
             GeneratedSpec("gen_mixl_base", "mixl", 300, 3, 3, 0.0, random_coefficients=2),
         ]
+    if profile == "stress":
+        return [
+            GeneratedSpec("stress_mnl_NJK", "mnl", 50000, 35, 20, 0.5),
+            GeneratedSpec("stress_nl_NJK", "nl", 50000, 20, 12, 0.5),
+            GeneratedSpec("stress_mixl_NJK", "mixl", 20000, 8, 8, 0.5, random_coefficients=4),
+        ]
     return [
         GeneratedSpec("gen_mnl_base", "mnl", 1000, 3, 4, 0.0),
         GeneratedSpec("gen_mnl_N", "mnl", 10000, 3, 4, 0.0),
@@ -116,17 +127,18 @@ def build_mnl_case(meta: GeneratedSpec, seed: int) -> MNLCase:
     probabilities = softmax(utility)
     choices = sample_choices(rng, probabilities)
 
-    df = pd.DataFrame({"obs_id": np.arange(meta.n_obs), "choice": [alternatives[i] for i in choices]})
+    columns: dict[str, object] = {"obs_id": np.arange(meta.n_obs), "choice": [alternatives[i] for i in choices]}
     feature_columns: dict[str, dict[str, str]] = {feature: {} for feature in features}
     availability_columns: dict[str, str] = {}
     for j, alt in enumerate(alternatives):
         alt_key = alt.lower()
-        df[f"avail_{alt_key}"] = True
+        columns[f"avail_{alt_key}"] = True
         availability_columns[alt] = f"avail_{alt_key}"
         for k, feature in enumerate(features):
             col = f"{feature}_{alt_key}"
-            df[col] = x[:, j, k]
+            columns[col] = x[:, j, k]
             feature_columns[feature][alt] = col
+    df = pd.DataFrame(columns)
 
     data = ChoiceDataset.from_wide(
         df,
@@ -568,26 +580,127 @@ def safe_run_mixed(backend: str, fn: Callable[[], mixed_real.BackendResult]) -> 
         return mixed_real.BackendResult(backend, False, total_s=time.perf_counter() - start, message=f"{type(exc).__name__}: {exc}")
 
 
+def safe_run_generic(backend: str, fn, result_class):
+    start = time.perf_counter()
+    try:
+        return fn()
+    except Exception as exc:
+        return result_class(backend, False, total_s=time.perf_counter() - start, message=f"{type(exc).__name__}: {exc}")
+
+
+def timed_safe_run(backend: str, fn, result_class, timeout_s: int | None):
+    if not timeout_s or timeout_s <= 0:
+        return safe_run_generic(backend, fn, result_class)
+    start = time.perf_counter()
+    previous_handler = signal.getsignal(signal.SIGALRM)
+
+    def _raise_timeout(_signum, _frame):
+        raise TimeoutError(f"{backend} exceeded {timeout_s}s timeout")
+
+    signal.signal(signal.SIGALRM, _raise_timeout)
+    signal.setitimer(signal.ITIMER_REAL, timeout_s)
+    try:
+        return fn()
+    except TimeoutError as exc:
+        return result_class(backend, False, total_s=time.perf_counter() - start, message=str(exc))
+    except Exception as exc:
+        return result_class(backend, False, total_s=time.perf_counter() - start, message=f"{type(exc).__name__}: {exc}")
+    finally:
+        signal.setitimer(signal.ITIMER_REAL, 0)
+        signal.signal(signal.SIGALRM, previous_handler)
+
+
+def isolated_timed_safe_run(backend: str, fn, result_class, timeout_s: int | None):
+    if not timeout_s or timeout_s <= 0:
+        return safe_run_generic(backend, fn, result_class)
+    context = mp.get_context("fork")
+    queue: mp.Queue = context.Queue(maxsize=1)
+
+    def _worker():
+        try:
+            os.setsid()
+            result = fn()
+            result.covariance = None
+            result.probabilities = None
+            queue.put(("ok", result))
+        except Exception as exc:
+            queue.put(("error", f"{type(exc).__name__}: {exc}"))
+
+    start = time.perf_counter()
+    process = context.Process(target=_worker, name=f"torchdcm_{backend}_stress")
+    process.start()
+    process.join(timeout_s)
+    elapsed = time.perf_counter() - start
+    if process.is_alive():
+        try:
+            os.killpg(process.pid, signal.SIGTERM)
+        except ProcessLookupError:
+            process.terminate()
+        process.join(10)
+        if process.is_alive():
+            try:
+                os.killpg(process.pid, signal.SIGKILL)
+            except ProcessLookupError:
+                process.kill()
+            process.join()
+        return result_class(backend, False, total_s=elapsed, message=f"{backend} exceeded {timeout_s}s timeout")
+    if process.exitcode != 0:
+        return result_class(backend, False, total_s=elapsed, message=f"{backend} failed in isolated process with exit code {process.exitcode}")
+    if queue.empty():
+        return result_class(backend, False, total_s=elapsed, message=f"{backend} isolated process returned no result")
+    status, payload = queue.get()
+    if status == "ok":
+        return payload
+    return result_class(backend, False, total_s=elapsed, message=payload)
+
+
+def is_timeout(result) -> bool:
+    return "timeout" in str(getattr(result, "message", "")).lower()
+
+
 def run_generated_mnl(meta: GeneratedSpec, args) -> dict:
     case = build_mnl_case(meta, args.seed)
-    results = [
-        safe_run("torchdcm", lambda: run_mnl_torch(case, args.max_iter)),
-        safe_run("scipy_bfgs", lambda: run_mnl_scipy(case)),
-        safe_run("biogeme", lambda: run_mnl_biogeme(case)),
-        safe_run("apollo", lambda: run_mnl_apollo(case)),
-        safe_run("mlogit", lambda: run_mnl_mlogit(case)),
-        safe_run("gmnl", lambda: run_mnl_gmnl(case)),
-        safe_run("xlogit", lambda: run_mnl_xlogit(case)),
-    ]
+    results = [safe_run("torchdcm", lambda: run_mnl_torch(case, args.max_iter))]
+    if args.profile == "stress":
+        results.extend(
+            [
+                isolated_timed_safe_run("biogeme", lambda: run_mnl_biogeme(case), BackendResult, args.backend_timeout),
+                isolated_timed_safe_run("apollo", lambda: run_mnl_apollo(case), BackendResult, args.backend_timeout),
+            ]
+        )
+    else:
+        results.extend(
+            [
+                timed_safe_run("scipy_bfgs", lambda: run_mnl_scipy(case), BackendResult, args.backend_timeout),
+                timed_safe_run("biogeme", lambda: run_mnl_biogeme(case), BackendResult, args.backend_timeout),
+                timed_safe_run("apollo", lambda: run_mnl_apollo(case), BackendResult, args.backend_timeout),
+                timed_safe_run("mlogit", lambda: run_mnl_mlogit(case), BackendResult, args.backend_timeout),
+                timed_safe_run("gmnl", lambda: run_mnl_gmnl(case), BackendResult, args.backend_timeout),
+                timed_safe_run("xlogit", lambda: run_mnl_xlogit(case), BackendResult, args.backend_timeout),
+            ]
+        )
     consistent = compare_mnl(case, results)
+    if any(is_timeout(result) for result in results):
+        consistent = False
     return payload(meta, "MNL", case.parameter_names, results, consistent, extra={"true_parameters": case.true_parameters})
 
 
 def run_generated_nl(meta: GeneratedSpec, args) -> dict:
     mnl_case = build_mnl_case(meta, args.seed)
     case = build_nested_case(mnl_case)
-    result = nested_real.run_case(case, max_iter=args.max_iter, lambda_min=args.lambda_min)
+    results = [
+        nested_real.safe_run("torchdcm", lambda: nested_real.run_torch(case, max_iter=args.max_iter)),
+        isolated_timed_safe_run("biogeme", lambda: nested_real.run_biogeme(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout)
+        if args.profile == "stress"
+        else timed_safe_run("biogeme", lambda: nested_real.run_biogeme(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout),
+        isolated_timed_safe_run("apollo", lambda: nested_real.run_apollo(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout)
+        if args.profile == "stress"
+        else timed_safe_run("apollo", lambda: nested_real.run_apollo(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout),
+    ]
+    result = nested_real.result_payload(case, results)
     result["consistent"] = "Yes" if result.get("consistent") else "No"
+    if any(is_timeout(result) for result in results):
+        result["consistent"] = "Timeout"
     result.update({"generated": meta_payload(meta), "family": "Nested logit"})
     return result
 
@@ -599,11 +712,19 @@ def run_generated_mixl(meta: GeneratedSpec, args) -> dict:
     mixed_real.make_draws_cached = draws
     results = [
         safe_run_mixed("torchdcm", lambda: mixed_real.run_torch(case, draws, args.max_iter, args.torch_device)),
-        safe_run_mixed("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter)),
-        safe_run_mixed("apollo", lambda: run_mixed_apollo(case, args.n_draws)),
+        isolated_timed_safe_run("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter), mixed_real.BackendResult, args.backend_timeout)
+        if args.profile == "stress"
+        else timed_safe_run("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter), mixed_real.BackendResult, args.backend_timeout),
+        isolated_timed_safe_run("apollo", lambda: run_mixed_apollo(case, args.n_draws), mixed_real.BackendResult, args.backend_timeout)
+        if args.profile == "stress"
+        else timed_safe_run("apollo", lambda: run_mixed_apollo(case, args.n_draws), mixed_real.BackendResult, args.backend_timeout),
     ]
     consistent = mixed_real.compare_results(case, results)
+    if any(is_timeout(result) for result in results):
+        consistent = False
     result = mixed_real.payload(case, draws, results, consistent)
+    if any(is_timeout(result) for result in results):
+        result["consistent"] = "Timeout"
     result.update({"generated": meta_payload(meta), "family": "Mixed logit"})
     return result
 
@@ -683,10 +804,15 @@ def r_env() -> dict[str, str]:
 
 
 def render_markdown(rows: list[dict], profile: str) -> str:
+    description = (
+        "Stress rows compare TorchDCM against Biogeme and Apollo under a 300-second per-backend timeout. Timeout means the backend did not finish the aligned full-estimation run within the wall-clock budget; it is not treated as a numerical inconsistency."
+        if profile == "stress"
+        else "Synthetic cases vary sample size (N), number of alternatives (J), number of observed variables (K), and equicorrelation (rho). MNL rows compare TorchDCM against SciPy, Biogeme, Apollo, mlogit, gmnl, and xlogit where available. Nested-logit and mixed-logit rows compare TorchDCM against Biogeme and Apollo."
+    )
     lines = [
         f"# Generated Choice Benchmark Battery ({profile})",
         "",
-        "Synthetic cases vary sample size (N), number of alternatives (J), number of observed variables (K), and equicorrelation (rho). MNL rows compare TorchDCM against SciPy, Biogeme, Apollo, mlogit, gmnl, and xlogit where available. Nested-logit and mixed-logit rows compare TorchDCM against Biogeme and Apollo.",
+        description,
         "",
         "| case | family | N | J | K | rho | TorchDCM | SciPy | Biogeme | Apollo | mlogit | gmnl | xlogit | Consistent? |",
         "| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
@@ -728,6 +854,8 @@ def fmt_time(row: dict | None) -> str:
     if not row:
         return "NA"
     if not row.get("available"):
+        if "timeout" in str(row.get("message", "")).lower():
+            return "Timeout"
         return "Fail"
     value = row.get("total_s")
     return f"{float(value):.3f}" if isinstance(value, (int, float)) else "NA"
@@ -756,13 +884,14 @@ def write_outputs(rows: list[dict], profile: str) -> tuple[Path, Path]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", choices=["smoke", "full"], default="smoke")
+    parser.add_argument("--profile", choices=["smoke", "full", "stress"], default="smoke")
     parser.add_argument("--models", nargs="+", choices=["mnl", "nl", "mixl"], default=["mnl", "nl", "mixl"])
     parser.add_argument("--seed", type=int, default=20260709)
     parser.add_argument("--max-iter", type=int, default=120)
     parser.add_argument("--lambda-min", type=float, default=0.0001)
     parser.add_argument("--n-draws", type=int, default=32)
     parser.add_argument("--torch-device", default="cpu")
+    parser.add_argument("--backend-timeout", type=int, default=0, help="Seconds before marking non-Torch backends as timed out. Zero disables per-backend timeout.")
     args = parser.parse_args()
     if torch.device(args.torch_device).type != "cpu":
         raise ValueError("Generated cross-estimator comparisons must use --torch-device cpu.")

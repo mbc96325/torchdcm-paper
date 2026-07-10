@@ -13,5 +13,6 @@ The raw covariance and standard-error audits remain useful internally, but the p
 
 The benchmark system is also still expanding in dataset coverage and controlled synthetic coverage.
 The current public data suite includes several Biogeme and R package examples, plus processed large-data candidates, and the current synthetic suite covers MNL, nested-logit, and mixed-logit full-estimation comparisons under controlled dimensions.
+The generated stress rows also identify a practical scaling boundary: at larger $N$, $J$, and $K$, TorchDCM continues to complete full estimation while at least one symbolic reference backend exceeds a 300-second wall-clock budget.
 More Apollo examples and additional public large-scale choice datasets should be added before final submission.
 This expansion will make the empirical section closer to IJOC software-paper standards, where reproducibility, public data, and baseline breadth are central acceptance signals.

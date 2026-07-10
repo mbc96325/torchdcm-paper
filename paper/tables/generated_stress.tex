@@ -1,0 +1,18 @@
+\begin{table}[H]
+\caption{Generated large-scale stress benchmarks with a 300-second external-backend timeout. Runtime columns report total remote wall-clock seconds when the backend completed, and ``Timeout'' when it did not finish within 300 seconds.}
+\label{tab:generated_stress}
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrrrl}
+\toprule
+Family & $N$ & $J$ & $K$ & $\rho$ & RC & TorchDCM & Biogeme & Apollo & Status \\
+\midrule
+MNL & 50000 & 35 & 20 & 0.5 & -- & 6.224 & Timeout & Timeout & External timeout \\
+Nested logit & 50000 & 20 & 12 & 0.5 & -- & 2.678 & Timeout & 57.066 & Biogeme timeout \\
+Mixed logit & 20000 & 8 & 8 & 0.5 & 4 & 2.560 & 134.011 & Timeout & Apollo timeout \\
+\bottomrule
+\end{tabular}
+}
+\caption*{\footnotesize Notes: stress rows are designed to identify scaling boundaries rather than numerical disagreement. TorchDCM completed all three full-estimation runs, while at least one external symbolic/reference backend exceeded the 300-second wall-clock budget. The MNL stress row is the strongest boundary case: both Biogeme and Apollo timed out while TorchDCM completed in 6.224 seconds.}
+\end{table}
