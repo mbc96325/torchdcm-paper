@@ -16,6 +16,7 @@ import numpy as np
 import pandas as pd
 import torch
 
+from benchmark_runtime import estimation_covariance_total
 from torchdcm import Beta, ChoiceDataset, MultinomialLogit, UtilitySpec
 from mnl_generic_backends import (
     make_design_long,
@@ -310,12 +311,14 @@ def run_apollo(case: BenchmarkCase) -> BackendResult:
             payload = json.loads(output_path.read_text(encoding="utf-8"))
             covariance_names = payload.get("covariance_names") or case.parameter_names
             covariance = reorder_covariance(payload.get("covariance"), covariance_names, case.parameter_names)
+            estimate_s = payload.get("timing", {}).get("estimate_seconds")
+            covariance_s = payload.get("timing", {}).get("covariance_seconds")
             return BackendResult(
                 backend="apollo",
                 available=True,
-                total_s=total_s,
-                estimate_s=payload.get("timing", {}).get("estimate_seconds"),
-                covariance_s=payload.get("timing", {}).get("covariance_seconds"),
+                total_s=estimation_covariance_total(estimate_s, covariance_s),
+                estimate_s=estimate_s,
+                covariance_s=covariance_s,
                 loglike=float(payload["loglike"]),
                 params={name: float(payload["estimates"][name]) for name in case.parameter_names},
                 covariance=covariance,

@@ -1,0 +1,2197 @@
+[
+  {
+    "case": "nl_N_1000",
+    "data": "nl_N_1000",
+    "model": "Generated nested logit",
+    "n_obs": 1000,
+    "n_alternatives": 4,
+    "n_parameters": 11,
+    "source": "synthetic NL N=1000 J=4 K=6 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.04553453694097698,
+        "estimate_s": 0.0370669859694317,
+        "covariance_s": 0.008467550971545279,
+        "loglike": -567.6938156888741,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 24.95768692891579,
+        "estimate_s": 24.957606658921577,
+        "covariance_s": 8.026999421417713e-05,
+        "loglike": -567.6938160755598,
+        "ll_diff": -3.866856559398002e-07,
+        "max_param_diff": 3.5805642493724754e-05,
+        "max_prob_diff": 5.714038933962717e-05,
+        "max_cov_diff": 0.014390432534071854,
+        "max_se_diff": 0.1199502063274514,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 0.519,
+        "estimate_s": 0.511,
+        "covariance_s": 0.00800000000000001,
+        "loglike": -567.693815740459,
+        "ll_diff": -5.1584834181994665e-08,
+        "max_param_diff": 7.655652715099492e-07,
+        "max_prob_diff": 6.402948969363997e-07,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 1000,
+      "J": 4,
+      "K": 6,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_N_10000",
+    "data": "nl_N_10000",
+    "model": "Generated nested logit",
+    "n_obs": 10000,
+    "n_alternatives": 4,
+    "n_parameters": 11,
+    "source": "synthetic NL N=10000 J=4 K=6 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.07002847699914128,
+        "estimate_s": 0.05095244396943599,
+        "covariance_s": 0.019076033029705286,
+        "loglike": -5269.181032428542,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 25.893500500940718,
+        "estimate_s": 25.893423111992888,
+        "covariance_s": 7.738894782960415e-05,
+        "loglike": -5269.181035946313,
+        "ll_diff": -3.517771801853087e-06,
+        "max_param_diff": 4.5031189022937124e-05,
+        "max_prob_diff": 5.089765449017847e-05,
+        "max_cov_diff": 1.031354899275411e-07,
+        "max_se_diff": 1.9577006839313627e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 2.052,
+        "estimate_s": 2.044,
+        "covariance_s": 0.00800000000000001,
+        "loglike": -5269.18103242864,
+        "ll_diff": -9.822542779147625e-11,
+        "max_param_diff": 2.1769890656830881e-07,
+        "max_prob_diff": 3.5634364281555975e-07,
+        "max_cov_diff": 2.3406089679281483e-09,
+        "max_se_diff": 3.567311250562977e-08,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 10000,
+      "J": 4,
+      "K": 6,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_N_100000",
+    "data": "nl_N_100000",
+    "model": "Generated nested logit",
+    "n_obs": 100000,
+    "n_alternatives": 4,
+    "n_parameters": 11,
+    "source": "synthetic NL N=100000 J=4 K=6 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.5469685350544751,
+        "estimate_s": 0.39281247404869646,
+        "covariance_s": 0.1541560610057786,
+        "loglike": -53619.24158527321,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 37.29153885296546,
+        "estimate_s": 37.29146253399085,
+        "covariance_s": 7.631897460669279e-05,
+        "loglike": -53619.24159932441,
+        "ll_diff": -1.4051198377273977e-05,
+        "max_param_diff": 1.726204397733966e-05,
+        "max_prob_diff": 4.6275009096097275e-05,
+        "max_cov_diff": 5.376855978766462e-09,
+        "max_se_diff": 2.720016215405213e-07,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 29.578000000000003,
+        "estimate_s": 29.57,
+        "covariance_s": 0.00800000000000267,
+        "loglike": -53619.2415852728,
+        "ll_diff": 4.0745362639427185e-10,
+        "max_param_diff": 6.351509834745528e-08,
+        "max_prob_diff": 7.430493514926084e-08,
+        "max_cov_diff": 9.508482746284873e-12,
+        "max_se_diff": 5.902358116149919e-10,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 100000,
+      "J": 4,
+      "K": 6,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_C_3",
+    "data": "nl_C_3",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 3,
+    "n_parameters": 9,
+    "source": "synthetic NL N=20000 J=3 K=6 rho=0.3; GROUP_A=0.65, GROUP_B=1.00",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3"
+        ],
+        "fixed": true,
+        "init": 1.0
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "LAMBDA_GROUP_A"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.1032042921287939,
+        "estimate_s": 0.07154955307487398,
+        "covariance_s": 0.03165473905391991,
+        "loglike": -8293.574916679896,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 9.260924114030786,
+        "estimate_s": 9.260853754007258,
+        "covariance_s": 7.036002352833748e-05,
+        "loglike": -8293.574927974607,
+        "ll_diff": -1.1294710930087604e-05,
+        "max_param_diff": 6.991102629250179e-05,
+        "max_prob_diff": 4.71155962355474e-05,
+        "max_cov_diff": 7.534753147006145e-08,
+        "max_se_diff": 1.7914615605026107e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 2.678,
+        "estimate_s": 2.67,
+        "covariance_s": 0.00800000000000001,
+        "loglike": -8293.57491667999,
+        "ll_diff": -9.458744898438454e-11,
+        "max_param_diff": 1.75700745286278e-07,
+        "max_prob_diff": 3.2114290010598623e-07,
+        "max_cov_diff": 1.1978245760720097e-10,
+        "max_se_diff": 2.660314902397376e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 3,
+      "K": 6,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 1.0
+    }
+  },
+  {
+    "case": "nl_C_10",
+    "data": "nl_C_10",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 10,
+    "n_parameters": 17,
+    "source": "synthetic NL N=20000 J=10 K=6 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2",
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT6",
+          "ALT7",
+          "ALT8",
+          "ALT9",
+          "ALT10"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8",
+      "ASC_ALT9",
+      "ASC_ALT10",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.288439234951511,
+        "estimate_s": 0.18552277190610766,
+        "covariance_s": 0.10291646304540336,
+        "loglike": -17003.10324692782,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": false,
+        "total_s": 300.1074936169898,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "biogeme exceeded 300s timeout"
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 14.116999999999999,
+        "estimate_s": 14.109,
+        "covariance_s": 0.00799999999999912,
+        "loglike": -17003.1032469283,
+        "ll_diff": -4.802132025361061e-10,
+        "max_param_diff": 3.6742003572953763e-07,
+        "max_prob_diff": 4.6772687911644795e-07,
+        "max_cov_diff": 3.812355619994129e-10,
+        "max_se_diff": 5.103791462374163e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 10,
+      "K": 6,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_C_20",
+    "data": "nl_C_20",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 20,
+    "n_parameters": 27,
+    "source": "synthetic NL N=20000 J=20 K=6 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2",
+          "ALT3",
+          "ALT4",
+          "ALT5",
+          "ALT6",
+          "ALT7",
+          "ALT8",
+          "ALT9",
+          "ALT10"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT11",
+          "ALT12",
+          "ALT13",
+          "ALT14",
+          "ALT15",
+          "ALT16",
+          "ALT17",
+          "ALT18",
+          "ALT19",
+          "ALT20"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8",
+      "ASC_ALT9",
+      "ASC_ALT10",
+      "ASC_ALT11",
+      "ASC_ALT12",
+      "ASC_ALT13",
+      "ASC_ALT14",
+      "ASC_ALT15",
+      "ASC_ALT16",
+      "ASC_ALT17",
+      "ASC_ALT18",
+      "ASC_ALT19",
+      "ASC_ALT20",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.8269831449724734,
+        "estimate_s": 0.49123828997835517,
+        "covariance_s": 0.3357448549941182,
+        "loglike": -22021.69258031797,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": false,
+        "total_s": 300.11238551000133,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "biogeme exceeded 300s timeout"
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 62.56300000000001,
+        "estimate_s": 62.555,
+        "covariance_s": 0.00800000000000978,
+        "loglike": -22021.692580318,
+        "ll_diff": -2.9103830456733704e-11,
+        "max_param_diff": 3.0158794586676585e-07,
+        "max_prob_diff": 1.7841459765133294e-07,
+        "max_cov_diff": 8.393493252864537e-10,
+        "max_se_diff": 9.998564462487813e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 20,
+      "K": 6,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_K_4",
+    "data": "nl_K_4",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 5,
+    "n_parameters": 10,
+    "source": "synthetic NL N=20000 J=5 K=4 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.1266378180589527,
+        "estimate_s": 0.09211845300160348,
+        "covariance_s": 0.034519365057349205,
+        "loglike": -16219.894709596505,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 53.393293016939424,
+        "estimate_s": 53.39322106691543,
+        "covariance_s": 7.195002399384975e-05,
+        "loglike": -16219.89474133455,
+        "ll_diff": -3.1738045436213724e-05,
+        "max_param_diff": 0.00018996456074027446,
+        "max_prob_diff": 6.901455207908302e-05,
+        "max_cov_diff": 1.3589028061351035e-07,
+        "max_se_diff": 2.3119004776417373e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 4.02,
+        "estimate_s": 4.012,
+        "covariance_s": 0.00800000000000001,
+        "loglike": -16219.8947095963,
+        "ll_diff": 2.0554580260068178e-10,
+        "max_param_diff": 3.566155371975688e-07,
+        "max_prob_diff": 1.8133669338338265e-07,
+        "max_cov_diff": 1.957820535974529e-10,
+        "max_se_diff": 5.610957927448812e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 5,
+      "K": 4,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_K_12",
+    "data": "nl_K_12",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 5,
+    "n_parameters": 18,
+    "source": "synthetic NL N=20000 J=5 K=12 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.17246738402172923,
+        "estimate_s": 0.10976819600909948,
+        "covariance_s": 0.06269918801262975,
+        "loglike": -7140.95762672578,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 49.49286623194348,
+        "estimate_s": 49.49276536295656,
+        "covariance_s": 0.00010086898691952229,
+        "loglike": -7140.957694697348,
+        "ll_diff": -6.797156856919173e-05,
+        "max_param_diff": 0.00034016209537779396,
+        "max_prob_diff": 0.00017805267076415054,
+        "max_cov_diff": 3.4574952903639565e-07,
+        "max_se_diff": 4.0582923991963615e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 9.710999999999999,
+        "estimate_s": 9.703,
+        "covariance_s": 0.00799999999999912,
+        "loglike": -7140.95762672578,
+        "ll_diff": 0.0,
+        "max_param_diff": 3.3297396473397356e-07,
+        "max_prob_diff": 3.5358593319934073e-07,
+        "max_cov_diff": 1.2761193173135496e-09,
+        "max_se_diff": 2.3584772655682595e-08,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 5,
+      "K": 12,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_K_32",
+    "data": "nl_K_32",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 5,
+    "n_parameters": 38,
+    "source": "synthetic NL N=20000 J=5 K=32 rho=0.3; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "B_X13",
+      "B_X14",
+      "B_X15",
+      "B_X16",
+      "B_X17",
+      "B_X18",
+      "B_X19",
+      "B_X20",
+      "B_X21",
+      "B_X22",
+      "B_X23",
+      "B_X24",
+      "B_X25",
+      "B_X26",
+      "B_X27",
+      "B_X28",
+      "B_X29",
+      "B_X30",
+      "B_X31",
+      "B_X32",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.2776192339370027,
+        "estimate_s": 0.13716728589497507,
+        "covariance_s": 0.14045194804202765,
+        "loglike": -2800.7619022245344,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 194.6462803040631,
+        "estimate_s": 194.64605179603677,
+        "covariance_s": 0.0002285080263391137,
+        "loglike": -2800.76208266896,
+        "ll_diff": -0.00018044442549580708,
+        "max_param_diff": 0.0007390609777376822,
+        "max_prob_diff": 0.0002690445912909567,
+        "max_cov_diff": 2.515873737053871e-06,
+        "max_se_diff": 1.9954251098880382e-05,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 46.946,
+        "estimate_s": 46.938,
+        "covariance_s": 0.00799999999999557,
+        "loglike": -2800.76190222605,
+        "ll_diff": -1.515672920504585e-09,
+        "max_param_diff": 9.97736516628045e-07,
+        "max_prob_diff": 1.8141029196061531e-06,
+        "max_cov_diff": 5.336455626133926e-09,
+        "max_se_diff": 6.360428995294543e-08,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 5,
+      "K": 32,
+      "rho": 0.3,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_rho_0p0",
+    "data": "nl_rho_0p0",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 5,
+    "n_parameters": 18,
+    "source": "synthetic NL N=20000 J=5 K=12 rho=0.0; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.1790371690876782,
+        "estimate_s": 0.11639578104950488,
+        "covariance_s": 0.06264138803817332,
+        "loglike": -13254.368622904032,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 56.25788540299982,
+        "estimate_s": 56.25778095400892,
+        "covariance_s": 0.00010444899089634418,
+        "loglike": -13254.368647993051,
+        "ll_diff": -2.508901889086701e-05,
+        "max_param_diff": 0.0001809292260774864,
+        "max_prob_diff": 6.891058659036498e-05,
+        "max_cov_diff": 1.4468118992249333e-07,
+        "max_se_diff": 2.217052484911053e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 9.627,
+        "estimate_s": 9.62,
+        "covariance_s": 0.00700000000000145,
+        "loglike": -13254.3686229039,
+        "ll_diff": 1.3278622645884752e-10,
+        "max_param_diff": 3.7177257167231303e-07,
+        "max_prob_diff": 2.4210876403696346e-07,
+        "max_cov_diff": 2.7001217873991873e-10,
+        "max_se_diff": 4.3607503372178336e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 5,
+      "K": 12,
+      "rho": 0.0,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_rho_0p5",
+    "data": "nl_rho_0p5",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 5,
+    "n_parameters": 18,
+    "source": "synthetic NL N=20000 J=5 K=12 rho=0.5; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.16785669897217304,
+        "estimate_s": 0.10599210695363581,
+        "covariance_s": 0.06186459201853722,
+        "loglike": -5900.363307272615,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 48.8446938280249,
+        "estimate_s": 48.84459044900723,
+        "covariance_s": 0.00010337901767343283,
+        "loglike": -5900.363374965471,
+        "ll_diff": -6.769285573682282e-05,
+        "max_param_diff": 0.0002770052791157829,
+        "max_prob_diff": 0.0001888825481829448,
+        "max_cov_diff": 4.730059655804267e-07,
+        "max_se_diff": 5.235210173128169e-06,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 11.312000000000001,
+        "estimate_s": 11.304,
+        "covariance_s": 0.0080000000000009,
+        "loglike": -5900.36330727265,
+        "ll_diff": -3.456079866737127e-11,
+        "max_param_diff": 5.303172689874458e-08,
+        "max_prob_diff": 1.2136468058310257e-07,
+        "max_cov_diff": 2.735254121723901e-10,
+        "max_se_diff": 4.599666366539301e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 5,
+      "K": 12,
+      "rho": 0.5,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_rho_0p98",
+    "data": "nl_rho_0p98",
+    "model": "Generated nested logit",
+    "n_obs": 20000,
+    "n_alternatives": 5,
+    "n_parameters": 18,
+    "source": "synthetic NL N=20000 J=5 K=12 rho=0.98; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT3",
+          "ALT4",
+          "ALT5"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.16846587392501533,
+        "estimate_s": 0.10636850201990455,
+        "covariance_s": 0.062097371905110776,
+        "loglike": -4450.704993629476,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 47.523720937082544,
+        "estimate_s": 47.52362337708473,
+        "covariance_s": 9.755999781191349e-05,
+        "loglike": -4450.705167396687,
+        "ll_diff": -0.00017376721098116832,
+        "max_param_diff": 0.001254043514640646,
+        "max_prob_diff": 0.0004304603671859142,
+        "max_cov_diff": 2.8738419681970107e-06,
+        "max_se_diff": 1.2056023290740736e-05,
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 10.094,
+        "estimate_s": 10.086,
+        "covariance_s": 0.00799999999999912,
+        "loglike": -4450.70499363241,
+        "ll_diff": -2.9340299079194665e-09,
+        "max_param_diff": 2.9324248010942355e-06,
+        "max_prob_diff": 1.2563354659933523e-06,
+        "max_cov_diff": 1.5893930319435534e-08,
+        "max_se_diff": 1.2641370827903842e-07,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 20000,
+      "J": 5,
+      "K": 12,
+      "rho": 0.98,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_stress_small",
+    "data": "nl_stress_small",
+    "model": "Generated nested logit",
+    "n_obs": 30000,
+    "n_alternatives": 12,
+    "n_parameters": 21,
+    "source": "synthetic NL N=30000 J=12 K=8 rho=0.5; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2",
+          "ALT3",
+          "ALT4",
+          "ALT5",
+          "ALT6"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT7",
+          "ALT8",
+          "ALT9",
+          "ALT10",
+          "ALT11",
+          "ALT12"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8",
+      "ASC_ALT9",
+      "ASC_ALT10",
+      "ASC_ALT11",
+      "ASC_ALT12",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.5519583718851209,
+        "estimate_s": 0.3353312019025907,
+        "covariance_s": 0.21662716998253018,
+        "loglike": -18348.167076396945,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": false,
+        "total_s": 300.1127932940144,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "biogeme exceeded 300s timeout"
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 37.06399999999999,
+        "estimate_s": 37.056,
+        "covariance_s": 0.00799999999999557,
+        "loglike": -18348.1670763967,
+        "ll_diff": 2.4374458007514477e-10,
+        "max_param_diff": 2.0148708670952864e-07,
+        "max_prob_diff": 1.504965931875546e-07,
+        "max_cov_diff": 1.3693250699997606e-10,
+        "max_se_diff": 1.994520890460927e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 30000,
+      "J": 12,
+      "K": 8,
+      "rho": 0.5,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "nl_stress_medium",
+    "data": "nl_stress_medium",
+    "model": "Generated nested logit",
+    "n_obs": 40000,
+    "n_alternatives": 16,
+    "n_parameters": 27,
+    "source": "synthetic NL N=40000 J=16 K=10 rho=0.5; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2",
+          "ALT3",
+          "ALT4",
+          "ALT5",
+          "ALT6",
+          "ALT7",
+          "ALT8"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT9",
+          "ALT10",
+          "ALT11",
+          "ALT12",
+          "ALT13",
+          "ALT14",
+          "ALT15",
+          "ALT16"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8",
+      "ASC_ALT9",
+      "ASC_ALT10",
+      "ASC_ALT11",
+      "ASC_ALT12",
+      "ASC_ALT13",
+      "ASC_ALT14",
+      "ASC_ALT15",
+      "ASC_ALT16",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 1.3382791461190209,
+        "estimate_s": 0.793070322019048,
+        "covariance_s": 0.5452088240999728,
+        "loglike": -21811.5281323053,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": false,
+        "total_s": 300.1147081570234,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "biogeme exceeded 300s timeout"
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 99.092,
+        "estimate_s": 99.084,
+        "covariance_s": 0.00799999999999557,
+        "loglike": -21811.5281323053,
+        "ll_diff": 0.0,
+        "max_param_diff": 6.847749090543864e-07,
+        "max_prob_diff": 6.209109494892395e-07,
+        "max_cov_diff": 3.6631676858522866e-10,
+        "max_se_diff": 4.869423114728377e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 40000,
+      "J": 16,
+      "K": 10,
+      "rho": 0.5,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  },
+  {
+    "case": "stress_nl_NJK",
+    "data": "stress_nl_NJK",
+    "model": "Generated nested logit",
+    "n_obs": 50000,
+    "n_alternatives": 20,
+    "n_parameters": 33,
+    "source": "synthetic NL N=50000 J=20 K=12 rho=0.5; GROUP_A=0.65, GROUP_B=0.80",
+    "nests": {
+      "GROUP_A": {
+        "alternatives": [
+          "ALT1",
+          "ALT2",
+          "ALT3",
+          "ALT4",
+          "ALT5",
+          "ALT6",
+          "ALT7",
+          "ALT8",
+          "ALT9",
+          "ALT10"
+        ],
+        "fixed": false,
+        "init": 0.8
+      },
+      "GROUP_B": {
+        "alternatives": [
+          "ALT11",
+          "ALT12",
+          "ALT13",
+          "ALT14",
+          "ALT15",
+          "ALT16",
+          "ALT17",
+          "ALT18",
+          "ALT19",
+          "ALT20"
+        ],
+        "fixed": false,
+        "init": 0.8
+      }
+    },
+    "parameters": [
+      "B_X1",
+      "B_X2",
+      "B_X3",
+      "B_X4",
+      "B_X5",
+      "B_X6",
+      "B_X7",
+      "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
+      "ASC_ALT2",
+      "ASC_ALT3",
+      "ASC_ALT4",
+      "ASC_ALT5",
+      "ASC_ALT6",
+      "ASC_ALT7",
+      "ASC_ALT8",
+      "ASC_ALT9",
+      "ASC_ALT10",
+      "ASC_ALT11",
+      "ASC_ALT12",
+      "ASC_ALT13",
+      "ASC_ALT14",
+      "ASC_ALT15",
+      "ASC_ALT16",
+      "ASC_ALT17",
+      "ASC_ALT18",
+      "ASC_ALT19",
+      "ASC_ALT20",
+      "LAMBDA_GROUP_A",
+      "LAMBDA_GROUP_B"
+    ],
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 2.7805759159382433,
+        "estimate_s": 1.5941275589866564,
+        "covariance_s": 1.186448356951587,
+        "loglike": -23845.606379882105,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "max_cov_diff": 0.0,
+        "max_se_diff": 0.0,
+        "message": ""
+      },
+      {
+        "backend": "biogeme",
+        "available": false,
+        "total_s": 300.11776509101037,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "biogeme exceeded 300s timeout"
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 227.469,
+        "estimate_s": 227.46,
+        "covariance_s": 0.00899999999998613,
+        "loglike": -23845.6063798815,
+        "ll_diff": 6.039044819772243e-10,
+        "max_param_diff": 5.204881848852594e-07,
+        "max_prob_diff": 3.404469760548423e-07,
+        "max_cov_diff": 4.920019595726355e-10,
+        "max_se_diff": 5.496549312922205e-09,
+        "message": "apollo_version=0.3.8; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ],
+    "generated": {
+      "model": "nl",
+      "N": 50000,
+      "J": 20,
+      "K": 12,
+      "rho": 0.5,
+      "random_coefficients": 0
+    },
+    "family": "Nested logit",
+    "data_generating_process": "two-level nested logit",
+    "true_dissimilarities": {
+      "GROUP_A": 0.65,
+      "GROUP_B": 0.8
+    }
+  }
+]

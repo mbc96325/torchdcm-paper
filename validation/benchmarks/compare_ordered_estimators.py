@@ -1,8 +1,19 @@
 from __future__ import annotations
 
 import argparse
+import json
 import time
 from dataclasses import dataclass
+from pathlib import Path
+
+from benchmark_runtime import (
+    configure_single_thread_cpu,
+    estimation_covariance_total,
+    runtime_policy_metadata,
+)
+
+if __name__ == "__main__":
+    configure_single_thread_cpu(configure_torch=True)
 
 import numpy as np
 import pandas as pd
@@ -236,7 +247,6 @@ def run_biogeme_estimate(df: pd.DataFrame, kind: str, initial: dict[str, float])
         biogeme = bio.BIOGEME(database, logprob)
         biogeme.model_name = f"torchdcm_ordered_{kind}_estimate"
         biogeme.biogeme_parameters.set_value("save_iterations", False)
-        start = time.perf_counter()
         estimate_start = time.perf_counter()
         estimates = biogeme.estimate()
         estimate_seconds = time.perf_counter() - estimate_start
@@ -259,7 +269,7 @@ def run_biogeme_estimate(df: pd.DataFrame, kind: str, initial: dict[str, float])
         return BackendResult(
             backend="biogeme",
             available=True,
-            seconds=time.perf_counter() - start,
+            seconds=estimation_covariance_total(estimate_seconds, covariance_seconds),
             estimate_seconds=estimate_seconds,
             covariance_seconds=covariance_seconds,
             loglike=float(estimates.final_log_likelihood),
@@ -310,6 +320,7 @@ def print_results(
     print(f"case: biogeme_optima_ordered_{indicator.lower()}_{kind}")
     print(f"mode: {mode}")
     print(f"n_obs: {n_obs}")
+    print(f"runtime_policy: {runtime_policy_metadata()}")
     print("alignment:")
     if mode == "fixed":
         print("  benchmark_mode: fixed_likelihood_replay")
@@ -369,6 +380,7 @@ def main() -> None:
     parser.add_argument("--n-obs", type=int, default=None)
     parser.add_argument("--mode", choices=["fixed", "fit-replay", "full-estimation"], default="fixed")
     parser.add_argument("--max-iter", type=int, default=40)
+    parser.add_argument("--json-output", type=Path)
     args = parser.parse_args()
 
     df, data = load_ordered_optima(args.indicator, args.n_obs)
@@ -393,6 +405,17 @@ def main() -> None:
             reference = "torchdcm_fit"
     compare_to_reference(results, reference)
     print_results(results, reference, data.n_obs, args.kind, args.mode, args.indicator)
+    if args.json_output:
+        payload = {
+            "case": f"biogeme_optima_ordered_{args.indicator.lower()}_{args.kind}",
+            "mode": args.mode,
+            "n_obs": data.n_obs,
+            "runtime_policy": runtime_policy_metadata(),
+            "reference": reference,
+            "backends": [serialize_result(result) for result in results],
+        }
+        args.json_output.parent.mkdir(parents=True, exist_ok=True)
+        args.json_output.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
 def _fmt_optional(value: float | None) -> str:
@@ -405,6 +428,25 @@ def _fmt_seconds(value: float | None) -> str:
     if value is None:
         return "NA"
     return f"{value:.6f}"
+
+
+def serialize_result(result: BackendResult) -> dict:
+    return {
+        "backend": result.backend,
+        "available": result.available,
+        "total_s": result.seconds,
+        "estimate_s": result.estimate_seconds,
+        "covariance_s": result.covariance_seconds,
+        "loglike": result.loglike,
+        "ll_diff": getattr(result, "ll_diff", None),
+        "max_param_diff": getattr(result, "max_abs_param_diff", None),
+        "max_probability_diff": getattr(result, "max_abs_probability_diff", None),
+        "max_covariance_diff": getattr(result, "max_abs_covariance_diff", None),
+        "max_se_diff": getattr(result, "max_abs_se_diff", None),
+        "max_t_diff": getattr(result, "max_abs_t_diff", None),
+        "params": result.params,
+        "message": result.message,
+    }
 
 
 if __name__ == "__main__":

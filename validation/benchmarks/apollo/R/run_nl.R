@@ -153,4 +153,4 @@ out <- list(
   )
 )
 
-write_json(out, output_path, pretty = TRUE, auto_unbox = TRUE)
+write_json(out, output_path, pretty = TRUE, auto_unbox = TRUE, digits = NA)

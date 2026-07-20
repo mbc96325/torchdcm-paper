@@ -3,9 +3,21 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import shutil
+import subprocess
+import tempfile
 import time
 from dataclasses import dataclass
 from pathlib import Path
+
+from benchmark_runtime import (
+    configure_single_thread_cpu,
+    estimation_covariance_total,
+    runtime_policy_metadata,
+)
+
+if __name__ == "__main__":
+    configure_single_thread_cpu(configure_torch=True)
 
 import numpy as np
 import pandas as pd
@@ -21,6 +33,7 @@ from run_mlogit_dataset_battery import run_r_reference
 
 ROOT = Path(__file__).resolve().parents[1]
 GENERATED = ROOT / "generated"
+APOLLO_MIXED_SCRIPT = ROOT / "benchmarks" / "apollo" / "R" / "run_generic_mixed_estimate.R"
 
 
 @dataclass
@@ -209,6 +222,13 @@ def run_torch(case: MixedCase, draws: torch.Tensor, max_iter: int, device: str) 
             compiled.chol_offdiag_initial,
         ]
     )
+
+    # Exclude one-time tensor-kernel and autograd initialization from timing,
+    # following the generated MNL and NL runtime policy.
+    warmup_internal = internal_initial.clone().detach().requires_grad_(True)
+    warmup_natural = model._internal_to_natural(warmup_internal, compiled)
+    (-model.loglike(warmup_natural, data, compiled)).backward()
+
     internal_params = internal_initial.clone().detach().requires_grad_(True)
     optimizer = torch.optim.LBFGS(
         [internal_params],
@@ -259,7 +279,13 @@ def run_torch(case: MixedCase, draws: torch.Tensor, max_iter: int, device: str) 
     )
 
 
-def run_biogeme(case: MixedCase, draws: np.ndarray, max_iter: int) -> BackendResult:
+def run_biogeme(
+    case: MixedCase,
+    draws: np.ndarray,
+    max_iter: int,
+    *,
+    smooth_positive_scales: bool = False,
+) -> BackendResult:
     tmp_root = Path(tempfile.gettempdir()) if False else Path(os.environ.get("TMPDIR", "/tmp"))
     os.environ.setdefault("MPLCONFIGDIR", str(tmp_root / "torchdcm_matplotlib"))
     os.environ.setdefault("XDG_CACHE_HOME", str(tmp_root / "torchdcm_cache"))
@@ -270,6 +296,7 @@ def run_biogeme(case: MixedCase, draws: np.ndarray, max_iter: int) -> BackendRes
         import biogeme.database as db
         from biogeme.expressions import Beta as BioBeta
         from biogeme.expressions import Variable
+        from biogeme.expressions import exp
         from biogeme.expressions import log
         from biogeme import models
         from biogeme.results_processing.variance_covariance import EstimateVarianceCovariance
@@ -295,10 +322,27 @@ def run_biogeme(case: MixedCase, draws: np.ndarray, max_iter: int) -> BackendRes
         if draw_columns:
             df = pd.concat([df, pd.DataFrame(draw_columns, index=df.index)], axis=1)
 
-        names = [*case.parameter_names, *[f"SIGMA_{name}" for name in case.random_names]]
+        sigma_names = [f"SIGMA_{name}" for name in case.random_names]
+        names = [*case.parameter_names, *sigma_names]
         betas = {name: BioBeta(name, 0.0, None, None, 0) for name in case.parameter_names}
-        for name in case.random_names:
-            betas[f"SIGMA_{name}"] = BioBeta(f"SIGMA_{name}", case.sigma_init, 0.0, None, 0)
+        if smooth_positive_scales:
+            phi_names = [f"PHI_{name}" for name in sigma_names]
+            optimization_names = [*case.parameter_names, *phi_names]
+            phi_init = float(np.log(np.expm1(case.sigma_init)))
+            for sigma_name, phi_name in zip(sigma_names, phi_names):
+                phi = BioBeta(phi_name, phi_init, None, None, 0)
+                # Match TorchDCM's smooth positive-scale parameterization. A
+                # hard lower bound at zero creates a stationary boundary under
+                # symmetric draws, while an unrestricted scale changes the
+                # finite-draw objective when one draw dimension changes sign.
+                betas[sigma_name] = log(1 + exp(phi))
+        else:
+            phi_names = []
+            optimization_names = names
+            for sigma_name in sigma_names:
+                betas[sigma_name] = BioBeta(
+                    sigma_name, case.sigma_init, 0.0, None, 0
+                )
 
         database = db.Database(f"torchdcm_mixed_{case.case}_{len(df)}", df)
         choice = Variable(choice_col)
@@ -335,18 +379,177 @@ def run_biogeme(case: MixedCase, draws: np.ndarray, max_iter: int) -> BackendRes
         covariance_obj = estimates.get_variance_covariance_matrix(EstimateVarianceCovariance.RAO_CRAMER)
         covariance_s = time.perf_counter() - covariance_start
         beta_values = estimates.get_beta_values()
+        covariance_internal = covariance_to_array(covariance_obj, optimization_names)
+        if smooth_positive_scales:
+            transform = np.ones(len(names))
+            natural_values = {
+                name: float(beta_values[name]) for name in case.parameter_names
+            }
+            for index, (sigma_name, phi_name) in enumerate(
+                zip(sigma_names, phi_names), start=len(case.parameter_names)
+            ):
+                phi_value = float(beta_values[phi_name])
+                natural_values[sigma_name] = float(np.logaddexp(0.0, phi_value))
+                transform[index] = 1.0 / (1.0 + np.exp(-phi_value))
+            covariance = (
+                transform[:, None] * covariance_internal * transform[None, :]
+            )
+        else:
+            natural_values = {name: float(beta_values[name]) for name in names}
+            covariance = covariance_internal
         return BackendResult(
             backend="biogeme",
             available=True,
-            total_s=time.perf_counter() - total_start,
+            total_s=estimation_covariance_total(estimate_s, covariance_s),
             estimate_s=estimate_s,
             covariance_s=covariance_s,
             loglike=float(estimates.final_log_likelihood),
-            params={name: float(beta_values[name]) for name in names},
-            covariance=covariance_to_array(covariance_obj, names),
+            params=natural_values,
+            covariance=covariance,
         )
     except Exception as exc:
         return BackendResult("biogeme", False, message=f"{type(exc).__name__}: {exc}")
+
+
+def run_apollo(case: MixedCase, n_draws: int, timeout: float) -> BackendResult:
+    rscript = shutil.which("Rscript")
+    if rscript is None:
+        return BackendResult("apollo", False, message="Rscript not found.")
+    if not APOLLO_MIXED_SCRIPT.exists():
+        return BackendResult("apollo", False, message=f"Missing Apollo script: {APOLLO_MIXED_SCRIPT}")
+    with tempfile.TemporaryDirectory(prefix=f"torchdcm_apollo_real_mixl_{case.case}_") as tmp:
+        tmp_path = Path(tmp)
+        data_path = tmp_path / "data.csv"
+        spec_path = tmp_path / "spec.json"
+        output_path = tmp_path / "apollo_result.json"
+        df, spec = apollo_inputs(case, n_draws)
+        df.to_csv(data_path, index=False)
+        spec_path.write_text(json.dumps(spec, indent=2), encoding="utf-8")
+        command = [
+            rscript,
+            str(APOLLO_MIXED_SCRIPT),
+            "--data",
+            str(data_path),
+            "--spec",
+            str(spec_path),
+            "--output",
+            str(output_path),
+        ]
+        start = time.perf_counter()
+        try:
+            proc = subprocess.run(
+                command,
+                text=True,
+                capture_output=True,
+                env=r_env(),
+                timeout=timeout,
+            )
+        except subprocess.TimeoutExpired:
+            return BackendResult(
+                "apollo",
+                False,
+                total_s=timeout,
+                message=f"Apollo exceeded {timeout:.0f}s timeout.",
+            )
+        wall_s = time.perf_counter() - start
+        if proc.returncode != 0 or not output_path.exists():
+            return BackendResult(
+                "apollo",
+                False,
+                total_s=wall_s,
+                message=(proc.stderr or proc.stdout).strip(),
+            )
+        result = json.loads(output_path.read_text(encoding="utf-8"))
+        names = [*case.parameter_names, *[f"SIGMA_{name}" for name in case.random_names]]
+        estimate_s = result.get("timing", {}).get("estimate_seconds")
+        covariance_s = result.get("timing", {}).get("covariance_seconds")
+        total_s = estimation_covariance_total(estimate_s, covariance_s)
+        convergence = result.get("convergence") or {}
+        message = (
+            f"apollo_version={result.get('apollo_version')}; "
+            f"apollo_halton_draws={n_draws}; "
+            f"convergence_status={convergence.get('status')}; "
+            f"convergence_message={convergence.get('message')}"
+        )
+        if "unfavorable" in str(convergence.get("message")).lower():
+            return BackendResult(
+                "apollo",
+                False,
+                total_s=total_s,
+                estimate_s=estimate_s,
+                covariance_s=covariance_s,
+                message=message,
+            )
+        covariance = reorder_covariance(
+            result.get("covariance"),
+            result.get("covariance_names"),
+            names,
+        )
+        return BackendResult(
+            "apollo",
+            True,
+            total_s=total_s,
+            estimate_s=estimate_s,
+            covariance_s=covariance_s,
+            loglike=float(result["loglike"]),
+            params={name: float(result["estimates"][name]) for name in names},
+            covariance=covariance,
+            message=message,
+        )
+
+
+def apollo_inputs(case: MixedCase, n_draws: int) -> tuple[pd.DataFrame, dict]:
+    df = case.df.copy()
+    code_by_alt = {alt: index + 1 for index, alt in enumerate(case.alternatives)}
+    if case.choice_col == "choice":
+        df["choice_code"] = df["choice"].map(code_by_alt).astype(int)
+        df = df.drop(columns=["choice"])
+        choice_col = "choice_code"
+    else:
+        choice_col = case.choice_col
+    for column in df.select_dtypes(include=["bool"]).columns:
+        df[column] = df[column].astype(int)
+    parameters = {name: 0.0 for name in case.parameter_names}
+    parameters.update({f"SIGMA_{name}": case.sigma_init for name in case.random_names})
+    utility = {
+        alt: {
+            "code": code_by_alt[alt],
+            "availability": case.availability_columns[alt],
+            "terms": [
+                {"parameter": parameter, "variable": variable}
+                for parameter, variable in case.utility_terms[alt]
+            ],
+        }
+        for alt in case.alternatives
+    }
+    return df, {
+        "model_name": f"apollo_real_mixl_{case.case}_{case.data.n_obs}",
+        "alternatives": case.alternatives,
+        "choice_col": choice_col,
+        "parameters": parameters,
+        "utility": utility,
+        "random_coefficients": case.random_names,
+        "n_draws": n_draws,
+    }
+
+
+def reorder_covariance(covariance, source_names, target_names: list[str]) -> np.ndarray | None:
+    if covariance is None or source_names is None:
+        return None
+    try:
+        matrix = pd.DataFrame(covariance, index=source_names, columns=source_names)
+        ordered = matrix.loc[target_names, target_names].to_numpy(dtype=float)
+    except Exception:
+        return None
+    return ordered if np.isfinite(ordered).all() else None
+
+
+def r_env() -> dict[str, str]:
+    env = os.environ.copy()
+    r_user_lib = str(Path.home() / "R" / "site-library")
+    existing = env.get("R_LIBS_USER")
+    env["R_LIBS_USER"] = r_user_lib if not existing else f"{r_user_lib}:{existing}"
+    return env
 
 
 def replay_probabilities(case: MixedCase, params: dict[str, float], draws: torch.Tensor) -> np.ndarray | None:
@@ -424,6 +627,7 @@ def run_case(case: MixedCase, args) -> dict:
         results.append(BackendResult("torchdcm", False, message=f"{type(exc).__name__}: {exc}"))
     if not args.torch_only:
         results.append(run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter))
+        results.append(run_apollo(case, args.n_draws, args.backend_timeout))
     consistent = compare_results(case, results)
     return payload(case, draws, results, consistent)
 
@@ -439,6 +643,7 @@ def payload(case: MixedCase, draws: torch.Tensor, results: list[BackendResult], 
         "n_alternatives": len(case.alternatives),
         "n_draws": int(draws.shape[0]),
         "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+        "runtime_policy": runtime_policy_metadata(),
         "parameter_names": case.parameter_names,
         "random_coefficients": case.random_names,
         "sigma_init": case.sigma_init,
@@ -522,24 +727,26 @@ def render_markdown(rows: list[dict]) -> str:
     lines = [
         "# Real-data Mixed Logit Battery",
         "",
-        "All cross-estimator rows use CPU for TorchDCM and Biogeme. Each runnable model uses 2-4 independent normal random coefficients selected from observed-variable coefficients first, then ASC terms only when needed.",
+        "All cross-estimator runtimes report estimation plus covariance on one logical CPU. Each runnable model uses 2-4 independent normal random coefficients selected from observed-variable coefficients first, then ASC terms only when needed.",
         "",
-        "| case | N | RC | TorchDCM s | Biogeme s | LL diff | Param diff | Prob diff | Consistent? |",
-        "| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | --- |",
+        "| case | N | RC | TorchDCM s | Biogeme s | Apollo s | LL diff | Param diff | Prob diff | Consistent? |",
+        "| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |",
     ]
     for row in rows:
         if row.get("status") == "skipped":
-            lines.append(f"| {row['case']} | NA | skipped | NA | NA | NA | NA | NA | No |")
+            lines.append(f"| {row['case']} | NA | skipped | NA | NA | NA | NA | NA | NA | No |")
             continue
         torch_row = backend(row, "torchdcm")
         biogeme_row = backend(row, "biogeme")
+        apollo_row = backend(row, "apollo")
         lines.append(
-            "| {case} | {n} | {rc} | {torch_s} | {bio_s} | {ll} | {pd} | {prob} | {ok} |".format(
+            "| {case} | {n} | {rc} | {torch_s} | {bio_s} | {apollo_s} | {ll} | {pd} | {prob} | {ok} |".format(
                 case=row["case"],
                 n=row["n_obs"],
                 rc=", ".join(row["random_coefficients"]),
                 torch_s=fmt(torch_row.get("total_s")),
                 bio_s=fmt(biogeme_row.get("total_s")),
+                apollo_s=fmt(apollo_row.get("total_s")) if apollo_row.get("available") else "NA",
                 ll=sci(biogeme_row.get("ll_diff")),
                 pd=sci(biogeme_row.get("max_param_diff")),
                 prob=sci(biogeme_row.get("max_prob_diff")),
@@ -579,16 +786,19 @@ def main() -> None:
     parser.add_argument("--max-iter", type=int, default=100)
     parser.add_argument("--sigma", type=float, default=1.0)
     parser.add_argument("--seed", type=int, default=20260704)
+    parser.add_argument("--backend-timeout", type=float, default=300.0)
     parser.add_argument("--torch-device", default="cpu")
     parser.add_argument("--torch-only", action="store_true")
     parser.add_argument("--profile", default="full")
+    parser.add_argument("--json-output", type=Path)
+    parser.add_argument("--md-output", type=Path)
     args = parser.parse_args()
     if not args.torch_only and torch.device(args.torch_device).type != "cpu":
         raise ValueError("Cross-estimator mixed-logit batteries must use --torch-device cpu.")
 
     GENERATED.mkdir(parents=True, exist_ok=True)
-    json_path = GENERATED / f"mixed_real_battery_{args.profile}.json"
-    md_path = GENERATED / f"mixed_real_battery_{args.profile}.md"
+    json_path = args.json_output or GENERATED / f"mixed_real_battery_{args.profile}.json"
+    md_path = args.md_output or GENERATED / f"mixed_real_battery_{args.profile}.md"
     rows = []
     for case_or_skip in build_cases(args.datasets, args.n_obs, args.sigma):
         if isinstance(case_or_skip, dict):
@@ -602,7 +812,8 @@ def main() -> None:
         rows.append(row)
         print(
             f"{row['case']}: torch={fmt(backend(row, 'torchdcm').get('total_s'))} "
-            f"biogeme={fmt(backend(row, 'biogeme').get('total_s'))} consistent={row['consistent']}",
+            f"biogeme={fmt(backend(row, 'biogeme').get('total_s'))} "
+            f"apollo={fmt(backend(row, 'apollo').get('total_s'))} consistent={row['consistent']}",
             flush=True,
         )
         json_path.write_text(json.dumps(rows, indent=2), encoding="utf-8")

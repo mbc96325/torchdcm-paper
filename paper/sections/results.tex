@@ -46,17 +46,24 @@ These synthetic experiments complement the public-data estimator comparisons by 
 
 \input{tables/generated_mnl}
 
-Table~\ref{tab:generated_mnl} extends the synthetic benchmark from TorchDCM-only scaling to full-estimation cross-estimator comparisons.
+Table~\ref{tab:generated_mnl} reports the synthetic MNL full-estimation comparisons.
 All rows use generated MNL data, shared zero initial values, and aligned generic long-format specifications for SciPy, Biogeme, Apollo, \texttt{mlogit}, \texttt{gmnl}, and \texttt{xlogit}.
 The five cases vary one design dimension at a time: baseline scale, larger $N$, larger $J$, larger $K$, and high feature correlation $\rho$.
 All successful estimators match TorchDCM under the same likelihood, parameter, and probability tolerances used for the real-data MNL benchmark.
 
-\input{tables/generated_nl_mixl}
+\input{tables/generated_nl}
 
-Table~\ref{tab:generated_nl_mixl} reports the corresponding generated nested-logit and mixed-logit comparisons.
-Nested-logit cases use generated two-nest specifications, while mixed-logit cases use 2--4 independent normal random coefficients with 32 simulation draws.
-As in the real-data NL and MixL tables, consistency is evaluated against Biogeme; Apollo is included as an additional runtime and final-objective diagnostic.
+Table~\ref{tab:generated_nl} reports the synthetic nested-logit comparisons.
+The five rows vary baseline scale, larger $N$, larger $J$, larger $K$, and high feature correlation $\rho$ under generated two-nest specifications.
+As in the real-data NL table, consistency is evaluated against Biogeme; Apollo is included as an additional runtime and final-objective diagnostic.
 The generated nested-logit large-$J$ row highlights a backend-overhead case: Biogeme remains numerically consistent but spends over 1000 seconds in total remote wall-clock time, including the observed JAX/XLA CPU compilation and symbolic-estimation overhead.
+
+\input{tables/generated_mixl}
+
+Table~\ref{tab:generated_mixl} reports the synthetic mixed-logit comparisons.
+The five rows use 2--4 independent normal random coefficients with 32 shared antithetic simulation draws while varying $N$, $J$, $K$, and $\rho$.
+As in the real-data MixL table, consistency is evaluated against Biogeme; Apollo is included as an additional runtime and final-objective diagnostic.
+All reported synthetic mixed-logit rows are consistent with the Biogeme reference under the prespecified tolerances.
 
 \input{tables/generated_stress}
 

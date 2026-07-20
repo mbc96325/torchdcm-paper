@@ -14,6 +14,7 @@ import pandas as pd
 import torch
 from scipy.optimize import minimize
 
+from benchmark_runtime import estimation_covariance_total
 from torchdcm import MultinomialLogit
 
 
@@ -171,15 +172,17 @@ def run_r_generic(backend: str, script: Path, long_df: pd.DataFrame, parameter_n
             return unavailable(backend, (proc.stderr or proc.stdout).strip(), wall)
         payload = json.loads(result_path.read_text(encoding="utf-8"))
         covariance = reorder_covariance(payload["covariance"], payload["covariance_names"], parameter_names)
+        estimate_s = float(payload.get("estimate_seconds", 0.0))
+        covariance_s = float(payload.get("covariance_seconds", 0.0))
         return SimpleNamespace(
             backend=backend,
             available=True,
-            total_s=wall,
-            seconds=wall,
-            estimate_s=float(payload.get("estimate_seconds", 0.0)),
-            estimate_seconds=float(payload.get("estimate_seconds", 0.0)),
-            covariance_s=float(payload.get("covariance_seconds", 0.0)),
-            covariance_seconds=float(payload.get("covariance_seconds", 0.0)),
+            total_s=estimation_covariance_total(estimate_s, covariance_s),
+            seconds=estimation_covariance_total(estimate_s, covariance_s),
+            estimate_s=estimate_s,
+            estimate_seconds=estimate_s,
+            covariance_s=covariance_s,
+            covariance_seconds=covariance_s,
             loglike=float(payload["loglike"]),
             params={name: float(payload["params"][name]) for name in parameter_names},
             covariance=covariance,

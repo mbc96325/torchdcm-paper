@@ -16,6 +16,7 @@ import pandas as pd
 import torch
 from xlogit import MultinomialLogit as XlogitMultinomialLogit
 
+from benchmark_runtime import estimation_covariance_total
 from torchdcm import Beta, ChoiceDataset, MultinomialLogit, UtilitySpec
 from mnl_generic_backends import run_scipy_mle
 
@@ -260,12 +261,14 @@ def run_apollo(dataset: str, df: pd.DataFrame, names: list[str]) -> BackendResul
             payload = json.loads(output_path.read_text(encoding="utf-8"))
             covariance_names = payload.get("covariance_names") or names
             covariance = reorder_covariance(payload.get("covariance"), covariance_names, names)
+            estimate_seconds = float(payload.get("timing", {}).get("estimate_seconds", 0.0))
+            covariance_seconds = float(payload.get("timing", {}).get("covariance_seconds", 0.0))
             return BackendResult(
                 backend="apollo",
                 available=True,
-                seconds=wall,
-                estimate_seconds=float(payload.get("timing", {}).get("estimate_seconds", 0.0)),
-                covariance_seconds=float(payload.get("timing", {}).get("covariance_seconds", 0.0)),
+                seconds=estimation_covariance_total(estimate_seconds, covariance_seconds),
+                estimate_seconds=estimate_seconds,
+                covariance_seconds=covariance_seconds,
                 loglike=float(payload["loglike"]),
                 params={name: float(payload["estimates"][name]) for name in names},
                 covariance=covariance,

@@ -16,6 +16,7 @@ import pandas as pd
 import torch
 from scipy.optimize import minimize
 
+from benchmark_runtime import estimation_covariance_total
 from torchdcm import Beta, ChoiceDataset, MultinomialLogit, UtilitySpec
 from torchdcm.spec.expressions import Expression, Term
 from compare_biogeme import build_case, run_biogeme
@@ -311,12 +312,14 @@ def run_apollo_timed(df, alternatives, names, initial_values) -> BackendResult:
                 message=(proc.stderr or proc.stdout).strip(),
             )
         payload = json.loads(output_path.read_text(encoding="utf-8"))
+        estimate_seconds = payload.get("timing", {}).get("estimate_seconds")
+        covariance_seconds = payload.get("timing", {}).get("covariance_seconds")
         return BackendResult(
             backend="apollo",
             available=True,
-            seconds=seconds,
-            estimate_seconds=payload.get("timing", {}).get("estimate_seconds"),
-            covariance_seconds=payload.get("timing", {}).get("covariance_seconds"),
+            seconds=estimation_covariance_total(estimate_seconds, covariance_seconds),
+            estimate_seconds=estimate_seconds,
+            covariance_seconds=covariance_seconds,
             loglike=float(payload["loglike"]),
             params={key: float(value) for key, value in payload["estimates"].items()},
             covariance=np.asarray(payload["covariance"], dtype=float)

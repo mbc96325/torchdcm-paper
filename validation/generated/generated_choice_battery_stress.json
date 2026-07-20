@@ -1,6 +1,6 @@
 [
   {
-    "case": "stress_mnl_NJK",
+    "case": "stress_mnl_large",
     "family": "MNL",
     "generated": {
       "model": "mnl",
@@ -71,14 +71,49 @@
       "ASC_ALT34",
       "ASC_ALT35"
     ],
-    "consistent": "No",
+    "consistent": "Yes",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
     "backends": [
       {
         "backend": "torchdcm",
         "available": true,
-        "total_s": 6.22420119587332,
-        "estimate_s": 2.9117429237812757,
-        "covariance_s": 3.3124582720920444,
+        "total_s": 6.67065993975848,
+        "estimate_s": 3.119824217632413,
+        "covariance_s": 3.5508357221260667,
         "loglike": -19804.996654548806,
         "ll_diff": 0.0,
         "max_param_diff": 0.0,
@@ -88,9 +123,23 @@
         "message": ""
       },
       {
+        "backend": "scipy_bfgs",
+        "available": true,
+        "total_s": 155.8973712134175,
+        "estimate_s": 152.3169372593984,
+        "covariance_s": 3.5804339540190995,
+        "loglike": -19804.996654546052,
+        "ll_diff": 2.7539499569684267E-9,
+        "max_param_diff": 0.000001477597034907352,
+        "max_prob_diff": 7.221087268138859E-7,
+        "max_cov_diff": 1.0887693481162475E-9,
+        "max_se_diff": 6.790744855322828E-9,
+        "message": "Desired error not necessarily achieved due to precision loss."
+      },
+      {
         "backend": "biogeme",
         "available": false,
-        "total_s": 300.1458602412604,
+        "total_s": 300.11970164068043,
         "estimate_s": null,
         "covariance_s": null,
         "loglike": null,
@@ -104,7 +153,7 @@
       {
         "backend": "apollo",
         "available": false,
-        "total_s": 300.11642093909904,
+        "total_s": 300.1337220799178,
         "estimate_s": null,
         "covariance_s": null,
         "loglike": null,
@@ -114,6 +163,48 @@
         "max_cov_diff": null,
         "max_se_diff": null,
         "message": "apollo exceeded 300s timeout"
+      },
+      {
+        "backend": "mlogit",
+        "available": true,
+        "total_s": 41.971000000000004,
+        "estimate_s": 41.97,
+        "covariance_s": 0.0010000000000047748,
+        "loglike": -19804.99665454624,
+        "ll_diff": 2.5647750589996576E-9,
+        "max_param_diff": 0.0000014758534946368584,
+        "max_prob_diff": 7.125809409203043E-7,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": ""
+      },
+      {
+        "backend": "gmnl",
+        "available": false,
+        "total_s": 300.11807551281527,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": "gmnl exceeded 300s timeout"
+      },
+      {
+        "backend": "xlogit",
+        "available": true,
+        "total_s": 135.71899590222165,
+        "estimate_s": 135.7189945220016,
+        "covariance_s": 0.0000013802200555801392,
+        "loglike": -19804.996654550665,
+        "ll_diff": -1.8590071704238653E-9,
+        "max_param_diff": 0.000002210399675434127,
+        "max_prob_diff": 0.000001351910193347905,
+        "max_cov_diff": null,
+        "max_se_diff": null,
+        "message": ""
       }
     ],
     "true_parameters": {
@@ -250,14 +341,49 @@
       "LAMBDA_GROUP_A",
       "LAMBDA_GROUP_B"
     ],
-    "consistent": "Timeout",
+    "consistent": "No",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
     "backends": [
       {
         "backend": "torchdcm",
         "available": true,
-        "total_s": 2.6783014638349414,
-        "estimate_s": 1.6505765900947154,
-        "covariance_s": 1.027724873740226,
+        "total_s": 4.292719313874841,
+        "estimate_s": 2.6809168038889766,
+        "covariance_s": 1.6118025099858642,
         "loglike": -29526.485768916304,
         "ll_diff": 0.0,
         "max_param_diff": 0.0,
@@ -269,7 +395,7 @@
       {
         "backend": "biogeme",
         "available": false,
-        "total_s": 300.1130848741159,
+        "total_s": 300.1219842210412,
         "estimate_s": null,
         "covariance_s": null,
         "loglike": null,
@@ -283,13 +409,13 @@
       {
         "backend": "apollo",
         "available": true,
-        "total_s": 57.06554941320792,
-        "estimate_s": 27.443,
+        "total_s": 27.826,
+        "estimate_s": 27.817,
         "covariance_s": 0.009,
         "loglike": -51417.7562,
         "ll_diff": -21891.2704310837,
-        "max_param_diff": 0.9325697009293732,
-        "max_prob_diff": 0.6389640380350025,
+        "max_param_diff": 0.9325697009293703,
+        "max_prob_diff": 0.6389640380350026,
         "max_cov_diff": null,
         "max_se_diff": null,
         "message": "apollo_version=0.3.8"
@@ -308,13 +434,48 @@
   {
     "case": "stress_mixl_NJK",
     "dataset_id": "stress_mixl_NJK",
-    "source": "synthetic N=20000 J=8 K=8 rho=0.5",
+    "source": "synthetic N=40000 J=20 K=12 rho=0.5",
     "model_name": "Generated mixed logit",
-    "n_obs": 20000,
-    "n_rows": 160000,
-    "n_alternatives": 8,
+    "n_obs": 40000,
+    "n_rows": 800000,
+    "n_alternatives": 20,
     "n_draws": 32,
     "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
     "parameter_names": [
       "B_X1",
       "B_X2",
@@ -324,19 +485,37 @@
       "B_X6",
       "B_X7",
       "B_X8",
+      "B_X9",
+      "B_X10",
+      "B_X11",
+      "B_X12",
       "ASC_ALT2",
       "ASC_ALT3",
       "ASC_ALT4",
       "ASC_ALT5",
       "ASC_ALT6",
       "ASC_ALT7",
-      "ASC_ALT8"
+      "ASC_ALT8",
+      "ASC_ALT9",
+      "ASC_ALT10",
+      "ASC_ALT11",
+      "ASC_ALT12",
+      "ASC_ALT13",
+      "ASC_ALT14",
+      "ASC_ALT15",
+      "ASC_ALT16",
+      "ASC_ALT17",
+      "ASC_ALT18",
+      "ASC_ALT19",
+      "ASC_ALT20"
     ],
     "random_coefficients": [
       "B_X1",
       "B_X2",
       "B_X3",
-      "B_X4"
+      "B_X4",
+      "B_X5",
+      "B_X6"
     ],
     "sigma_init": 1.0,
     "specification": {
@@ -348,7 +527,19 @@
         "ALT5",
         "ALT6",
         "ALT7",
-        "ALT8"
+        "ALT8",
+        "ALT9",
+        "ALT10",
+        "ALT11",
+        "ALT12",
+        "ALT13",
+        "ALT14",
+        "ALT15",
+        "ALT16",
+        "ALT17",
+        "ALT18",
+        "ALT19",
+        "ALT20"
       ],
       "availability": {
         "ALT1": "avail_alt1",
@@ -358,7 +549,19 @@
         "ALT5": "avail_alt5",
         "ALT6": "avail_alt6",
         "ALT7": "avail_alt7",
-        "ALT8": "avail_alt8"
+        "ALT8": "avail_alt8",
+        "ALT9": "avail_alt9",
+        "ALT10": "avail_alt10",
+        "ALT11": "avail_alt11",
+        "ALT12": "avail_alt12",
+        "ALT13": "avail_alt13",
+        "ALT14": "avail_alt14",
+        "ALT15": "avail_alt15",
+        "ALT16": "avail_alt16",
+        "ALT17": "avail_alt17",
+        "ALT18": "avail_alt18",
+        "ALT19": "avail_alt19",
+        "ALT20": "avail_alt20"
       },
       "utilities": {
         "ALT1": [
@@ -385,12 +588,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt1",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt1",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -400,6 +603,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt1",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt1",
             "random": false
           }
         ],
@@ -432,12 +655,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt2",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt2",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -447,6 +670,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt2",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt2",
             "random": false
           }
         ],
@@ -479,12 +722,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt3",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt3",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -494,6 +737,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt3",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt3",
             "random": false
           }
         ],
@@ -526,12 +789,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt4",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt4",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -541,6 +804,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt4",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt4",
             "random": false
           }
         ],
@@ -573,12 +856,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt5",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt5",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -588,6 +871,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt5",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt5",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt5",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt5",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt5",
             "random": false
           }
         ],
@@ -620,12 +923,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt6",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt6",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -635,6 +938,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt6",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt6",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt6",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt6",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt6",
             "random": false
           }
         ],
@@ -667,12 +990,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt7",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt7",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -682,6 +1005,26 @@
           {
             "parameter": "B_X8",
             "variable": "x8_alt7",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt7",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt7",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt7",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt7",
             "random": false
           }
         ],
@@ -714,12 +1057,12 @@
           {
             "parameter": "B_X5",
             "variable": "x5_alt8",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X6",
             "variable": "x6_alt8",
-            "random": false
+            "random": true
           },
           {
             "parameter": "B_X7",
@@ -730,82 +1073,904 @@
             "parameter": "B_X8",
             "variable": "x8_alt8",
             "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt8",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt8",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt8",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt8",
+            "random": false
+          }
+        ],
+        "ALT9": [
+          {
+            "parameter": "ASC_ALT9",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt9",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt9",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt9",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt9",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt9",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt9",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt9",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt9",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt9",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt9",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt9",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt9",
+            "random": false
+          }
+        ],
+        "ALT10": [
+          {
+            "parameter": "ASC_ALT10",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt10",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt10",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt10",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt10",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt10",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt10",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt10",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt10",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt10",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt10",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt10",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt10",
+            "random": false
+          }
+        ],
+        "ALT11": [
+          {
+            "parameter": "ASC_ALT11",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt11",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt11",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt11",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt11",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt11",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt11",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt11",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt11",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt11",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt11",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt11",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt11",
+            "random": false
+          }
+        ],
+        "ALT12": [
+          {
+            "parameter": "ASC_ALT12",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt12",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt12",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt12",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt12",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt12",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt12",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt12",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt12",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt12",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt12",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt12",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt12",
+            "random": false
+          }
+        ],
+        "ALT13": [
+          {
+            "parameter": "ASC_ALT13",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt13",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt13",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt13",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt13",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt13",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt13",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt13",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt13",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt13",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt13",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt13",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt13",
+            "random": false
+          }
+        ],
+        "ALT14": [
+          {
+            "parameter": "ASC_ALT14",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt14",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt14",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt14",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt14",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt14",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt14",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt14",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt14",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt14",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt14",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt14",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt14",
+            "random": false
+          }
+        ],
+        "ALT15": [
+          {
+            "parameter": "ASC_ALT15",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt15",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt15",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt15",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt15",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt15",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt15",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt15",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt15",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt15",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt15",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt15",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt15",
+            "random": false
+          }
+        ],
+        "ALT16": [
+          {
+            "parameter": "ASC_ALT16",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt16",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt16",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt16",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt16",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt16",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt16",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt16",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt16",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt16",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt16",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt16",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt16",
+            "random": false
+          }
+        ],
+        "ALT17": [
+          {
+            "parameter": "ASC_ALT17",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt17",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt17",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt17",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt17",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt17",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt17",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt17",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt17",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt17",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt17",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt17",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt17",
+            "random": false
+          }
+        ],
+        "ALT18": [
+          {
+            "parameter": "ASC_ALT18",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt18",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt18",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt18",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt18",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt18",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt18",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt18",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt18",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt18",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt18",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt18",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt18",
+            "random": false
+          }
+        ],
+        "ALT19": [
+          {
+            "parameter": "ASC_ALT19",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt19",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt19",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt19",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt19",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt19",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt19",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt19",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt19",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt19",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt19",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt19",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt19",
+            "random": false
+          }
+        ],
+        "ALT20": [
+          {
+            "parameter": "ASC_ALT20",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_X1",
+            "variable": "x1_alt20",
+            "random": true
+          },
+          {
+            "parameter": "B_X2",
+            "variable": "x2_alt20",
+            "random": true
+          },
+          {
+            "parameter": "B_X3",
+            "variable": "x3_alt20",
+            "random": true
+          },
+          {
+            "parameter": "B_X4",
+            "variable": "x4_alt20",
+            "random": true
+          },
+          {
+            "parameter": "B_X5",
+            "variable": "x5_alt20",
+            "random": true
+          },
+          {
+            "parameter": "B_X6",
+            "variable": "x6_alt20",
+            "random": true
+          },
+          {
+            "parameter": "B_X7",
+            "variable": "x7_alt20",
+            "random": false
+          },
+          {
+            "parameter": "B_X8",
+            "variable": "x8_alt20",
+            "random": false
+          },
+          {
+            "parameter": "B_X9",
+            "variable": "x9_alt20",
+            "random": false
+          },
+          {
+            "parameter": "B_X10",
+            "variable": "x10_alt20",
+            "random": false
+          },
+          {
+            "parameter": "B_X11",
+            "variable": "x11_alt20",
+            "random": false
+          },
+          {
+            "parameter": "B_X12",
+            "variable": "x12_alt20",
+            "random": false
           }
         ]
       }
     },
-    "consistent": "Timeout",
+    "consistent": "--",
     "backends": [
       {
         "backend": "torchdcm",
         "available": true,
-        "total_s": 2.560266686603427,
-        "estimate_s": 1.8508433303795755,
-        "covariance_s": 0.7094233562238514,
-        "loglike": -12798.636273666385,
-        "ll_diff": 0.0,
-        "max_param_diff": 0.0,
-        "max_prob_diff": 0.0,
+        "total_s": 100.5101844468154,
+        "estimate_s": 76.70822990406305,
+        "covariance_s": 23.801954542752355,
+        "loglike": -23804.183713735874,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
         "params": {
-          "B_X1": -0.25795811303469807,
-          "B_X2": -0.37987064980853114,
-          "B_X3": -0.45765349593520993,
-          "B_X4": -0.6248349053252573,
-          "B_X5": -0.7087796068179949,
-          "B_X6": -0.8395478191114524,
-          "B_X7": -0.9883848172797955,
-          "B_X8": -1.091710403423216,
-          "ASC_ALT2": -0.12702645161291265,
-          "ASC_ALT3": -0.2000207695275364,
-          "ASC_ALT4": -0.3231237267648156,
-          "ASC_ALT5": -0.3406595005070002,
-          "ASC_ALT6": -0.5301768308550296,
-          "ASC_ALT7": -0.5816447944468032,
-          "ASC_ALT8": -0.6387594030578075,
-          "SIGMA_B_X1": 4.5222383641767405e-06,
-          "SIGMA_B_X2": 4.219413981191012e-06,
-          "SIGMA_B_X3": 4.920569174529668e-06,
-          "SIGMA_B_X4": 6.108290979138288e-06
+          "B_X1": -0.25786634963205296,
+          "B_X2": -0.32465742398101927,
+          "B_X3": -0.40687806629775247,
+          "B_X4": -0.5069517851266641,
+          "B_X5": -0.5485378202963316,
+          "B_X6": -0.667388856563394,
+          "B_X7": -0.7425471350584686,
+          "B_X8": -0.8054387358372,
+          "B_X9": -0.883398948029814,
+          "B_X10": -0.9803579888246718,
+          "B_X11": -1.0330201633911726,
+          "B_X12": -1.0976920965650179,
+          "ASC_ALT2": -0.03717789661264664,
+          "ASC_ALT3": -0.14289166715504528,
+          "ASC_ALT4": -0.036656977824823224,
+          "ASC_ALT5": -0.07809748010698941,
+          "ASC_ALT6": -0.19773919013259142,
+          "ASC_ALT7": -0.1823993749923991,
+          "ASC_ALT8": -0.17771722428432454,
+          "ASC_ALT9": -0.29429986592216967,
+          "ASC_ALT10": -0.3022125245750249,
+          "ASC_ALT11": -0.41842978602154957,
+          "ASC_ALT12": -0.3970226929027842,
+          "ASC_ALT13": -0.4466404456155964,
+          "ASC_ALT14": -0.48730757421975773,
+          "ASC_ALT15": -0.5137923538749546,
+          "ASC_ALT16": -0.5780309843339027,
+          "ASC_ALT17": -0.5593082634270081,
+          "ASC_ALT18": -0.5757995517224266,
+          "ASC_ALT19": -0.6491227357559822,
+          "ASC_ALT20": -0.7200593163179674,
+          "SIGMA_B_X1": 0.16543275684209782,
+          "SIGMA_B_X2": 0.04419211944845546,
+          "SIGMA_B_X3": 0.2371498433348195,
+          "SIGMA_B_X4": 0.23897236757639034,
+          "SIGMA_B_X5": 1.5905418047260711E-9,
+          "SIGMA_B_X6": 0.12260088618444934
         },
         "message": ""
       },
       {
         "backend": "biogeme",
-        "available": true,
-        "total_s": 134.01075144531205,
-        "estimate_s": 134.01064168661833,
-        "covariance_s": 0.0001033279113471508,
-        "loglike": -12798.636299037767,
-        "ll_diff": -2.5371382434968837e-05,
-        "max_param_diff": 0.001780538591785032,
-        "max_prob_diff": 3.2539064956149666e-05,
-        "params": {
-          "B_X1": -0.25795178963328746,
-          "B_X2": -0.37986166016867123,
-          "B_X3": -0.457644637160874,
-          "B_X4": -0.6247932251163616,
-          "B_X5": -0.7087638540247734,
-          "B_X6": -0.8395286042474018,
-          "B_X7": -0.9883641581937538,
-          "B_X8": -1.0916863933932548,
-          "ASC_ALT2": -0.12702596023559176,
-          "ASC_ALT3": -0.20001510594345,
-          "ASC_ALT4": -0.32311511760397366,
-          "ASC_ALT5": -0.3406532432367397,
-          "ASC_ALT6": -0.5301632178761425,
-          "ASC_ALT7": -0.5816338639428681,
-          "ASC_ALT8": -0.6387455568034945,
-          "SIGMA_B_X1": 0.0006993229064507617,
-          "SIGMA_B_X2": 0.0,
-          "SIGMA_B_X3": 0.00020260195952748173,
-          "SIGMA_B_X4": 0.0017866468827641702
-        },
-        "message": ""
+        "available": false,
+        "total_s": 300.1078834487125,
+        "estimate_s": null,
+        "covariance_s": null,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "params": null,
+        "message": "biogeme exceeded 300s timeout"
       },
       {
         "backend": "apollo",
         "available": false,
-        "total_s": 300.11489878967404,
+        "total_s": 300.1048280261457,
         "estimate_s": null,
         "covariance_s": null,
         "loglike": null,
@@ -818,11 +1983,11 @@
     ],
     "generated": {
       "model": "mixl",
-      "N": 20000,
-      "J": 8,
-      "K": 8,
+      "N": 40000,
+      "J": 20,
+      "K": 12,
       "rho": 0.5,
-      "random_coefficients": 4
+      "random_coefficients": 6
     },
     "family": "Mixed logit"
   }

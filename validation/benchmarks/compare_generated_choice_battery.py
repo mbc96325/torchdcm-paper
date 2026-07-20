@@ -10,10 +10,19 @@ import subprocess
 import tempfile
 import time
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Callable
+
+from benchmark_runtime import (
+    configure_single_thread_cpu,
+    estimation_covariance_total,
+    runtime_policy_metadata,
+)
+
+if __name__ == "__main__":
+    configure_single_thread_cpu(configure_torch=True)
 
 import numpy as np
 import pandas as pd
@@ -39,6 +48,15 @@ APOLLO_MNL_SCRIPT = ROOT / "benchmarks" / "apollo" / "R" / "run_generic_mnl.R"
 APOLLO_MIXED_SCRIPT = ROOT / "benchmarks" / "apollo" / "R" / "run_generic_mixed_estimate.R"
 warnings.filterwarnings("ignore", category=PerformanceWarning)
 
+NL_TRUE_DISSIMILARITY = {"GROUP_A": 0.65, "GROUP_B": 0.80}
+NL_LL_ABS_TOL = 1e-4
+NL_LL_REL_TOL = 1e-7
+NL_PARAM_TOL = 2e-3
+NL_PROB_TOL = 5e-4
+MIXL_SIGMA_MAX = 0.40
+MIXL_SIGMA_MIN = 0.20
+MIXL_SIGMA_INIT = 0.30
+
 
 @dataclass(frozen=True)
 class GeneratedSpec:
@@ -63,6 +81,8 @@ class MNLCase:
     parameter_names: list[str]
     initial_values: dict[str, float]
     true_parameters: dict[str, float]
+    systematic_utility: np.ndarray
+    feature_values: np.ndarray
     meta: GeneratedSpec
 
 
@@ -78,6 +98,9 @@ class BackendResult:
     covariance: np.ndarray | None = None
     probabilities: np.ndarray | None = None
     message: str = ""
+    closure_evals: int | None = None
+    optimizer_iterations: int | None = None
+    runtime_repeats_s: list[float | None] | None = None
 
 
 def generated_specs(profile: str) -> list[GeneratedSpec]:
@@ -89,10 +112,96 @@ def generated_specs(profile: str) -> list[GeneratedSpec]:
         ]
     if profile == "stress":
         return [
-            GeneratedSpec("stress_mnl_NJK", "mnl", 50000, 35, 20, 0.5),
+            GeneratedSpec("stress_mnl_large", "mnl", 50000, 35, 20, 0.5),
             GeneratedSpec("stress_nl_NJK", "nl", 50000, 20, 12, 0.5),
-            GeneratedSpec("stress_mixl_NJK", "mixl", 20000, 8, 8, 0.5, random_coefficients=4),
+            GeneratedSpec("stress_mixl_NJK", "mixl", 40000, 20, 12, 0.5, random_coefficients=6),
         ]
+    if profile == "stress_additional":
+        return [
+            GeneratedSpec("stress_mnl_small", "mnl", 30000, 20, 12, 0.5),
+            GeneratedSpec("stress_mnl_medium", "mnl", 40000, 28, 16, 0.5),
+        ]
+    if profile == "controlled":
+        return [
+            GeneratedSpec("N_1000", "mnl", 1000, 4, 6, 0.3),
+            GeneratedSpec("N_10000", "mnl", 10000, 4, 6, 0.3),
+            GeneratedSpec("N_100000", "mnl", 100000, 4, 6, 0.3),
+            GeneratedSpec("J_3", "mnl", 20000, 3, 6, 0.3),
+            GeneratedSpec("J_10", "mnl", 20000, 10, 6, 0.3),
+            GeneratedSpec("J_20", "mnl", 20000, 20, 6, 0.3),
+            GeneratedSpec("K_4", "mnl", 20000, 5, 4, 0.3),
+            GeneratedSpec("K_12", "mnl", 20000, 5, 12, 0.3),
+            GeneratedSpec("K_32", "mnl", 20000, 5, 32, 0.3),
+            GeneratedSpec("rho_0p0", "mnl", 20000, 5, 12, 0.0),
+            GeneratedSpec("rho_0p5", "mnl", 20000, 5, 12, 0.5),
+            GeneratedSpec("rho_0p98", "mnl", 20000, 5, 12, 0.98),
+        ]
+    if profile == "controlled_additional":
+        return [
+            GeneratedSpec("J_10", "mnl", 20000, 10, 6, 0.3),
+            GeneratedSpec("K_12", "mnl", 20000, 5, 12, 0.3),
+            GeneratedSpec("rho_0p5", "mnl", 20000, 5, 12, 0.5),
+        ]
+    if profile == "table4":
+        controlled_grid = [
+            ("N_1000", 1000, 4, 6, 0.3),
+            ("N_10000", 10000, 4, 6, 0.3),
+            ("N_100000", 100000, 4, 6, 0.3),
+            ("C_3", 20000, 3, 6, 0.3),
+            ("C_10", 20000, 10, 6, 0.3),
+            ("C_20", 20000, 20, 6, 0.3),
+            ("K_4", 20000, 5, 4, 0.3),
+            ("K_12", 20000, 5, 12, 0.3),
+            ("K_32", 20000, 5, 32, 0.3),
+            ("rho_0p0", 20000, 5, 12, 0.0),
+            ("rho_0p5", 20000, 5, 12, 0.5),
+            ("rho_0p98", 20000, 5, 12, 0.98),
+        ]
+        rows = [
+            GeneratedSpec(f"nl_{case}", "nl", n_obs, n_alt, n_var, rho)
+            for case, n_obs, n_alt, n_var, rho in controlled_grid
+        ]
+        rows.extend(
+            [
+                GeneratedSpec("nl_stress_small", "nl", 30000, 12, 8, 0.5),
+                GeneratedSpec("nl_stress_medium", "nl", 40000, 16, 10, 0.5),
+                GeneratedSpec("stress_nl_NJK", "nl", 50000, 20, 12, 0.5),
+            ]
+        )
+        mixed_random_counts = {
+            "N_1000": 3,
+            "N_10000": 3,
+            "N_100000": 3,
+            "C_3": 3,
+            "C_10": 3,
+            "C_20": 3,
+            "K_4": 2,
+            "K_12": 6,
+            "K_32": 16,
+            "rho_0p0": 6,
+            "rho_0p5": 6,
+            "rho_0p98": 6,
+        }
+        rows.extend(
+            GeneratedSpec(
+                f"mixl_{case}",
+                "mixl",
+                n_obs,
+                n_alt,
+                n_var,
+                rho,
+                random_coefficients=mixed_random_counts[case],
+            )
+            for case, n_obs, n_alt, n_var, rho in controlled_grid
+        )
+        rows.extend(
+            [
+                GeneratedSpec("mixl_stress_small", "mixl", 20000, 12, 8, 0.5, random_coefficients=4),
+                GeneratedSpec("mixl_stress_medium", "mixl", 30000, 16, 10, 0.5, random_coefficients=5),
+                GeneratedSpec("stress_mixl_NJK", "mixl", 40000, 20, 12, 0.5, random_coefficients=6),
+            ]
+        )
+        return rows
     return [
         GeneratedSpec("gen_mnl_base", "mnl", 1000, 3, 4, 0.0),
         GeneratedSpec("gen_mnl_N", "mnl", 10000, 3, 4, 0.0),
@@ -170,6 +279,8 @@ def build_mnl_case(meta: GeneratedSpec, seed: int) -> MNLCase:
         parameter_names=parameter_names,
         initial_values={name: 0.0 for name in parameter_names},
         true_parameters=true_parameters,
+        systematic_utility=utility,
+        feature_values=x,
         meta=meta,
     )
 
@@ -193,6 +304,39 @@ def sample_choices(rng: np.random.Generator, probabilities: np.ndarray) -> np.nd
     return (draws > thresholds).sum(axis=1)
 
 
+def nested_choice_probabilities(
+    utility: np.ndarray,
+    nest_indices: list[list[int]],
+    dissimilarities: list[float],
+) -> np.ndarray:
+    """Evaluate two-level nested-logit probabilities with a unit root scale."""
+    if len(nest_indices) != len(dissimilarities):
+        raise ValueError("Each nest must have one dissimilarity parameter.")
+    if sorted(index for nest in nest_indices for index in nest) != list(range(utility.shape[1])):
+        raise ValueError("Nested-logit nests must partition all alternatives exactly once.")
+
+    nest_log_sums: list[np.ndarray] = []
+    for indices, dissimilarity in zip(nest_indices, dissimilarities):
+        if not 0.0 < dissimilarity <= 1.0:
+            raise ValueError("Nested-logit dissimilarities must lie in (0, 1].")
+        scaled = utility[:, indices] / dissimilarity
+        nest_log_sums.append(np.logaddexp.reduce(scaled, axis=1))
+
+    log_nest_weights = np.column_stack(
+        [dissimilarity * log_sum for dissimilarity, log_sum in zip(dissimilarities, nest_log_sums)]
+    )
+    log_denominator = np.logaddexp.reduce(log_nest_weights, axis=1)
+    log_probabilities = np.full_like(utility, -np.inf)
+    for indices, dissimilarity, log_sum in zip(nest_indices, dissimilarities, nest_log_sums):
+        log_probabilities[:, indices] = (
+            utility[:, indices] / dissimilarity
+            + (dissimilarity - 1.0) * log_sum[:, None]
+            - log_denominator[:, None]
+        )
+    probabilities = np.exp(log_probabilities)
+    return probabilities / probabilities.sum(axis=1, keepdims=True)
+
+
 def stable_case_offset(case: str) -> int:
     return sum((index + 1) * ord(char) for index, char in enumerate(case))
 
@@ -201,15 +345,25 @@ def run_mnl_torch(case: MNLCase, max_iter: int) -> BackendResult:
     model = MultinomialLogit(case.spec, max_iter=max_iter)
     data = case.data.to(device=model.device, dtype=model.dtype)
     compiled = model.compile(data)
-    params = torch.as_tensor([case.initial_values[name] for name in compiled.free_names], dtype=torch.float64).requires_grad_(True)
+    initial = torch.as_tensor([case.initial_values[name] for name in compiled.free_names], dtype=torch.float64)
+
+    # Exclude one-time tensor-kernel and autograd initialization from the
+    # optimizer timing while preserving the same zero starting values.
+    warmup_params = initial.clone().requires_grad_(True)
+    (-model.loglike(warmup_params, data, compiled)).backward()
+
+    params = initial.clone().requires_grad_(True)
     optimizer = torch.optim.LBFGS(
         [params],
         max_iter=max_iter,
         tolerance_grad=model.tolerance_grad,
         line_search_fn=model.line_search_fn,
     )
+    closure_evals = 0
 
     def closure():
+        nonlocal closure_evals
+        closure_evals += 1
         optimizer.zero_grad(set_to_none=True)
         loss = -model.loglike(params, data, compiled)
         loss.backward()
@@ -224,6 +378,7 @@ def run_mnl_torch(case: MNLCase, max_iter: int) -> BackendResult:
     hessian = torch.autograd.functional.hessian(lambda p: model.loglike(p, data, compiled), final)
     covariance = torch.linalg.pinv(-hessian.detach(), hermitian=True).cpu().numpy()
     covariance_s = time.perf_counter() - covariance_start
+    optimizer_state = optimizer.state.get(params, {})
     return BackendResult(
         "torchdcm",
         True,
@@ -234,6 +389,8 @@ def run_mnl_torch(case: MNLCase, max_iter: int) -> BackendResult:
         params={name: float(final[i].detach().cpu()) for i, name in enumerate(compiled.free_names)},
         covariance=covariance,
         probabilities=model.predict_proba(data, final, compiled).detach().cpu().numpy(),
+        closure_evals=closure_evals,
+        optimizer_iterations=int(optimizer_state.get("n_iter", 0)),
     )
 
 
@@ -281,7 +438,7 @@ def run_mnl_biogeme(case: MNLCase) -> BackendResult:
         return BackendResult(
             "biogeme",
             True,
-            total_s=time.perf_counter() - total_start,
+            total_s=estimation_covariance_total(estimate_s, covariance_s),
             estimate_s=estimate_s,
             covariance_s=covariance_s,
             loglike=float(estimates.final_log_likelihood),
@@ -313,12 +470,14 @@ def run_mnl_apollo(case: MNLCase) -> BackendResult:
         if proc.returncode != 0:
             return BackendResult("apollo", False, total_s=total_s, message=(proc.stderr or proc.stdout).strip())
         payload = json.loads(output_path.read_text(encoding="utf-8"))
+        estimate_s = payload.get("timing", {}).get("estimate_seconds")
+        covariance_s = payload.get("timing", {}).get("covariance_seconds")
         return BackendResult(
             "apollo",
             True,
-            total_s=total_s,
-            estimate_s=payload.get("timing", {}).get("estimate_seconds"),
-            covariance_s=payload.get("timing", {}).get("covariance_seconds"),
+            total_s=estimation_covariance_total(estimate_s, covariance_s),
+            estimate_s=estimate_s,
+            covariance_s=covariance_s,
             loglike=float(payload["loglike"]),
             params={name: float(payload["estimates"][name]) for name in case.parameter_names},
             covariance=reorder_covariance_or_none(payload.get("covariance"), payload.get("covariance_names"), case.parameter_names),
@@ -362,18 +521,39 @@ def mnl_design_long(case: MNLCase) -> pd.DataFrame:
     )
 
 
-def build_nested_case(mnl: MNLCase) -> nested_real.NestedCase:
-    long_df = mnl_design_long(mnl)
-    midpoint = max(1, len(mnl.alternatives) // 2)
+def build_nested_case(mnl: MNLCase, seed: int) -> nested_real.NestedCase:
+    midpoint = max(2, len(mnl.alternatives) // 2)
+    group_a = mnl.alternatives[:midpoint]
+    group_b = mnl.alternatives[midpoint:]
     nests = {
-        "GROUP_A": nested_real.NestSpec(mnl.alternatives[:midpoint], init=0.8),
-        "GROUP_B": nested_real.NestSpec(mnl.alternatives[midpoint:], init=0.8),
+        "GROUP_A": nested_real.NestSpec(group_a, init=1.0 if len(group_a) == 1 else 0.8, fixed=len(group_a) == 1),
+        "GROUP_B": nested_real.NestSpec(group_b, init=1.0 if len(group_b) == 1 else 0.8, fixed=len(group_b) == 1),
     }
+    alternative_index = {alternative: index for index, alternative in enumerate(mnl.alternatives)}
+    nest_indices = [[alternative_index[alternative] for alternative in nest.alternatives] for nest in nests.values()]
+    true_dissimilarities = [
+        1.0 if nest.fixed else NL_TRUE_DISSIMILARITY[nest_name]
+        for nest_name, nest in nests.items()
+    ]
+    probabilities = nested_choice_probabilities(mnl.systematic_utility, nest_indices, true_dissimilarities)
+    rng = np.random.default_rng(seed + stable_case_offset(mnl.case) + 10_000_019)
+    choices = sample_choices(rng, probabilities)
+    nested_df = mnl.df.copy()
+    nested_df["choice"] = [mnl.alternatives[index] for index in choices]
+    nested_mnl = replace(mnl, df=nested_df)
+    long_df = mnl_design_long(nested_mnl)
+    dgp_text = ", ".join(
+        f"{nest_name}={dissimilarity:.2f}"
+        for nest_name, dissimilarity in zip(nests, true_dissimilarities)
+    )
     return nested_real.nested_case_from_design_long(
         case=mnl.case,
         data_label=mnl.case,
         model_label="Generated nested logit",
-        source=f"synthetic N={mnl.meta.n_obs} J={mnl.meta.n_alternatives} K={mnl.meta.n_variables} rho={mnl.meta.rho}",
+        source=(
+            f"synthetic NL N={mnl.meta.n_obs} J={mnl.meta.n_alternatives} "
+            f"K={mnl.meta.n_variables} rho={mnl.meta.rho}; {dgp_text}"
+        ),
         long_df=long_df,
         alternatives=mnl.alternatives,
         beta_names=mnl.parameter_names,
@@ -381,7 +561,36 @@ def build_nested_case(mnl: MNLCase) -> nested_real.NestedCase:
     )
 
 
-def build_mixed_case(mnl: MNLCase) -> mixed_real.MixedCase:
+def mixed_true_sigmas(random_names: list[str]) -> dict[str, float]:
+    values = np.linspace(MIXL_SIGMA_MAX, MIXL_SIGMA_MIN, len(random_names))
+    return {name: float(value) for name, value in zip(random_names, values)}
+
+
+def build_mixed_case(mnl: MNLCase, seed: int) -> mixed_real.MixedCase:
+    random_names = beta_names(mnl)[: max(2, min(mnl.meta.random_coefficients, len(beta_names(mnl))))]
+    true_sigmas = mixed_true_sigmas(random_names)
+    random_indices = [beta_names(mnl).index(name) for name in random_names]
+    random_scales = np.asarray([true_sigmas[name] for name in random_names])
+    rng = np.random.default_rng(seed + stable_case_offset(mnl.case) + 20_000_033)
+    taste_deviations = rng.standard_normal((mnl.meta.n_obs, len(random_names))) * random_scales
+    utility = mnl.systematic_utility + np.einsum(
+        "njr,nr->nj",
+        mnl.feature_values[:, :, random_indices],
+        taste_deviations,
+    )
+    probabilities = softmax(utility)
+    choices = sample_choices(rng, probabilities)
+    mixed_df = mnl.df.copy()
+    mixed_df["choice"] = [mnl.alternatives[index] for index in choices]
+    mixed_data = ChoiceDataset.from_wide(
+        mixed_df,
+        alternatives=mnl.alternatives,
+        choice="choice",
+        variables=mnl.feature_columns,
+        availability=mnl.availability_columns,
+        obs_id="obs_id",
+    )
+
     utility_terms: dict[str, list[tuple[str, str | None]]] = {}
     for alt in mnl.alternatives:
         terms: list[tuple[str, str | None]] = []
@@ -391,14 +600,17 @@ def build_mixed_case(mnl: MNLCase) -> mixed_real.MixedCase:
         for feature, beta_name in zip(mnl.feature_columns, beta_names(mnl)):
             terms.append((beta_name, mnl.feature_columns[feature][alt]))
         utility_terms[alt] = terms
-    random_names = beta_names(mnl)[: max(2, min(mnl.meta.random_coefficients, len(beta_names(mnl))))]
+    sigma_text = ", ".join(f"SIGMA_{name}={true_sigmas[name]:.3f}" for name in random_names)
     return mixed_real.MixedCase(
         case=mnl.case,
         dataset_id=mnl.case,
-        source=f"synthetic N={mnl.meta.n_obs} J={mnl.meta.n_alternatives} K={mnl.meta.n_variables} rho={mnl.meta.rho}",
+        source=(
+            f"synthetic MixL N={mnl.meta.n_obs} J={mnl.meta.n_alternatives} "
+            f"K={mnl.meta.n_variables} rho={mnl.meta.rho}; {sigma_text}"
+        ),
         model_name="Generated mixed logit",
-        df=mnl.df.copy(),
-        data=mnl.data,
+        df=mixed_df,
+        data=mixed_data,
         spec=mnl.spec,
         alternatives=mnl.alternatives,
         choice_col="choice",
@@ -406,7 +618,7 @@ def build_mixed_case(mnl: MNLCase) -> mixed_real.MixedCase:
         availability_columns=mnl.availability_columns,
         parameter_names=mnl.parameter_names,
         random_names=random_names,
-        sigma_init=1.0,
+        sigma_init=MIXL_SIGMA_INIT,
     )
 
 
@@ -433,16 +645,36 @@ def run_mixed_apollo(case: mixed_real.MixedCase, n_draws: int) -> mixed_real.Bac
         payload = json.loads(output_path.read_text(encoding="utf-8"))
         names = [*case.parameter_names, *[f"SIGMA_{name}" for name in case.random_names]]
         covariance = reorder_covariance_or_none(payload.get("covariance"), payload.get("covariance_names"), names)
+        estimate_s = payload.get("timing", {}).get("estimate_seconds")
+        covariance_s = payload.get("timing", {}).get("covariance_seconds")
+        convergence = payload.get("convergence") or {}
+        convergence_status = convergence.get("status")
+        convergence_message = convergence.get("message")
+        message = (
+            f"apollo_version={payload.get('apollo_version')}; "
+            f"apollo_halton_draws={n_draws}; "
+            f"convergence_status={convergence_status}; "
+            f"convergence_message={convergence_message}"
+        )
+        if "unfavorable" in str(convergence_message).lower():
+            return mixed_real.BackendResult(
+                "apollo",
+                False,
+                total_s=estimation_covariance_total(estimate_s, covariance_s),
+                estimate_s=estimate_s,
+                covariance_s=covariance_s,
+                message=message,
+            )
         return mixed_real.BackendResult(
             "apollo",
             True,
-            total_s=total_s,
-            estimate_s=payload.get("timing", {}).get("estimate_seconds"),
-            covariance_s=payload.get("timing", {}).get("covariance_seconds"),
+            total_s=estimation_covariance_total(estimate_s, covariance_s),
+            estimate_s=estimate_s,
+            covariance_s=covariance_s,
             loglike=float(payload["loglike"]),
             params={name: float(payload["estimates"][name]) for name in names},
             covariance=covariance,
-            message=f"apollo_version={payload.get('apollo_version')}; apollo_halton_draws={n_draws}",
+            message=message,
         )
 
 
@@ -525,6 +757,7 @@ def compare_mnl(case: MNLCase, results: list[BackendResult]) -> bool:
         if result.available and result.probabilities is None and result.params is not None:
             result.probabilities = predict_mnl_probabilities(case, result.params)
     consistent = True
+    compared_external = False
     for result in results:
         if not result.available:
             continue
@@ -538,9 +771,10 @@ def compare_mnl(case: MNLCase, results: list[BackendResult]) -> bool:
             result.max_cov_diff = None  # type: ignore[attr-defined]
             result.max_se_diff = None  # type: ignore[attr-defined]
         if result.backend != "torchdcm":
+            compared_external = True
             row_ok = abs(result.ll_diff) <= max(1e-4, 1e-8 * abs(ref.loglike or 0.0)) and result.max_param_diff <= 5e-4 and result.max_prob_diff <= 2e-4
             consistent = consistent and row_ok
-    return consistent
+    return consistent and compared_external
 
 
 def predict_mnl_probabilities(case: MNLCase, params: dict[str, float]) -> np.ndarray:
@@ -611,8 +845,6 @@ def timed_safe_run(backend: str, fn, result_class, timeout_s: int | None):
 
 
 def isolated_timed_safe_run(backend: str, fn, result_class, timeout_s: int | None):
-    if not timeout_s or timeout_s <= 0:
-        return safe_run_generic(backend, fn, result_class)
     context = mp.get_context("fork")
     queue: mp.Queue = context.Queue(maxsize=1)
 
@@ -620,16 +852,16 @@ def isolated_timed_safe_run(backend: str, fn, result_class, timeout_s: int | Non
         try:
             os.setsid()
             result = fn()
-            result.covariance = None
             result.probabilities = None
             queue.put(("ok", result))
         except Exception as exc:
             queue.put(("error", f"{type(exc).__name__}: {exc}"))
 
     start = time.perf_counter()
-    process = context.Process(target=_worker, name=f"torchdcm_{backend}_stress")
+    process = context.Process(target=_worker, name=f"torchdcm_{backend}_benchmark")
     process.start()
-    process.join(timeout_s)
+    timeout = timeout_s if timeout_s and timeout_s > 0 else None
+    process.join(timeout)
     elapsed = time.perf_counter() - start
     if process.is_alive():
         try:
@@ -654,78 +886,130 @@ def isolated_timed_safe_run(backend: str, fn, result_class, timeout_s: int | Non
     return result_class(backend, False, total_s=elapsed, message=payload)
 
 
-def is_timeout(result) -> bool:
-    return "timeout" in str(getattr(result, "message", "")).lower()
+def repeated_isolated_run(backend: str, fn, result_class, repeats: int, timeout_s: int | None):
+    runs = [isolated_timed_safe_run(backend, fn, result_class, timeout_s) for _ in range(repeats)]
+    completed = [result for result in runs if result.available and result.total_s is not None]
+    if not completed:
+        result = runs[0]
+    else:
+        result = sorted(completed, key=lambda item: float(item.total_s))[len(completed) // 2]
+    result.runtime_repeats_s = [item.total_s for item in runs]
+    return result
+
+
+def compare_available_nested(results: list) -> bool | None:
+    """Compare every completed external NL backend; unavailable rows are neutral."""
+    reference = next(
+        (result for result in results if result.backend == "torchdcm" and result.available),
+        None,
+    )
+    if reference is None:
+        return None
+    completed = [result for result in results if result.backend != "torchdcm" and result.available]
+    if not completed:
+        return None
+    return all(
+        getattr(result, "ll_diff", None) is not None
+        and abs(result.ll_diff)
+        <= max(NL_LL_ABS_TOL, NL_LL_REL_TOL * abs(reference.loglike or 0.0))
+        and getattr(result, "max_param_diff", None) is not None
+        and result.max_param_diff <= NL_PARAM_TOL
+        and getattr(result, "max_prob_diff", None) is not None
+        and result.max_prob_diff <= NL_PROB_TOL
+        for result in completed
+    )
 
 
 def run_generated_mnl(meta: GeneratedSpec, args) -> dict:
     case = build_mnl_case(meta, args.seed)
-    results = [safe_run("torchdcm", lambda: run_mnl_torch(case, args.max_iter))]
-    if args.profile == "stress":
-        results.extend(
-            [
-                isolated_timed_safe_run("biogeme", lambda: run_mnl_biogeme(case), BackendResult, args.backend_timeout),
-                isolated_timed_safe_run("apollo", lambda: run_mnl_apollo(case), BackendResult, args.backend_timeout),
-            ]
-        )
-    else:
-        results.extend(
-            [
-                timed_safe_run("scipy_bfgs", lambda: run_mnl_scipy(case), BackendResult, args.backend_timeout),
-                timed_safe_run("biogeme", lambda: run_mnl_biogeme(case), BackendResult, args.backend_timeout),
-                timed_safe_run("apollo", lambda: run_mnl_apollo(case), BackendResult, args.backend_timeout),
-                timed_safe_run("mlogit", lambda: run_mnl_mlogit(case), BackendResult, args.backend_timeout),
-                timed_safe_run("gmnl", lambda: run_mnl_gmnl(case), BackendResult, args.backend_timeout),
-                timed_safe_run("xlogit", lambda: run_mnl_xlogit(case), BackendResult, args.backend_timeout),
-            ]
-        )
+    runners = [
+        ("torchdcm", lambda: run_mnl_torch(case, args.max_iter)),
+        ("scipy_bfgs", lambda: run_mnl_scipy(case)),
+        ("biogeme", lambda: run_mnl_biogeme(case)),
+        ("apollo", lambda: run_mnl_apollo(case)),
+        ("mlogit", lambda: run_mnl_mlogit(case)),
+        ("gmnl", lambda: run_mnl_gmnl(case)),
+        ("xlogit", lambda: run_mnl_xlogit(case)),
+    ]
+    results = [
+        repeated_isolated_run(backend, runner, BackendResult, args.repeats, args.backend_timeout)
+        for backend, runner in runners
+    ]
     consistent = compare_mnl(case, results)
-    if any(is_timeout(result) for result in results):
-        consistent = False
-    return payload(meta, "MNL", case.parameter_names, results, consistent, extra={"true_parameters": case.true_parameters})
+    return payload(
+        meta,
+        "MNL",
+        case.parameter_names,
+        results,
+        consistent,
+        extra={
+            "true_parameters": case.true_parameters,
+            "runtime_repetitions": args.repeats,
+            "runtime_summary": "median" if args.repeats > 1 else "single run",
+            "worker_policy": "independent child process per backend repetition",
+        },
+    )
 
 
 def run_generated_nl(meta: GeneratedSpec, args) -> dict:
     mnl_case = build_mnl_case(meta, args.seed)
-    case = build_nested_case(mnl_case)
+    case = build_nested_case(mnl_case, args.seed)
     results = [
         nested_real.safe_run("torchdcm", lambda: nested_real.run_torch(case, max_iter=args.max_iter)),
         isolated_timed_safe_run("biogeme", lambda: nested_real.run_biogeme(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout)
-        if args.profile == "stress"
+        if args.profile.startswith(("stress", "table4"))
         else timed_safe_run("biogeme", lambda: nested_real.run_biogeme(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout),
         isolated_timed_safe_run("apollo", lambda: nested_real.run_apollo(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout)
-        if args.profile == "stress"
+        if args.profile.startswith(("stress", "table4"))
         else timed_safe_run("apollo", lambda: nested_real.run_apollo(case, lambda_min=args.lambda_min), nested_real.BackendResult, args.backend_timeout),
     ]
     result = nested_real.result_payload(case, results)
-    result["consistent"] = "Yes" if result.get("consistent") else "No"
-    if any(is_timeout(result) for result in results):
-        result["consistent"] = "Timeout"
-    result.update({"generated": meta_payload(meta), "family": "Nested logit"})
+    comparison = compare_available_nested(results)
+    result["consistent"] = "--" if comparison is None else ("Yes" if comparison else "No")
+    result.update(
+        {
+            "generated": meta_payload(meta),
+            "family": "Nested logit",
+            "data_generating_process": "two-level nested logit",
+            "true_dissimilarities": {
+                name: 1.0 if nest.fixed else NL_TRUE_DISSIMILARITY[name]
+                for name, nest in case.nests.items()
+            },
+        }
+    )
     return result
 
 
 def run_generated_mixl(meta: GeneratedSpec, args) -> dict:
     mnl_case = build_mnl_case(meta, args.seed)
-    case = build_mixed_case(mnl_case)
+    case = build_mixed_case(mnl_case, args.seed)
     draws = mixed_real.make_draws(args.n_draws, args.seed + stable_case_offset(meta.case), len(case.random_names))
     mixed_real.make_draws_cached = draws
     results = [
         safe_run_mixed("torchdcm", lambda: mixed_real.run_torch(case, draws, args.max_iter, args.torch_device)),
-        isolated_timed_safe_run("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter), mixed_real.BackendResult, args.backend_timeout)
-        if args.profile == "stress"
-        else timed_safe_run("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter), mixed_real.BackendResult, args.backend_timeout),
+        isolated_timed_safe_run("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter, smooth_positive_scales=True), mixed_real.BackendResult, args.backend_timeout)
+        if args.profile.startswith(("stress", "table4"))
+        else timed_safe_run("biogeme", lambda: mixed_real.run_biogeme(case, draws.detach().cpu().numpy(), args.max_iter, smooth_positive_scales=True), mixed_real.BackendResult, args.backend_timeout),
         isolated_timed_safe_run("apollo", lambda: run_mixed_apollo(case, args.n_draws), mixed_real.BackendResult, args.backend_timeout)
-        if args.profile == "stress"
+        if args.profile.startswith(("stress", "table4"))
         else timed_safe_run("apollo", lambda: run_mixed_apollo(case, args.n_draws), mixed_real.BackendResult, args.backend_timeout),
     ]
-    consistent = mixed_real.compare_results(case, results)
-    if any(is_timeout(result) for result in results):
-        consistent = False
+    biogeme_completed = any(result.backend == "biogeme" and result.available for result in results)
+    consistent = mixed_real.compare_results(case, results) if biogeme_completed else False
     result = mixed_real.payload(case, draws, results, consistent)
-    if any(is_timeout(result) for result in results):
-        result["consistent"] = "Timeout"
-    result.update({"generated": meta_payload(meta), "family": "Mixed logit"})
+    if not biogeme_completed:
+        result["consistent"] = "--"
+    result.update(
+        {
+            "generated": meta_payload(meta),
+            "family": "Mixed logit",
+            "data_generating_process": "mixed logit with independent normal coefficients",
+            "true_sigmas": {
+                f"SIGMA_{name}": value
+                for name, value in mixed_true_sigmas(case.random_names).items()
+            },
+        }
+    )
     return result
 
 
@@ -741,6 +1025,7 @@ def payload(meta: GeneratedSpec, family: str, parameters: list[str], results: li
         "n_parameters": len(parameters),
         "parameters": parameters,
         "consistent": "Yes" if consistent else "No",
+        "runtime_policy": runtime_policy_metadata(),
         "backends": [backend_payload(result) for result in results],
     }
     if extra:
@@ -761,6 +1046,9 @@ def backend_payload(result) -> dict:
         "max_prob_diff": getattr(result, "max_prob_diff", None),
         "max_cov_diff": getattr(result, "max_cov_diff", None),
         "max_se_diff": getattr(result, "max_se_diff", None),
+        "closure_evals": getattr(result, "closure_evals", None),
+        "optimizer_iterations": getattr(result, "optimizer_iterations", None),
+        "runtime_repeats_s": getattr(result, "runtime_repeats_s", None),
         "message": result.message,
     }
 
@@ -805,10 +1093,18 @@ def r_env() -> dict[str, str]:
 
 def render_markdown(rows: list[dict], profile: str) -> str:
     description = (
-        "Stress rows compare TorchDCM against Biogeme and Apollo under a 300-second per-backend timeout. Timeout means the backend did not finish the aligned full-estimation run within the wall-clock budget; it is not treated as a numerical inconsistency."
-        if profile == "stress"
-        else "Synthetic cases vary sample size (N), number of alternatives (J), number of observed variables (K), and equicorrelation (rho). MNL rows compare TorchDCM against SciPy, Biogeme, Apollo, mlogit, gmnl, and xlogit where available. Nested-logit and mixed-logit rows compare TorchDCM against Biogeme and Apollo."
+        "All cross-estimator runtimes report estimation plus covariance on one logical CPU. Stress rows apply a 300-second worker-wall-clock limit to every external backend; timeout is not treated as numerical disagreement."
+        if profile.startswith("stress")
+        else "All cross-estimator runtimes report estimation plus covariance on one logical CPU. Synthetic cases vary sample size (N), number of alternatives (J), number of observed variables (K), and equicorrelation (rho). MNL rows compare TorchDCM against SciPy, Biogeme, Apollo, mlogit, gmnl, and xlogit where available. Nested-logit and mixed-logit rows compare TorchDCM against Biogeme and Apollo."
     )
+    repeated = [row for row in rows if int(row.get("runtime_repetitions", 1)) > 1]
+    if repeated:
+        counts = sorted({int(row["runtime_repetitions"]) for row in repeated})
+        count_text = ", ".join(str(count) for count in counts)
+        description += (
+            f" Repeated rows report the median of {count_text} independent backend workers."
+            " TorchDCM performs one untimed likelihood-and-gradient warm-up per worker and records LBFGS closure evaluations."
+        )
     lines = [
         f"# Generated Choice Benchmark Battery ({profile})",
         "",
@@ -884,20 +1180,32 @@ def write_outputs(rows: list[dict], profile: str) -> tuple[Path, Path]:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--profile", choices=["smoke", "full", "stress"], default="smoke")
+    parser.add_argument(
+        "--profile",
+        choices=["smoke", "full", "controlled", "controlled_additional", "stress", "stress_additional", "table4"],
+        default="smoke",
+    )
     parser.add_argument("--models", nargs="+", choices=["mnl", "nl", "mixl"], default=["mnl", "nl", "mixl"])
+    parser.add_argument("--case", help="Run only the named case within the selected profile.")
+    parser.add_argument("--output-profile", help="Optional output filename suffix; defaults to --profile.")
     parser.add_argument("--seed", type=int, default=20260709)
     parser.add_argument("--max-iter", type=int, default=120)
     parser.add_argument("--lambda-min", type=float, default=0.0001)
     parser.add_argument("--n-draws", type=int, default=32)
+    parser.add_argument("--repeats", type=int, default=1, help="Independent backend repetitions; the median runtime run is reported.")
     parser.add_argument("--torch-device", default="cpu")
     parser.add_argument("--backend-timeout", type=int, default=0, help="Seconds before marking non-Torch backends as timed out. Zero disables per-backend timeout.")
     args = parser.parse_args()
+    if args.repeats < 1:
+        raise ValueError("--repeats must be at least 1.")
     if torch.device(args.torch_device).type != "cpu":
         raise ValueError("Generated cross-estimator comparisons must use --torch-device cpu.")
 
+    output_profile = args.output_profile or args.profile
     rows = []
     for meta in generated_specs(args.profile):
+        if args.case and meta.case != args.case:
+            continue
         if meta.model not in args.models:
             continue
         print(f"[generated] running {meta.case} ({meta.model}, N={meta.n_obs}, J={meta.n_alternatives}, K={meta.n_variables}, rho={meta.rho})", flush=True)
@@ -908,7 +1216,7 @@ def main() -> None:
         else:
             row = run_generated_mixl(meta, args)
         rows.append(row)
-        write_outputs(rows, args.profile)
+        write_outputs(rows, output_profile)
         backends = {item["backend"]: item for item in row.get("backends", [])}
         print(
             f"[generated] {meta.case}: torch={fmt_time(backends.get('torchdcm'))} "
@@ -916,7 +1224,7 @@ def main() -> None:
             f"consistent={row.get('consistent')}",
             flush=True,
         )
-    json_path, md_path = write_outputs(rows, args.profile)
+    json_path, md_path = write_outputs(rows, output_profile)
     print(f"json: {json_path}")
     print(f"markdown: {md_path}")
 

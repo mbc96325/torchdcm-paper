@@ -10,6 +10,15 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
+from benchmark_runtime import (
+    configure_single_thread_cpu,
+    estimation_covariance_total,
+    runtime_policy_metadata,
+)
+
+if __name__ == "__main__":
+    configure_single_thread_cpu(configure_torch=True)
+
 import numpy as np
 import pandas as pd
 import torch
@@ -25,6 +34,10 @@ from compare_nested_logit_estimators import load_biogeme_swissmetro
 ROOT = Path(__file__).resolve().parents[1]
 GENERATED = ROOT / "generated"
 APOLLO_SCRIPT = ROOT / "benchmarks" / "apollo" / "R" / "run_nl.R"
+NL_LL_ABS_TOL = 1e-4
+NL_LL_REL_TOL = 1e-7
+NL_PARAM_TOL = 2e-3
+NL_PROB_TOL = 5e-4
 
 
 @dataclass(frozen=True)
@@ -472,6 +485,13 @@ def run_torch(case: NestedCase, max_iter: int) -> BackendResult:
             model._lambda_to_internal(compiled.lambda_initial[~compiled.lambda_is_fixed]),
         ]
     )
+
+    # Exclude one-time tensor-kernel and autograd initialization from timing,
+    # following the same runtime policy as the generated MNL benchmark.
+    warmup_internal = initial.clone().detach().requires_grad_(True)
+    warmup_natural = model._internal_to_natural(warmup_internal, compiled)
+    (-model.loglike(warmup_natural, data, compiled)).backward()
+
     params = initial.clone().detach().requires_grad_(True)
     optimizer = torch.optim.LBFGS(
         [params],
@@ -578,7 +598,7 @@ def run_biogeme(case: NestedCase, lambda_min: float) -> BackendResult:
     covariance_start = time.perf_counter()
     covariance_obj = estimates.get_variance_covariance_matrix(EstimateVarianceCovariance.RAO_CRAMER)
     covariance_s = time.perf_counter() - covariance_start
-    total_s = time.perf_counter() - total_start
+    total_s = estimation_covariance_total(estimate_s, covariance_s)
     names = case.parameter_names
     covariance = covariance_to_array(covariance_obj, names)
     beta_values = estimates.get_beta_values()
@@ -621,16 +641,35 @@ def run_apollo(case: NestedCase, lambda_min: float) -> BackendResult:
         payload = json.loads(output_path.read_text(encoding="utf-8"))
         covariance_names = payload.get("covariance_names") or case.parameter_names
         covariance = reorder_covariance_or_none(payload.get("covariance"), covariance_names, case.parameter_names)
+        estimate_s = payload.get("timing", {}).get("estimate_seconds")
+        covariance_s = payload.get("timing", {}).get("covariance_seconds")
+        convergence = payload.get("convergence") or {}
+        convergence_status = convergence.get("status")
+        convergence_message = convergence.get("message")
+        message = (
+            f"apollo_version={payload.get('apollo_version')}; "
+            f"convergence_status={convergence_status}; "
+            f"convergence_message={convergence_message}"
+        )
+        if "unfavorable" in str(convergence_message).lower():
+            return BackendResult(
+                backend="apollo",
+                available=False,
+                total_s=estimation_covariance_total(estimate_s, covariance_s),
+                estimate_s=estimate_s,
+                covariance_s=covariance_s,
+                message=message,
+            )
         return BackendResult(
             backend="apollo",
             available=True,
-            total_s=total_s,
-            estimate_s=payload.get("timing", {}).get("estimate_seconds"),
-            covariance_s=payload.get("timing", {}).get("covariance_seconds"),
+            total_s=estimation_covariance_total(estimate_s, covariance_s),
+            estimate_s=estimate_s,
+            covariance_s=covariance_s,
             loglike=float(payload["loglike"]),
             params={name: float(payload["estimates"][name]) for name in case.parameter_names},
             covariance=covariance,
-            message=f"apollo_version={payload.get('apollo_version')}",
+            message=message,
         )
 
 
@@ -730,11 +769,12 @@ def is_consistent(results: list[BackendResult]) -> bool:
     prob_diff = getattr(biogeme, "max_prob_diff", None)
     if ll_diff is None or param_diff is None or prob_diff is None:
         return False
-    if abs(ll_diff) > 1e-4:
+    torchdcm = next(result for result in results if result.backend == "torchdcm" and result.available)
+    if abs(ll_diff) > max(NL_LL_ABS_TOL, NL_LL_REL_TOL * abs(torchdcm.loglike or 0.0)):
         return False
-    if param_diff > 5e-4:
+    if param_diff > NL_PARAM_TOL:
         return False
-    if prob_diff > 2e-4:
+    if prob_diff > NL_PROB_TOL:
         return False
     return True
 
@@ -752,6 +792,7 @@ def result_payload(case: NestedCase, results: list[BackendResult]) -> dict:
         "nests": {name: {"alternatives": nest.alternatives, "fixed": nest.fixed, "init": nest.init} for name, nest in case.nests.items()},
         "parameters": case.parameter_names,
         "consistent": is_consistent(results),
+        "runtime_policy": runtime_policy_metadata(),
         "backends": [
             {
                 "backend": result.backend,
@@ -797,6 +838,8 @@ def safe_run(backend: str, fn) -> BackendResult:
 def render_markdown(payloads: list[dict]) -> str:
     lines = [
         "# Real-data Nested Logit Benchmark",
+        "",
+        "Runtimes report estimation plus covariance on one logical CPU.",
         "",
         "| Data | Model | N | TorchDCM | Biogeme | Apollo | Consistent? |",
         "| --- | --- | ---: | ---: | ---: | ---: | --- |",

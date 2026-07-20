@@ -1,0 +1,20 @@
+\begin{table}[H]
+\caption{Synthetic nested-logit full-estimation runtime and consistency benchmarks. Runtime columns report total remote wall-clock seconds for aligned full estimation and covariance calculation where available. Rows vary sample size $N$, number of alternatives $J$, number of observed variables $K$, and equicorrelation $\rho$.}
+\label{tab:generated_nl}
+\centering
+\small
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrrrrrl}
+\toprule
+Case & $N$ & $J$ & $K$ & $\rho$ & TorchDCM & Biogeme & Apollo & Consistent? \\
+\midrule
+Base & 1000 & 4 & 4 & 0.0 & 0.022 & 15.227 & 1.317 & Yes \\
+Large $N$ & 5000 & 4 & 4 & 0.0 & 0.056 & 15.245 & 1.930 & Yes \\
+Large $J$ & 2500 & 8 & 4 & 0.0 & 0.078 & 1031.681 & 1.468 & Yes \\
+Large $K$ & 2500 & 4 & 8 & 0.0 & 0.037 & 35.250 & 1.966 & Yes \\
+High $\rho$ & 2500 & 4 & 6 & 0.8 & 0.040 & 29.793 & 1.782 & Yes \\
+\bottomrule
+\end{tabular}
+}
+\caption*{\footnotesize Notes: all rows use generated two-nest specifications with the same nested-logit structure across TorchDCM, Biogeme, and Apollo. Consistency is evaluated against Biogeme under the same likelihood, parameter, and probability tolerances used for the real-data nested-logit benchmark. The \emph{Large $J$} Biogeme time includes substantial JAX/XLA CPU compilation and symbolic-estimation overhead observed in the remote run.}
+\end{table}

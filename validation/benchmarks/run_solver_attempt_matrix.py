@@ -9,6 +9,11 @@ import time
 from dataclasses import dataclass
 from pathlib import Path
 
+from benchmark_runtime import configure_single_thread_cpu, runtime_policy_metadata
+
+if __name__ == "__main__":
+    configure_single_thread_cpu(configure_torch=False)
+
 
 ROOT = Path(__file__).resolve().parents[1]
 BENCHMARKS = ROOT / "benchmarks"
@@ -165,6 +170,7 @@ def run_case(case: MatrixCase, python: str) -> dict:
         "dataset": case.dataset,
         "model": case.model,
         "alignment_mode": case.alignment_mode,
+        "runtime_policy": runtime_policy_metadata(),
         "command": command,
         "returncode": proc.returncode,
         "wall_seconds": wall_s,
@@ -305,7 +311,7 @@ def render_markdown(rows: list[dict]) -> str:
     lines = [
         "# Solver Attempt Matrix",
         "",
-        "Each benchmark case is attempted with every configured solver where an aligned wrapper exists.",
+        "Each benchmark case is attempted with every configured solver where an aligned wrapper exists. Runtimes report estimation plus covariance on one logical CPU.",
         "`ok` means the solver completed the aligned case, `failed` means the wrapper was attempted but failed, and `unsupported` means no aligned wrapper exists for that solver/model case.",
         "",
         "| " + " | ".join(columns) + " |",
