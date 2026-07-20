@@ -14,7 +14,7 @@ dependencies = [
     "pandas>=1.5",
     "scipy>=1.10",
     "torch>=2.1",
-    "torchdcm @ git+https://github.com/mbc96325/torchdcm.git",
+    "torchdcm==0.1.0",
 ]
 
 [project.optional-dependencies]
@@ -26,4 +26,3 @@ bench = [
 
 [tool.setuptools]
 py-modules = []
-
