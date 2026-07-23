@@ -10,7 +10,7 @@ import pandas as pd
 
 
 ROOT = Path(__file__).resolve().parents[1]
-RAW_PATH = ROOT / "validation" / "datasets" / "raw" / "lpmc_london" / "data.csv"
+RAW_PATH = ROOT / "datasets" / "raw" / "lpmc_london" / "data.csv"
 OUT_DIR = ROOT / "datasets" / "large" / "processed" / "lpmc_london"
 RELEASE_DIR = ROOT / "datasets" / "large" / "releases"
 

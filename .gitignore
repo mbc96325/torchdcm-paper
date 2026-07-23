@@ -11,7 +11,7 @@ datasets/large/releases/*
 !datasets/large/releases/.gitkeep
 
 # Raw downloaded survey data stay local or on the remote benchmark server.
-validation/datasets/raw/
+datasets/raw/
 
 # Python/R generated benchmark scratch.
 __*.iter
@@ -19,18 +19,6 @@ torchdcm_compare*.html
 torchdcm_compare*.yaml
 torchdcm_nl_compare*.html
 torchdcm_nl_compare*.yaml
-
-# LaTeX build artifacts.
-paper/*.aux
-paper/*.bbl
-paper/*.blg
-paper/*.fdb_latexmk
-paper/*.fls
-paper/*.log
-paper/*.out
-paper/*.toc
-tmp/pdfs/
-
 
 # Local Biogeme runtime config.
 biogeme.toml

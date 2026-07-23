@@ -9,7 +9,7 @@ rules.
 | --- | --- | --- |
 | Small canonical datasets | `datasets/small/<dataset_id>/data.csv` | Can be committed to GitHub. |
 | Large processed datasets | Google Drive release zip | Only processed choice sets and attributes are uploaded. |
-| Raw validation mirrors | `validation/datasets/raw/` | Local/remote validation workspace, not committed by default. |
+| Raw validation mirrors | `datasets/raw/` | Local/remote validation workspace, not committed by default. |
 
 ## Current Release
 
@@ -33,4 +33,4 @@ python scripts/materialize_dataset_release.py
 python scripts/process_lpmc_london.py --zip
 ```
 
-Run these after refreshing `validation/datasets/dataset_manifest.json`.
+Run these after refreshing `datasets/dataset_manifest.json`.

@@ -1,28 +1,22 @@
 # TorchDCM Paper Benchmarks
 
-This repository contains the empirical validation, estimator comparisons,
-synthetic benchmark scripts, figures, tables, and LaTeX source for the
-TorchDCM software paper.
+This repository contains the reproducible benchmark and validation system used
+for the TorchDCM software paper. The installable package is maintained in the
+separate [TorchDCM repository](https://github.com/mbc96325/torchdcm) and is
+available from [PyPI](https://pypi.org/project/torchdcm/).
 
-The TorchDCM package itself lives in a separate repository:
-
-- PyPI: https://pypi.org/project/torchdcm/
-- Package repo: https://github.com/mbc96325/torchdcm
-- Paper repo: https://github.com/mbc96325/torchdcm-paper
-
-## Repository Layout
+## Repository layout
 
 | Path | Purpose |
 | --- | --- |
-| `paper/` | LaTeX manuscript, bibliography, tables, and compiled local PDF. |
-| `validation/` | Full-estimation comparisons against Biogeme, Apollo, SciPy, `mlogit`, `gmnl`, and `xlogit`. |
-| `datasets/` | Public benchmark dataset index, small processed datasets, and large-data release links. |
-| `scripts/` | Benchmark rendering, synthetic benchmark, and dataset materialization utilities. |
-| `docs/` | Benchmark notes, data documentation, and paper planning notes. |
+| `benchmarks/` | Synthetic and real-data comparisons against external estimators. |
+| `datasets/` | Dataset registry, provenance, canonical data, and download/export tools. |
+| `generated/` | Committed benchmark outputs used by the paper. |
+| `scripts/` | Dataset preparation and result-rendering utilities. |
+| `tests/` | Tests for benchmark loaders, wrappers, and result processing. |
+| `BENCHMARK_SYSTEM.md` | Benchmark conventions and extension guide. |
 
 ## Environment
-
-Install TorchDCM from PyPI, then install the paper dependencies:
 
 ```bash
 python -m venv .venv
@@ -32,38 +26,22 @@ python -m pip install torchdcm
 python -m pip install -e ".[bench]"
 ```
 
-Some benchmark backends are external to Python:
+Biogeme is installed through the Python benchmark dependencies. Apollo,
+`mlogit`, and `gmnl` require R; `xlogit` uses the Python benchmark environment.
 
-- Biogeme: installed through the Python extra when available.
-- Apollo, `mlogit`, and `gmnl`: installed in R.
-- `xlogit`: installed through the Python benchmark extra.
-
-## Benchmark Matrix
-
-The paper tables are generated from the following committed validation
-artifacts. The linked runner and output use the same model specification and
-benchmark conventions.
+## Benchmark matrix
 
 | Benchmark | Runner | Paper-facing output |
 | --- | --- | --- |
-| Controlled synthetic MNL, NL, and MixL | [`compare_generated_choice_battery.py`](validation/benchmarks/compare_generated_choice_battery.py) | [MNL](validation/generated/generated_choice_battery_controlled_office.md), [NL](validation/generated/generated_choice_battery_table4_nl_office.md), [MixL](validation/generated/generated_choice_battery_table4_mixl_office.md) |
-| Real-data MNL | [`run_solver_attempt_matrix.py`](validation/benchmarks/run_solver_attempt_matrix.py) | [`solver_attempt_matrix_mnl_single_core_office.md`](validation/generated/solver_attempt_matrix_mnl_single_core_office.md) |
-| Real-data NL | [`compare_real_nested_logit_battery.py`](validation/benchmarks/compare_real_nested_logit_battery.py) | [`nested_real_battery_single_core_office.md`](validation/generated/nested_real_battery_single_core_office.md) |
-| Real-data MixL | [`compare_real_mixed_logit_battery.py`](validation/benchmarks/compare_real_mixed_logit_battery.py) | [`mixed_real_battery_apollo_office.md`](validation/generated/mixed_real_battery_apollo_office.md) |
-| CPU--GPU scaling | [`compare_torch_device_stress.py`](validation/benchmarks/compare_torch_device_stress.py) | [`torch_device_stress_battery.md`](validation/generated/torch_device_stress_battery.md) |
-| Ordered logit and probit | [`compare_ordered_estimators.py`](validation/benchmarks/compare_ordered_estimators.py) | [Logit JSON](validation/generated/ordered_logit_single_core_office.json), [probit JSON](validation/generated/ordered_probit_single_core_office.json) |
+| Controlled synthetic MNL, NL, and MixL | [`compare_generated_choice_battery.py`](benchmarks/compare_generated_choice_battery.py) | [MNL](generated/generated_choice_battery_controlled_office.md), [NL](generated/generated_choice_battery_table4_nl_office.md), [MixL](generated/generated_choice_battery_table4_mixl_office.md) |
+| Real-data MNL | [`run_solver_attempt_matrix.py`](benchmarks/run_solver_attempt_matrix.py) | [`solver_attempt_matrix_mnl_single_core_office.md`](generated/solver_attempt_matrix_mnl_single_core_office.md) |
+| Real-data NL | [`compare_real_nested_logit_battery.py`](benchmarks/compare_real_nested_logit_battery.py) | [`nested_real_battery_single_core_office.md`](generated/nested_real_battery_single_core_office.md) |
+| Real-data MixL | [`compare_real_mixed_logit_battery.py`](benchmarks/compare_real_mixed_logit_battery.py) | [`mixed_real_battery_apollo_office.md`](generated/mixed_real_battery_apollo_office.md) |
+| CPU--GPU scaling | [`compare_torch_device_stress.py`](benchmarks/compare_torch_device_stress.py) | [`torch_device_stress_battery.md`](generated/torch_device_stress_battery.md) |
+| Ordered logit and probit | [`compare_ordered_estimators.py`](benchmarks/compare_ordered_estimators.py) | [Ordered logit](generated/ordered_logit_single_core_office.json), [ordered probit](generated/ordered_probit_single_core_office.json) |
+| Synthetic ordered probit | [`compare_synthetic_ordered_probit.py`](benchmarks/compare_synthetic_ordered_probit.py) | [`ordered_probit_synthetic_single_core_office.json`](generated/ordered_probit_synthetic_single_core_office.json) |
+| Real-data ordered probit | [`run_real_ordered_probit_battery.py`](benchmarks/run_real_ordered_probit_battery.py) | [`ordered_probit_real_battery_single_core_office.json`](generated/ordered_probit_real_battery_single_core_office.json) |
+| Latent class, hybrid choice, and panel full estimation | [`run_advanced_full_suite.py`](benchmarks/run_advanced_full_suite.py) | [`advanced_full_estimation_office.json`](generated/advanced_full_estimation_office.json) |
 
-See the [validation guide](validation/README.md) and
-[dataset catalog](datasets/dataset_index.csv) for setup, provenance, and the
-complete collection of generated artifacts.
-
-## Manuscript
-
-Build the local PDF from `paper/`:
-
-```bash
-cd paper
-latexmk -pdf -interaction=nonstopmode main.tex
-```
-
-The local manuscript PDF is `paper/main.pdf`.
+See the [benchmark guide](BENCHMARK_SYSTEM.md), [dataset catalog](datasets/dataset_index.csv),
+and [validation dataset notes](datasets/VALIDATION.md) for setup and provenance.

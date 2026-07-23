@@ -14,7 +14,7 @@ from torchdcm import Beta, ChoiceDataset, MultinomialLogit, UtilitySpec
 
 
 ROOT = Path(__file__).resolve().parents[1]
-GENERATED = ROOT / "validation" / "generated"
+GENERATED = ROOT / "generated"
 
 
 @dataclass(frozen=True)

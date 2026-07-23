@@ -7,7 +7,7 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-MANIFEST_PATH = ROOT / "validation" / "datasets" / "dataset_manifest.json"
+MANIFEST_PATH = ROOT / "datasets" / "dataset_manifest.json"
 DATASETS_DIR = ROOT / "datasets"
 SMALL_DIR = DATASETS_DIR / "small"
 LARGE_DIR = DATASETS_DIR / "large"
@@ -27,7 +27,7 @@ def choose_csv_file(dataset: dict) -> Path | None:
     for item in dataset.get("files", []):
         path = Path(item["path"])
         if path.name == "data.csv":
-            return ROOT / "validation" / "datasets" / path
+            return ROOT / "datasets" / path
     return None
 
 

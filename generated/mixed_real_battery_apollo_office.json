@@ -1,0 +1,3833 @@
+[
+  {
+    "case": "swissmetro",
+    "dataset_id": "biogeme_swissmetro",
+    "source": "biogeme.data.swissmetro/data/swissmetro.dat",
+    "model_name": "Swissmetro mixed logit",
+    "n_obs": 10719,
+    "n_rows": 32157,
+    "n_alternatives": 3,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "ASC_TRAIN",
+      "B_TIME",
+      "B_COST",
+      "ASC_CAR"
+    ],
+    "random_coefficients": [
+      "B_TIME",
+      "B_COST"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "ASC_TRAIN": -0.6522383974281696,
+        "B_TIME": -1.2789415356459937,
+        "B_COST": -0.7897904536048979,
+        "ASC_CAR": 0.01622805589218297
+      },
+      "random_scales": {
+        "B_TIME": 0.666680142166767,
+        "B_COST": 0.8884661940349301
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -8670.163118523758,
+      "mnl_gradient_norm": 0.000453612774946143
+    },
+    "specification": {
+      "alternatives": [
+        "TRAIN",
+        "SM",
+        "CAR"
+      ],
+      "availability": {
+        "TRAIN": "avail_train",
+        "SM": "avail_sm",
+        "CAR": "avail_car"
+      },
+      "utilities": {
+        "TRAIN": [
+          {
+            "parameter": "ASC_TRAIN",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_train",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_train",
+            "random": true
+          }
+        ],
+        "SM": [
+          {
+            "parameter": "B_TIME",
+            "variable": "time_sm",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_sm",
+            "random": true
+          }
+        ],
+        "CAR": [
+          {
+            "parameter": "ASC_CAR",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_car",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_car",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.41063190496061,
+        "estimate_s": 0.2538777570007369,
+        "covariance_s": 0.15675414795987308,
+        "loglike": -8392.698767519887,
+        "ll_diff": 0.0,
+        "worse_loglike": false,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "ASC_TRAIN": -0.3197197346650455,
+          "B_TIME": -2.478419848235441,
+          "B_COST": -1.765614745624915,
+          "ASC_CAR": 0.24702120092416227,
+          "SIGMA_B_TIME": 1.522663521871662,
+          "SIGMA_B_COST": 2.3840617969467943
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=3.246125353793753e-05; scaled_gradient_norm=3.867796812101015e-09; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 24.729426985955797,
+        "estimate_s": 24.729364303988405,
+        "covariance_s": 0.00006268196739256382,
+        "loglike": -8392.698767519883,
+        "ll_diff": 3.637978807091713E-12,
+        "worse_loglike": false,
+        "max_param_diff": 1.746486220088883E-7,
+        "max_prob_diff": 3.038905721508556E-8,
+        "params": {
+          "ASC_TRAIN": -0.3197197404116455,
+          "B_TIME": -2.478419854168966,
+          "B_COST": -1.765614920273537,
+          "ASC_CAR": 0.2470211758991702,
+          "SIGMA_B_TIME": 1.522663537047832,
+          "SIGMA_B_COST": 2.384061915477959
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 8.587,
+        "estimate_s": 8.587,
+        "covariance_s": 0,
+        "loglike": -8377.423344486953,
+        "ll_diff": 15.275423032933759,
+        "max_param_diff": 0.30667814925659487,
+        "max_prob_diff": 0.053742353073092414,
+        "params": {
+          "ASC_TRAIN": -0.303395400617487,
+          "B_TIME": -2.615243989514031,
+          "B_COST": -2.07229289488151,
+          "ASC_CAR": 0.26518847522614253,
+          "SIGMA_B_TIME": 1.7752118372652026,
+          "SIGMA_B_COST": 2.5146237855438556
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "airline",
+    "dataset_id": "biogeme_airline_itinerary",
+    "source": "Biogeme data page airline.dat",
+    "model_name": "Airline itinerary mixed logit",
+    "n_obs": 3609,
+    "n_rows": 10827,
+    "n_alternatives": 3,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_TRIP_TIME",
+      "B_FARE",
+      "B_LEGROOM",
+      "ASC_ALT2",
+      "ASC_ALT3"
+    ],
+    "random_coefficients": [
+      "B_TRIP_TIME",
+      "B_FARE",
+      "B_LEGROOM"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_TRIP_TIME": -0.31828256113081604,
+        "B_FARE": -1.902057544943024,
+        "B_LEGROOM": 0.21363140043208564,
+        "ASC_ALT2": -1.2548229298751055,
+        "ASC_ALT3": -1.4874718971494367
+      },
+      "random_scales": {
+        "B_TRIP_TIME": 0.1908924517640863,
+        "B_FARE": 0.22107348129979357,
+        "B_LEGROOM": 0.3660589886318971
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -2386.418413581494,
+      "mnl_gradient_norm": 0.00024584143072458995
+    },
+    "specification": {
+      "alternatives": [
+        "ALT1",
+        "ALT2",
+        "ALT3"
+      ],
+      "availability": {
+        "ALT1": "avail_alt1",
+        "ALT2": "avail_alt2",
+        "ALT3": "avail_alt3"
+      },
+      "utilities": {
+        "ALT1": [
+          {
+            "parameter": "B_TRIP_TIME",
+            "variable": "trip_time_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_FARE",
+            "variable": "fare_alt1",
+            "random": true
+          },
+          {
+            "parameter": "B_LEGROOM",
+            "variable": "legroom_alt1",
+            "random": true
+          }
+        ],
+        "ALT2": [
+          {
+            "parameter": "ASC_ALT2",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TRIP_TIME",
+            "variable": "trip_time_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_FARE",
+            "variable": "fare_alt2",
+            "random": true
+          },
+          {
+            "parameter": "B_LEGROOM",
+            "variable": "legroom_alt2",
+            "random": true
+          }
+        ],
+        "ALT3": [
+          {
+            "parameter": "ASC_ALT3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TRIP_TIME",
+            "variable": "trip_time_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_FARE",
+            "variable": "fare_alt3",
+            "random": true
+          },
+          {
+            "parameter": "B_LEGROOM",
+            "variable": "legroom_alt3",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.18311078706756234,
+        "estimate_s": 0.12323846097569913,
+        "covariance_s": 0.059872326091863215,
+        "loglike": -2328.195459417949,
+        "ll_diff": 0.0,
+        "worse_loglike": false,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_TRIP_TIME": -0.7743667244644633,
+          "B_FARE": -3.2231564134388924,
+          "B_LEGROOM": 0.35061728929210445,
+          "ASC_ALT2": -1.2101371345710616,
+          "ASC_ALT3": -1.5339525993933791,
+          "SIGMA_B_TRIP_TIME": 0.7225114011278796,
+          "SIGMA_B_FARE": 2.1625026908202147,
+          "SIGMA_B_LEGROOM": 0.43313623193901063
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.00010755266551761066; scaled_gradient_norm=4.619571998671405e-08; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 33.84017374005634,
+        "estimate_s": 33.84010810905602,
+        "covariance_s": 0.00006563100032508373,
+        "loglike": -2328.1954594494514,
+        "ll_diff": -3.1502167985308915E-8,
+        "worse_loglike": false,
+        "max_param_diff": 0.00005127444525188096,
+        "max_prob_diff": 0.000004714266582217519,
+        "params": {
+          "B_TRIP_TIME": -0.7743263520164337,
+          "B_FARE": -3.2231051389936405,
+          "B_LEGROOM": 0.35061076588150974,
+          "ASC_ALT2": -1.210162649726225,
+          "ASC_ALT3": -1.5339741099208761,
+          "SIGMA_B_TRIP_TIME": 0.7224704954667638,
+          "SIGMA_B_FARE": 2.1624585756197163,
+          "SIGMA_B_LEGROOM": 0.43313241567509986
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 3.9540000000000006,
+        "estimate_s": 3.9540000000000006,
+        "covariance_s": 0,
+        "loglike": -2323.9303913831623,
+        "ll_diff": 4.265068034786964,
+        "max_param_diff": 0.4877395910256679,
+        "max_prob_diff": 0.057890958212080124,
+        "params": {
+          "B_TRIP_TIME": -0.7017090074951666,
+          "B_FARE": -3.427237545747302,
+          "B_LEGROOM": 0.29569994377522035,
+          "ASC_ALT2": -1.3376681463220657,
+          "ASC_ALT3": -1.6586592361323869,
+          "SIGMA_B_TRIP_TIME": 0.6241648030030261,
+          "SIGMA_B_FARE": 2.6502422818458826,
+          "SIGMA_B_LEGROOM": 0.5200437254798762
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "parking",
+    "dataset_id": "biogeme_parking_spain",
+    "source": "Biogeme data page parking.dat",
+    "model_name": "Parking Spain mixed logit",
+    "n_obs": 1576,
+    "n_rows": 4728,
+    "n_alternatives": 3,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_ACCESS_TIME",
+      "B_SEARCH_TIME",
+      "B_FEE",
+      "ASC_PSP",
+      "ASC_PUP"
+    ],
+    "random_coefficients": [
+      "B_ACCESS_TIME",
+      "B_SEARCH_TIME",
+      "B_FEE"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_ACCESS_TIME": -0.8590371514970861,
+        "B_SEARCH_TIME": -0.5956409977494284,
+        "B_FEE": -3.0298585444481057,
+        "ASC_PSP": -0.6489849561443349,
+        "ASC_PUP": 2.364928714395679
+      },
+      "random_scales": {
+        "B_ACCESS_TIME": 1.0215078369104984,
+        "B_SEARCH_TIME": 0.8401680504168059,
+        "B_FEE": 1.241940599401662
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -1121.3392676024873,
+      "mnl_gradient_norm": 0.00016507418127299593
+    },
+    "specification": {
+      "alternatives": [
+        "FSP",
+        "PSP",
+        "PUP"
+      ],
+      "availability": {
+        "FSP": "avail_fsp",
+        "PSP": "avail_psp",
+        "PUP": "avail_pup"
+      },
+      "utilities": {
+        "FSP": [
+          {
+            "parameter": "B_ACCESS_TIME",
+            "variable": "access_time_fsp",
+            "random": true
+          },
+          {
+            "parameter": "B_SEARCH_TIME",
+            "variable": "search_time_fsp",
+            "random": true
+          },
+          {
+            "parameter": "B_FEE",
+            "variable": "fee_fsp",
+            "random": true
+          }
+        ],
+        "PSP": [
+          {
+            "parameter": "ASC_PSP",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_ACCESS_TIME",
+            "variable": "access_time_psp",
+            "random": true
+          },
+          {
+            "parameter": "B_SEARCH_TIME",
+            "variable": "search_time_psp",
+            "random": true
+          },
+          {
+            "parameter": "B_FEE",
+            "variable": "fee_psp",
+            "random": true
+          }
+        ],
+        "PUP": [
+          {
+            "parameter": "ASC_PUP",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_ACCESS_TIME",
+            "variable": "access_time_pup",
+            "random": true
+          },
+          {
+            "parameter": "B_SEARCH_TIME",
+            "variable": "search_time_pup",
+            "random": true
+          },
+          {
+            "parameter": "B_FEE",
+            "variable": "fee_pup",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.10171640804037452,
+        "estimate_s": 0.07283009507227689,
+        "covariance_s": 0.028886312968097627,
+        "loglike": -1086.4290131430694,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_ACCESS_TIME": -2.113268568479024,
+          "B_SEARCH_TIME": -2.117515218739465,
+          "B_FEE": -12.004080706663547,
+          "ASC_PSP": 3.8938964437486048,
+          "ASC_PUP": 9.711302790187998,
+          "SIGMA_B_ACCESS_TIME": 4.205411961986624,
+          "SIGMA_B_SEARCH_TIME": 3.155753675947677,
+          "SIGMA_B_FEE": 3.6230448429519915
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=6.205940427786655e-05; scaled_gradient_norm=5.712237387542419e-08; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 33.53711612790357,
+        "estimate_s": 33.5370496569667,
+        "covariance_s": 0.00006647093687206507,
+        "loglike": -1086.429013503386,
+        "ll_diff": -3.6031656236445997E-7,
+        "max_param_diff": 0.003039868878994767,
+        "max_prob_diff": 0.000020440652609754473,
+        "params": {
+          "B_ACCESS_TIME": -2.1133224744607157,
+          "B_SEARCH_TIME": -2.1171624765850705,
+          "B_FEE": -12.002808567427447,
+          "ASC_PSP": 3.8932055148308153,
+          "ASC_PUP": 9.710074804537495,
+          "SIGMA_B_ACCESS_TIME": 4.20237209310763,
+          "SIGMA_B_SEARCH_TIME": 3.1553803909820766,
+          "SIGMA_B_FEE": 3.6231529258640434
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.874,
+        "estimate_s": 1.874,
+        "covariance_s": 0,
+        "loglike": -1091.3914672523424,
+        "ll_diff": -4.96245410927304,
+        "max_param_diff": 3.7099970799390585,
+        "max_prob_diff": 0.06880772916302458,
+        "worse_loglike": false,
+        "params": {
+          "B_ACCESS_TIME": -3.413189401541087,
+          "B_SEARCH_TIME": -2.2646514409923055,
+          "B_FEE": -12.579353130995237,
+          "ASC_PSP": 3.557602183964695,
+          "ASC_PUP": 9.694018231943717,
+          "SIGMA_B_ACCESS_TIME": 7.915409041925683,
+          "SIGMA_B_SEARCH_TIME": 4.639437074053267,
+          "SIGMA_B_FEE": 3.6085576426578774
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "telephone",
+    "dataset_id": "biogeme_telephone",
+    "source": "Biogeme data page telephone.dat",
+    "model_name": "Telephone service mixed logit",
+    "n_obs": 434,
+    "n_rows": 2170,
+    "n_alternatives": 5,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_COST",
+      "ASC_A2",
+      "ASC_A3",
+      "ASC_A4",
+      "ASC_A5"
+    ],
+    "random_coefficients": [
+      "B_COST",
+      "ASC_A2"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_COST": -1.4908672332886679,
+        "ASC_A2": 0.527043186594918,
+        "ASC_A3": 1.4201425387348758,
+        "ASC_A4": 1.2857973263578428,
+        "ASC_A5": 2.358094691709313
+      },
+      "random_scales": {
+        "B_COST": 0.000019426561801786458,
+        "ASC_A2": 2.23606797749979
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -482.7191245740968,
+      "mnl_gradient_norm": 0.00003440196222371693
+    },
+    "specification": {
+      "alternatives": [
+        "A1",
+        "A2",
+        "A3",
+        "A4",
+        "A5"
+      ],
+      "availability": {
+        "A1": "avail_a1",
+        "A2": "avail_a2",
+        "A3": "avail_a3",
+        "A4": "avail_a4",
+        "A5": "avail_a5"
+      },
+      "utilities": {
+        "A1": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_a1",
+            "random": true
+          }
+        ],
+        "A2": [
+          {
+            "parameter": "ASC_A2",
+            "variable": null,
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_a2",
+            "random": true
+          }
+        ],
+        "A3": [
+          {
+            "parameter": "ASC_A3",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_a3",
+            "random": true
+          }
+        ],
+        "A4": [
+          {
+            "parameter": "ASC_A4",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_a4",
+            "random": true
+          }
+        ],
+        "A5": [
+          {
+            "parameter": "ASC_A5",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_a5",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.0353146749548614,
+        "estimate_s": 0.02169418695848435,
+        "covariance_s": 0.013620487996377051,
+        "loglike": -482.5297705497616,
+        "ll_diff": 0.0,
+        "worse_loglike": false,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_COST": -1.6516273658484637,
+          "ASC_A2": 0.19736498586222434,
+          "ASC_A3": 1.509770816008647,
+          "ASC_A4": 1.352738257510675,
+          "ASC_A5": 2.600349706683024,
+          "SIGMA_B_COST": 0.000019426511121350674,
+          "SIGMA_ASC_A2": 1.5993415645854294
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=3.838000371916814e-05; scaled_gradient_norm=7.95391415444493e-08; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 28.632836833945476,
+        "estimate_s": 28.63277189200744,
+        "covariance_s": 0.0000649419380351901,
+        "loglike": -482.52976927369724,
+        "ll_diff": 0.0000012760643812725903,
+        "worse_loglike": false,
+        "max_param_diff": 0.0011891459554784767,
+        "max_prob_diff": 0.00004129441758091851,
+        "params": {
+          "B_COST": -1.6517806018674357,
+          "ASC_A2": 0.19711144076876752,
+          "ASC_A3": 1.5098529726153846,
+          "ASC_A4": 1.3527992900273798,
+          "ASC_A5": 2.6005885325840166,
+          "SIGMA_B_COST": 0.000009245510964768745,
+          "SIGMA_ASC_A2": 1.600530710540908
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 0.7799999999999999,
+        "estimate_s": 0.7799999999999999,
+        "covariance_s": 0,
+        "loglike": -480.1917281004175,
+        "ll_diff": 2.3380424493441296,
+        "max_param_diff": 0.8080136188404206,
+        "max_prob_diff": 0.04566983902859034,
+        "params": {
+          "B_COST": -1.9793929424804115,
+          "ASC_A2": -0.1195326498190481,
+          "ASC_A3": 1.6851818345973084,
+          "ASC_A4": 1.5111683520156713,
+          "ASC_A5": 2.841816221465809,
+          "SIGMA_B_COST": 0.6379522730336425,
+          "SIGMA_ASC_A2": 2.40735518342585
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "lpmc",
+    "dataset_id": "lpmc_london",
+    "source": "Biogeme data page lpmc.dat",
+    "model_name": "London Passenger Mode Choice mixed logit",
+    "n_obs": 81086,
+    "n_rows": 324344,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_TIME",
+      "B_COST",
+      "ASC_CYCLE",
+      "ASC_PT",
+      "ASC_DRIVE"
+    ],
+    "random_coefficients": [
+      "B_TIME",
+      "B_COST"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_TIME": -5.3101621003391495,
+        "B_COST": -0.17136534860443023,
+        "ASC_CYCLE": -3.7981338614079903,
+        "ASC_PT": -0.5036630533999108,
+        "ASC_DRIVE": -1.223374778007154
+      },
+      "random_scales": {
+        "B_TIME": 1.1115884100143067,
+        "B_COST": 0.4409893468751579
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -74975.976074614,
+      "mnl_gradient_norm": 0.0011717374194816215
+    },
+    "specification": {
+      "alternatives": [
+        "walk",
+        "cycle",
+        "pt",
+        "drive"
+      ],
+      "availability": {
+        "walk": "avail_walk",
+        "cycle": "avail_cycle",
+        "pt": "avail_pt",
+        "drive": "avail_drive"
+      },
+      "utilities": {
+        "walk": [
+          {
+            "parameter": "B_TIME",
+            "variable": "time_walk",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_walk",
+            "random": true
+          }
+        ],
+        "cycle": [
+          {
+            "parameter": "ASC_CYCLE",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_cycle",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_cycle",
+            "random": true
+          }
+        ],
+        "pt": [
+          {
+            "parameter": "ASC_PT",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_pt",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_pt",
+            "random": true
+          }
+        ],
+        "drive": [
+          {
+            "parameter": "ASC_DRIVE",
+            "variable": null,
+            "random": false
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_drive",
+            "random": true
+          },
+          {
+            "parameter": "B_COST",
+            "variable": "cost_drive",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 17.47751121490728,
+        "estimate_s": 13.068618968944065,
+        "covariance_s": 4.408892245963216,
+        "loglike": -74862.20033877245,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_TIME": -6.146202356737356,
+          "B_COST": -0.17171642952074698,
+          "ASC_CYCLE": -3.9467847766137747,
+          "ASC_PT": -0.5608801983919159,
+          "ASC_DRIVE": -1.4078684806612245,
+          "SIGMA_B_TIME": 1.7224596319180518,
+          "SIGMA_B_COST": 1.3776347743391217E-12
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.0009571466743530043; scaled_gradient_norm=1.2785446727743069e-08; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 73.76886679092422,
+        "estimate_s": 73.76880436995998,
+        "covariance_s": 0.00006242096424102783,
+        "loglike": -74862.2213630953,
+        "ll_diff": -0.02102432285028044,
+        "max_param_diff": 0.00002226763743743827,
+        "max_prob_diff": 0.000004910871290286778,
+        "params": {
+          "B_TIME": -6.1462021435191065,
+          "B_COST": -0.17171640036983815,
+          "ASC_CYCLE": -3.9467845791136784,
+          "ASC_PT": -0.5608801533641137,
+          "ASC_DRIVE": -1.4078683560802672,
+          "SIGMA_B_TIME": 1.7224595299185328,
+          "SIGMA_B_COST": 0.000022267638815073046
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": false,
+        "total_s": 48.801,
+        "estimate_s": 48.801,
+        "covariance_s": 0,
+        "loglike": null,
+        "ll_diff": null,
+        "max_param_diff": null,
+        "max_prob_diff": null,
+        "params": null,
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=7; convergence_message=Singular convergence (unfavorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_catsup",
+    "dataset_id": "mlogit_catsup",
+    "source": "R mlogit::catsup",
+    "model_name": "mlogit::catsup mixed logit",
+    "n_obs": 2798,
+    "n_rows": 11192,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_DISP",
+      "B_FEAT",
+      "B_PRICE"
+    ],
+    "random_coefficients": [
+      "B_DISP",
+      "B_FEAT",
+      "B_PRICE"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_DISP": 1.265217272382343,
+        "B_FEAT": 0.8831265741426584,
+        "B_PRICE": -0.8850190251597777
+      },
+      "random_scales": {
+        "B_DISP": 4.056947563059173,
+        "B_FEAT": 4.340708564480094,
+        "B_PRICE": 0.2527931874213607
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -3065.4569127975265,
+      "mnl_gradient_norm": 0.000038816651129426204
+    },
+    "specification": {
+      "alternatives": [
+        "heinz41",
+        "heinz32",
+        "heinz28",
+        "hunts32"
+      ],
+      "availability": {
+        "heinz41": "avail_heinz41_1",
+        "heinz32": "avail_heinz32_2",
+        "heinz28": "avail_heinz28_3",
+        "hunts32": "avail_hunts32_4"
+      },
+      "utilities": {
+        "heinz41": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_heinz41_1",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_heinz41_1",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_heinz41_1",
+            "random": true
+          }
+        ],
+        "heinz32": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_heinz32_2",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_heinz32_2",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_heinz32_2",
+            "random": true
+          }
+        ],
+        "heinz28": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_heinz28_3",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_heinz28_3",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_heinz28_3",
+            "random": true
+          }
+        ],
+        "hunts32": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_hunts32_4",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_hunts32_4",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_hunts32_4",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.23109229002147913,
+        "estimate_s": 0.18652032199315727,
+        "covariance_s": 0.04457196802832186,
+        "loglike": -3047.188445376456,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_DISP": 2.2764530978094597,
+          "B_FEAT": 1.062182708841552,
+          "B_PRICE": -1.0362908472072054,
+          "SIGMA_B_DISP": 4.410636893650829,
+          "SIGMA_B_FEAT": 3.233538391676648E-10,
+          "SIGMA_B_PRICE": 0.5205595469860282
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=2.8534174407866582e-05; scaled_gradient_norm=9.36409904387827e-09; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 43.31054463097826,
+        "estimate_s": 43.31048492004629,
+        "covariance_s": 0.000059710931964218616,
+        "loglike": -3047.189606108263,
+        "ll_diff": -0.0011607318069764005,
+        "max_param_diff": 0.00039515970850536133,
+        "max_prob_diff": 0.000015306634058909196,
+        "params": {
+          "B_DISP": 2.2764305544534382,
+          "B_FEAT": 1.062182588861793,
+          "B_PRICE": -1.0362905458987643,
+          "SIGMA_B_DISP": 4.410555938412523,
+          "SIGMA_B_FEAT": 0.0003951600318592005,
+          "SIGMA_B_PRICE": 0.5205587938895939
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 2.4650000000000003,
+        "estimate_s": 2.4650000000000003,
+        "covariance_s": 0,
+        "loglike": -3050.2673174823467,
+        "ll_diff": -3.078872105890696,
+        "max_param_diff": 0.9088455723809474,
+        "max_prob_diff": 0.07788135449007971,
+        "worse_loglike": false,
+        "params": {
+          "B_DISP": 2.1970585848837074,
+          "B_FEAT": 0.9900024801329799,
+          "B_PRICE": -0.9311275169565095,
+          "SIGMA_B_DISP": 3.5017913212698817,
+          "SIGMA_B_FEAT": 0.1145964280338053,
+          "SIGMA_B_PRICE": 9.918083908617742E-7
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_cracker",
+    "dataset_id": "mlogit_cracker",
+    "source": "R mlogit::cracker",
+    "model_name": "mlogit::cracker mixed logit",
+    "n_obs": 3292,
+    "n_rows": 13168,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_DISP",
+      "B_FEAT",
+      "B_PRICE"
+    ],
+    "random_coefficients": [
+      "B_DISP",
+      "B_FEAT",
+      "B_PRICE"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_DISP": 0.726020277317062,
+        "B_FEAT": 0.5968340117360297,
+        "B_PRICE": -0.009553040241318547
+      },
+      "random_scales": {
+        "B_DISP": 2.4360222898539257,
+        "B_FEAT": 4.324875195256559,
+        "B_PRICE": 0.010157278430302384
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -4339.971890459953,
+      "mnl_gradient_norm": 0.011235688508125771
+    },
+    "specification": {
+      "alternatives": [
+        "sunshine",
+        "kleebler",
+        "nabisco",
+        "private"
+      ],
+      "availability": {
+        "sunshine": "avail_sunshine_1",
+        "kleebler": "avail_kleebler_2",
+        "nabisco": "avail_nabisco_3",
+        "private": "avail_private_4"
+      },
+      "utilities": {
+        "sunshine": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_sunshine_1",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_sunshine_1",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_sunshine_1",
+            "random": true
+          }
+        ],
+        "kleebler": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_kleebler_2",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_kleebler_2",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_kleebler_2",
+            "random": true
+          }
+        ],
+        "nabisco": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_nabisco_3",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_nabisco_3",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_nabisco_3",
+            "random": true
+          }
+        ],
+        "private": [
+          {
+            "parameter": "B_DISP",
+            "variable": "disp_private_4",
+            "random": true
+          },
+          {
+            "parameter": "B_FEAT",
+            "variable": "feat_private_4",
+            "random": true
+          },
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_private_4",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.2978556149173528,
+        "estimate_s": 0.24416370794642717,
+        "covariance_s": 0.05369190697092563,
+        "loglike": -4302.663965519578,
+        "ll_diff": 0.0,
+        "worse_loglike": false,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_DISP": 0.9101096504566557,
+          "B_FEAT": 0.7604742696207003,
+          "B_PRICE": -0.011604455706009053,
+          "SIGMA_B_DISP": 2.8777766637499855,
+          "SIGMA_B_FEAT": 6.968311937887436,
+          "SIGMA_B_PRICE": 0.0324882150450098
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.0027897662083214364; scaled_gradient_norm=6.483811496035693e-07; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 43.98717395996209,
+        "estimate_s": 43.98711452900898,
+        "covariance_s": 0.00005943095311522484,
+        "loglike": -4302.664039051353,
+        "ll_diff": -0.00007353177534241695,
+        "worse_loglike": false,
+        "max_param_diff": 0.031437975940094454,
+        "max_prob_diff": 0.0007101771116687083,
+        "params": {
+          "B_DISP": 0.9106694943833773,
+          "B_FEAT": 0.7602298740597202,
+          "B_PRICE": -0.011598480216509435,
+          "SIGMA_B_DISP": 2.8623885412811614,
+          "SIGMA_B_FEAT": 6.936873961947342,
+          "SIGMA_B_PRICE": 0.03246420391255636
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 3.194,
+        "estimate_s": 3.194,
+        "covariance_s": 0,
+        "loglike": -4297.167125650821,
+        "ll_diff": 5.496839868756979,
+        "max_param_diff": 1.3428560802554825,
+        "max_prob_diff": 0.040577213776391285,
+        "params": {
+          "B_DISP": 0.9488949250300256,
+          "B_FEAT": 0.8711556748585978,
+          "B_PRICE": -0.009460812666420406,
+          "SIGMA_B_DISP": 2.271938437667062,
+          "SIGMA_B_FEAT": 5.6254558576319535,
+          "SIGMA_B_PRICE": 0.039069243664318
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_electricity",
+    "dataset_id": "mlogit_electricity",
+    "source": "R mlogit::electricity",
+    "model_name": "mlogit::electricity mixed logit",
+    "n_obs": 4308,
+    "n_rows": 17232,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_PF",
+      "B_CL",
+      "B_LOC",
+      "B_WK",
+      "B_TOD",
+      "B_SEAS"
+    ],
+    "random_coefficients": [
+      "B_PF",
+      "B_CL",
+      "B_LOC",
+      "B_WK"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_PF": -0.6252273225093843,
+        "B_CL": -0.10829911550390856,
+        "B_LOC": 1.4422434151314445,
+        "B_WK": 0.9955041830396519,
+        "B_TOD": -5.462755733367664,
+        "B_SEAS": -5.840027927104029
+      },
+      "random_scales": {
+        "B_PF": 0.17596831613805536,
+        "B_CL": 0.3347740658618164,
+        "B_LOC": 2.2381470741623293,
+        "B_WK": 1.5712313350711458
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -4958.649119337403,
+      "mnl_gradient_norm": 0.0035644784415177584
+    },
+    "specification": {
+      "alternatives": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "availability": {
+        "1": "avail_alt_1_1",
+        "2": "avail_alt_2_2",
+        "3": "avail_alt_3_3",
+        "4": "avail_alt_4_4"
+      },
+      "utilities": {
+        "1": [
+          {
+            "parameter": "B_PF",
+            "variable": "pf_alt_1_1",
+            "random": true
+          },
+          {
+            "parameter": "B_CL",
+            "variable": "cl_alt_1_1",
+            "random": true
+          },
+          {
+            "parameter": "B_LOC",
+            "variable": "loc_alt_1_1",
+            "random": true
+          },
+          {
+            "parameter": "B_WK",
+            "variable": "wk_alt_1_1",
+            "random": true
+          },
+          {
+            "parameter": "B_TOD",
+            "variable": "tod_alt_1_1",
+            "random": false
+          },
+          {
+            "parameter": "B_SEAS",
+            "variable": "seas_alt_1_1",
+            "random": false
+          }
+        ],
+        "2": [
+          {
+            "parameter": "B_PF",
+            "variable": "pf_alt_2_2",
+            "random": true
+          },
+          {
+            "parameter": "B_CL",
+            "variable": "cl_alt_2_2",
+            "random": true
+          },
+          {
+            "parameter": "B_LOC",
+            "variable": "loc_alt_2_2",
+            "random": true
+          },
+          {
+            "parameter": "B_WK",
+            "variable": "wk_alt_2_2",
+            "random": true
+          },
+          {
+            "parameter": "B_TOD",
+            "variable": "tod_alt_2_2",
+            "random": false
+          },
+          {
+            "parameter": "B_SEAS",
+            "variable": "seas_alt_2_2",
+            "random": false
+          }
+        ],
+        "3": [
+          {
+            "parameter": "B_PF",
+            "variable": "pf_alt_3_3",
+            "random": true
+          },
+          {
+            "parameter": "B_CL",
+            "variable": "cl_alt_3_3",
+            "random": true
+          },
+          {
+            "parameter": "B_LOC",
+            "variable": "loc_alt_3_3",
+            "random": true
+          },
+          {
+            "parameter": "B_WK",
+            "variable": "wk_alt_3_3",
+            "random": true
+          },
+          {
+            "parameter": "B_TOD",
+            "variable": "tod_alt_3_3",
+            "random": false
+          },
+          {
+            "parameter": "B_SEAS",
+            "variable": "seas_alt_3_3",
+            "random": false
+          }
+        ],
+        "4": [
+          {
+            "parameter": "B_PF",
+            "variable": "pf_alt_4_4",
+            "random": true
+          },
+          {
+            "parameter": "B_CL",
+            "variable": "cl_alt_4_4",
+            "random": true
+          },
+          {
+            "parameter": "B_LOC",
+            "variable": "loc_alt_4_4",
+            "random": true
+          },
+          {
+            "parameter": "B_WK",
+            "variable": "wk_alt_4_4",
+            "random": true
+          },
+          {
+            "parameter": "B_TOD",
+            "variable": "tod_alt_4_4",
+            "random": false
+          },
+          {
+            "parameter": "B_SEAS",
+            "variable": "seas_alt_4_4",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.5648184919264168,
+        "estimate_s": 0.4589329019654542,
+        "covariance_s": 0.10588558996096253,
+        "loglike": -4949.615269229307,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_PF": -0.763834342552259,
+          "B_CL": -0.12978361852156806,
+          "B_LOC": 1.5617431878568917,
+          "B_WK": 1.1116631182143097,
+          "B_TOD": -6.717607576067108,
+          "B_SEAS": -7.158623554705478,
+          "SIGMA_B_PF": 0.14885281051115223,
+          "SIGMA_B_CL": 1.5094324207030673E-10,
+          "SIGMA_B_LOC": 1.1730951203423237,
+          "SIGMA_B_WK": 0.8738364070887528
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.0003213142501594689; scaled_gradient_norm=6.491701529955478e-08; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 93.01948338595685,
+        "estimate_s": 93.01941529498436,
+        "covariance_s": 0.00006809097249060869,
+        "loglike": -4949.61868697291,
+        "ll_diff": -0.0034177436027675867,
+        "max_param_diff": 0.0008263915710109426,
+        "max_prob_diff": 0.00007914850692763986,
+        "params": {
+          "B_PF": -0.7638448054585139,
+          "B_CL": -0.12978836319796166,
+          "B_LOC": 1.5617999434403635,
+          "B_WK": 1.1116644489864453,
+          "B_TOD": -6.717658629030734,
+          "B_SEAS": -7.158688611545611,
+          "SIGMA_B_PF": 0.14884871624217552,
+          "SIGMA_B_CL": 0.0005449194672247741,
+          "SIGMA_B_LOC": 1.1722687287713127,
+          "SIGMA_B_WK": 0.8739795060766515
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 10.001999999999999,
+        "estimate_s": 10.001999999999999,
+        "covariance_s": 0,
+        "loglike": -4953.992172972917,
+        "ll_diff": -4.376903743609546,
+        "max_param_diff": 0.4651740990009743,
+        "max_prob_diff": 0.03926737523147447,
+        "worse_loglike": false,
+        "params": {
+          "B_PF": -0.742915542292002,
+          "B_CL": -0.1362191734474913,
+          "B_LOC": 1.5839633279885268,
+          "B_WK": 1.108013670488841,
+          "B_TOD": -6.5196329372950546,
+          "B_SEAS": -6.947433430781956,
+          "SIGMA_B_PF": 0.13661932835229113,
+          "SIGMA_B_CL": 0.15358936347176977,
+          "SIGMA_B_LOC": 0.7342775831503566,
+          "SIGMA_B_WK": 0.4086623080877785
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_fishing",
+    "dataset_id": "mlogit_fishing",
+    "source": "R mlogit::fishing",
+    "model_name": "mlogit::fishing mixed logit",
+    "n_obs": 1182,
+    "n_rows": 4728,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_PRICE",
+      "B_CATCH"
+    ],
+    "random_coefficients": [
+      "B_PRICE",
+      "B_CATCH"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_PRICE": -0.020476540175794165,
+        "B_CATCH": 0.953098290806655
+      },
+      "random_scales": {
+        "B_PRICE": 0.008098143089571196,
+        "B_CATCH": 1.8948795626370647
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -1311.9796171078071,
+      "mnl_gradient_norm": 0.004590686232861865
+    },
+    "specification": {
+      "alternatives": [
+        "beach",
+        "pier",
+        "boat",
+        "charter"
+      ],
+      "availability": {
+        "beach": "avail_beach_1",
+        "pier": "avail_pier_2",
+        "boat": "avail_boat_3",
+        "charter": "avail_charter_4"
+      },
+      "utilities": {
+        "beach": [
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_beach_1",
+            "random": true
+          },
+          {
+            "parameter": "B_CATCH",
+            "variable": "catch_beach_1",
+            "random": true
+          }
+        ],
+        "pier": [
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_pier_2",
+            "random": true
+          },
+          {
+            "parameter": "B_CATCH",
+            "variable": "catch_pier_2",
+            "random": true
+          }
+        ],
+        "boat": [
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_boat_3",
+            "random": true
+          },
+          {
+            "parameter": "B_CATCH",
+            "variable": "catch_boat_3",
+            "random": true
+          }
+        ],
+        "charter": [
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_charter_4",
+            "random": true
+          },
+          {
+            "parameter": "B_CATCH",
+            "variable": "catch_charter_4",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.07117694115731865,
+        "estimate_s": 0.05463259806856513,
+        "covariance_s": 0.01654434308875352,
+        "loglike": -1306.3635128502483,
+        "ll_diff": 0.0,
+        "worse_loglike": false,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_PRICE": -0.024835044836172455,
+          "B_CATCH": 1.1148301814227632,
+          "SIGMA_B_PRICE": 0.008822045922883414,
+          "SIGMA_B_CATCH": 0.7814306666563234
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.008336431776807882; scaled_gradient_norm=6.38140279853599e-06; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 28.844423566013575,
+        "estimate_s": 28.844364705029875,
+        "covariance_s": 0.000058860983699560165,
+        "loglike": -1306.3635128500978,
+        "ll_diff": 1.5052137314341962E-10,
+        "worse_loglike": false,
+        "max_param_diff": 0.000003394750814122993,
+        "max_prob_diff": 4.4581145541844336E-7,
+        "params": {
+          "B_PRICE": -0.024835062888066653,
+          "B_CATCH": 1.1148296178484849,
+          "SIGMA_B_PRICE": 0.008822057216146494,
+          "SIGMA_B_CATCH": 0.7814340614071376
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 0.676,
+        "estimate_s": 0.676,
+        "covariance_s": 0,
+        "loglike": -1300.0905909306691,
+        "ll_diff": 6.272921919579176,
+        "max_param_diff": 0.7864470490138912,
+        "max_prob_diff": 0.06849960236083952,
+        "params": {
+          "B_PRICE": -0.027197496519186733,
+          "B_CATCH": 1.3404447162787685,
+          "SIGMA_B_PRICE": 0.01026409323216345,
+          "SIGMA_B_CATCH": 1.5678777156702146
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_hc",
+    "dataset_id": "mlogit_hc",
+    "source": "R mlogit::hc",
+    "model_name": "mlogit::hc mixed logit",
+    "n_obs": 250,
+    "n_rows": 1750,
+    "n_alternatives": 7,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_ICH",
+      "B_OCH"
+    ],
+    "random_coefficients": [
+      "B_ICH",
+      "B_OCH"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_ICH": -0.0016020607791049728,
+        "B_OCH": -0.009302549087213514
+      },
+      "random_scales": {
+        "B_ICH": 0.0006458714982418261,
+        "B_OCH": 0.0029330639435540895
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -331.9100227464945,
+      "mnl_gradient_norm": 0.10304833970905417
+    },
+    "specification": {
+      "alternatives": [
+        "gcc",
+        "ecc",
+        "erc",
+        "hpc",
+        "gc",
+        "ec",
+        "er"
+      ],
+      "availability": {
+        "gcc": "avail_gcc_1",
+        "ecc": "avail_ecc_2",
+        "erc": "avail_erc_3",
+        "hpc": "avail_hpc_4",
+        "gc": "avail_gc_5",
+        "ec": "avail_ec_6",
+        "er": "avail_er_7"
+      },
+      "utilities": {
+        "gcc": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_gcc_1",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_gcc_1",
+            "random": true
+          }
+        ],
+        "ecc": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_ecc_2",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_ecc_2",
+            "random": true
+          }
+        ],
+        "erc": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_erc_3",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_erc_3",
+            "random": true
+          }
+        ],
+        "hpc": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_hpc_4",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_hpc_4",
+            "random": true
+          }
+        ],
+        "gc": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_gc_5",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_gc_5",
+            "random": true
+          }
+        ],
+        "ec": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_ec_6",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_ec_6",
+            "random": true
+          }
+        ],
+        "er": [
+          {
+            "parameter": "B_ICH",
+            "variable": "ich_er_7",
+            "random": true
+          },
+          {
+            "parameter": "B_OCH",
+            "variable": "och_er_7",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.0453976031858474,
+        "estimate_s": 0.03682360611855984,
+        "covariance_s": 0.008573997067287564,
+        "loglike": -268.202545021801,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_ICH": -0.009688311761625813,
+          "B_OCH": -0.018476628735193117,
+          "SIGMA_B_ICH": 0.0064899659338102465,
+          "SIGMA_B_OCH": 0.000055486390304624656
+        },
+        "message": "success=True; LBFGS step or objective-change criterion satisfied.; optimizer_iterations=35; function_evaluations=41; internal_gradient_norm=0.026626773589517285; scaled_gradient_norm=9.927860150377364e-05; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 103.68317629490048,
+        "estimate_s": 103.68311890680343,
+        "covariance_s": 0.000057388097047805786,
+        "loglike": -268.1902309601105,
+        "ll_diff": 0.012314061690460676,
+        "max_param_diff": 0.000055460118885197525,
+        "max_prob_diff": 0.0003381932721410186,
+        "params": {
+          "B_ICH": -0.009685226279525316,
+          "B_OCH": -0.018470729395329646,
+          "SIGMA_B_ICH": 0.006484299534205772,
+          "SIGMA_B_OCH": 2.627141942713225E-8
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 0.366,
+        "estimate_s": 0.366,
+        "covariance_s": 0,
+        "loglike": -276.684808312693,
+        "ll_diff": -8.482263290892035,
+        "max_param_diff": 0.0011708600686695658,
+        "max_prob_diff": 0.042836900892535,
+        "worse_loglike": true,
+        "params": {
+          "B_ICH": -0.008740653717428687,
+          "B_OCH": -0.01730576866652355,
+          "SIGMA_B_ICH": 0.0065717276527877235,
+          "SIGMA_B_OCH": 0.00004031402963769039
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_heating",
+    "dataset_id": "mlogit_heating",
+    "source": "R mlogit::heating",
+    "model_name": "mlogit::heating mixed logit",
+    "n_obs": 900,
+    "n_rows": 4500,
+    "n_alternatives": 5,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_IC",
+      "B_OC"
+    ],
+    "random_coefficients": [
+      "B_IC",
+      "B_OC"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_IC": -0.006231869233050704,
+        "B_OC": -0.004580082210750272
+      },
+      "random_scales": {
+        "B_IC": 0.001079527009439866,
+        "B_OC": 0.003084490668001566
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -1095.2371253294464,
+      "mnl_gradient_norm": 0.007408680481111
+    },
+    "specification": {
+      "alternatives": [
+        "gc",
+        "gr",
+        "ec",
+        "er",
+        "hp"
+      ],
+      "availability": {
+        "gc": "avail_gc_1",
+        "gr": "avail_gr_2",
+        "ec": "avail_ec_3",
+        "er": "avail_er_4",
+        "hp": "avail_hp_5"
+      },
+      "utilities": {
+        "gc": [
+          {
+            "parameter": "B_IC",
+            "variable": "ic_gc_1",
+            "random": true
+          },
+          {
+            "parameter": "B_OC",
+            "variable": "oc_gc_1",
+            "random": true
+          }
+        ],
+        "gr": [
+          {
+            "parameter": "B_IC",
+            "variable": "ic_gr_2",
+            "random": true
+          },
+          {
+            "parameter": "B_OC",
+            "variable": "oc_gr_2",
+            "random": true
+          }
+        ],
+        "ec": [
+          {
+            "parameter": "B_IC",
+            "variable": "ic_ec_3",
+            "random": true
+          },
+          {
+            "parameter": "B_OC",
+            "variable": "oc_ec_3",
+            "random": true
+          }
+        ],
+        "er": [
+          {
+            "parameter": "B_IC",
+            "variable": "ic_er_4",
+            "random": true
+          },
+          {
+            "parameter": "B_OC",
+            "variable": "oc_er_4",
+            "random": true
+          }
+        ],
+        "hp": [
+          {
+            "parameter": "B_IC",
+            "variable": "ic_hp_5",
+            "random": true
+          },
+          {
+            "parameter": "B_OC",
+            "variable": "oc_hp_5",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.10852718772366643,
+        "estimate_s": 0.09312136983498931,
+        "covariance_s": 0.01540581788867712,
+        "loglike": -1091.702533955866,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_IC": -0.007374871509302208,
+          "B_OC": -0.004637397786502334,
+          "SIGMA_B_IC": 0.004341769975576727,
+          "SIGMA_B_OC": 9.896777860760295E-18
+        },
+        "message": "success=True; LBFGS step or objective-change criterion satisfied.; optimizer_iterations=49; function_evaluations=58; internal_gradient_norm=0.05134282004544261; scaled_gradient_norm=4.7030045684146253e-05; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 77.21053424896672,
+        "estimate_s": 77.21047856193036,
+        "covariance_s": 0.000055687036365270615,
+        "loglike": -1091.7025379268105,
+        "ll_diff": -0.000003970944362663431,
+        "max_param_diff": 2.122191067668866E-8,
+        "max_prob_diff": 0.0000010895297637980583,
+        "params": {
+          "B_IC": -0.007374857939874425,
+          "B_OC": -0.004637402410559776,
+          "SIGMA_B_IC": 0.00434174875366605,
+          "SIGMA_B_OC": 1.87651806247137E-9
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 0.7150000000000001,
+        "estimate_s": 0.7150000000000001,
+        "covariance_s": 0,
+        "loglike": -1092.0789403050237,
+        "ll_diff": -0.3764063491576053,
+        "max_param_diff": 0.00018788031402402092,
+        "max_prob_diff": 0.004275122776413454,
+        "worse_loglike": false,
+        "params": {
+          "B_IC": -0.0073025017047324585,
+          "B_OC": -0.004637502522021191,
+          "SIGMA_B_IC": 0.004249671269593823,
+          "SIGMA_B_OC": 0.00018788031402403082
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_mode",
+    "dataset_id": "mlogit_mode",
+    "source": "R mlogit::mode",
+    "model_name": "mlogit::mode mixed logit",
+    "n_obs": 453,
+    "n_rows": 1812,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_COST",
+      "B_TIME"
+    ],
+    "random_coefficients": [
+      "B_COST",
+      "B_TIME"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_COST": 0.1367936955646876,
+        "B_TIME": -0.1068767840457629
+      },
+      "random_scales": {
+        "B_COST": 0.3168246257402271,
+        "B_TIME": 0.023639632995462158
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -451.2967553327321,
+      "mnl_gradient_norm": 0.003908698041731146
+    },
+    "specification": {
+      "alternatives": [
+        "car",
+        "carpool",
+        "bus",
+        "rail"
+      ],
+      "availability": {
+        "car": "avail_car_1",
+        "carpool": "avail_carpool_2",
+        "bus": "avail_bus_3",
+        "rail": "avail_rail_4"
+      },
+      "utilities": {
+        "car": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_car_1",
+            "random": true
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_car_1",
+            "random": true
+          }
+        ],
+        "carpool": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_carpool_2",
+            "random": true
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_carpool_2",
+            "random": true
+          }
+        ],
+        "bus": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_bus_3",
+            "random": true
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_bus_3",
+            "random": true
+          }
+        ],
+        "rail": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_rail_4",
+            "random": true
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_rail_4",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.03307318710722029,
+        "estimate_s": 0.022571691079065204,
+        "covariance_s": 0.010501496028155088,
+        "loglike": -450.6488302306503,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_COST": 0.13768102175781097,
+          "B_TIME": -0.11646617260042097,
+          "SIGMA_B_COST": 0.03544105640365013,
+          "SIGMA_B_TIME": 0.030174712268261177
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.00017572291792603738; scaled_gradient_norm=3.899331500230439e-07; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 28.581486107083037,
+        "estimate_s": 28.581431037047878,
+        "covariance_s": 0.00005507003515958786,
+        "loglike": -450.64883023070945,
+        "ll_diff": -5.917399903410114E-11,
+        "max_param_diff": 8.89487620080176E-7,
+        "max_prob_diff": 2.0612902995598148E-7,
+        "params": {
+          "B_COST": 0.13768116863811034,
+          "B_TIME": -0.11646623468190713,
+          "SIGMA_B_COST": 0.03544194589127021,
+          "SIGMA_B_TIME": 0.03017483678766506
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 0.3670000000000001,
+        "estimate_s": 0.3670000000000001,
+        "covariance_s": 0,
+        "loglike": -450.9368713201655,
+        "ll_diff": -0.2880410895152181,
+        "max_param_diff": 0.027096648543048312,
+        "max_prob_diff": 0.018946513162905076,
+        "worse_loglike": false,
+        "params": {
+          "B_COST": 0.13571672376290364,
+          "B_TIME": -0.11840888969015333,
+          "SIGMA_B_COST": 0.00834440786060182,
+          "SIGMA_B_TIME": 0.04108818205355549
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_modecanada",
+    "dataset_id": "mlogit_modecanada",
+    "source": "R mlogit::modecanada",
+    "model_name": "mlogit::modecanada mixed logit",
+    "n_obs": 4324,
+    "n_rows": 15520,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_COST",
+      "B_IVT",
+      "B_OVT",
+      "B_FREQ"
+    ],
+    "random_coefficients": [
+      "B_COST",
+      "B_IVT",
+      "B_OVT",
+      "B_FREQ"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_COST": -0.008988908728705494,
+        "B_IVT": -0.013652682373983455,
+        "B_OVT": -0.02837709878629877,
+        "B_FREQ": 0.03139747937655261
+      },
+      "random_scales": {
+        "B_COST": 0.010860257026566468,
+        "B_IVT": 0.004474299828161961,
+        "B_OVT": 0.012429696323080852,
+        "B_FREQ": 0.06494374827077506
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -3349.363479708307,
+      "mnl_gradient_norm": 0.0661001867167437
+    },
+    "specification": {
+      "alternatives": [
+        "train",
+        "car",
+        "bus",
+        "air"
+      ],
+      "availability": {
+        "train": "avail_train_1",
+        "car": "avail_car_2",
+        "bus": "avail_bus_3",
+        "air": "avail_air_4"
+      },
+      "utilities": {
+        "train": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_train_1",
+            "random": true
+          },
+          {
+            "parameter": "B_IVT",
+            "variable": "ivt_train_1",
+            "random": true
+          },
+          {
+            "parameter": "B_OVT",
+            "variable": "ovt_train_1",
+            "random": true
+          },
+          {
+            "parameter": "B_FREQ",
+            "variable": "freq_train_1",
+            "random": true
+          }
+        ],
+        "car": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_car_2",
+            "random": true
+          },
+          {
+            "parameter": "B_IVT",
+            "variable": "ivt_car_2",
+            "random": true
+          },
+          {
+            "parameter": "B_OVT",
+            "variable": "ovt_car_2",
+            "random": true
+          },
+          {
+            "parameter": "B_FREQ",
+            "variable": "freq_car_2",
+            "random": true
+          }
+        ],
+        "bus": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_bus_3",
+            "random": true
+          },
+          {
+            "parameter": "B_IVT",
+            "variable": "ivt_bus_3",
+            "random": true
+          },
+          {
+            "parameter": "B_OVT",
+            "variable": "ovt_bus_3",
+            "random": true
+          },
+          {
+            "parameter": "B_FREQ",
+            "variable": "freq_bus_3",
+            "random": true
+          }
+        ],
+        "air": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_air_4",
+            "random": true
+          },
+          {
+            "parameter": "B_IVT",
+            "variable": "ivt_air_4",
+            "random": true
+          },
+          {
+            "parameter": "B_OVT",
+            "variable": "ovt_air_4",
+            "random": true
+          },
+          {
+            "parameter": "B_FREQ",
+            "variable": "freq_air_4",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 65.39631735510193,
+        "estimate_s": 50.871891817077994,
+        "covariance_s": 14.524425538023934,
+        "loglike": -3338.912446627187,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_COST": -0.01201423419782961,
+          "B_IVT": -0.016121178558791503,
+          "B_OVT": -0.029115109592058697,
+          "B_FREQ": 0.02781472759944459,
+          "SIGMA_B_COST": 5.913268226646582E-13,
+          "SIGMA_B_IVT": 0.0037098989502931568,
+          "SIGMA_B_OVT": 0.001883969979404507,
+          "SIGMA_B_FREQ": 9.250273437662062E-13
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.002091563323711009; scaled_gradient_norm=6.264205357717026e-07; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 170.16596553497948,
+        "estimate_s": 170.16589998500422,
+        "covariance_s": 0.00006554997526109219,
+        "loglike": -3338.9139260926777,
+        "ll_diff": -0.0014794654907746008,
+        "max_param_diff": 0.000002763368976188395,
+        "max_prob_diff": 0.000014174603971905952,
+        "params": {
+          "B_COST": -0.012013916269697927,
+          "B_IVT": -0.016120885593086703,
+          "B_OVT": -0.02911507213815765,
+          "B_FREQ": 0.027815498967667555,
+          "SIGMA_B_COST": 6.139648535263402E-7,
+          "SIGMA_B_IVT": 0.003709529475047111,
+          "SIGMA_B_OVT": 0.001883791291171183,
+          "SIGMA_B_FREQ": 0.000002763369901215739
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 5.444,
+        "estimate_s": 5.444,
+        "covariance_s": 0,
+        "loglike": -3339.5803692756776,
+        "ll_diff": -0.6679226484907304,
+        "max_param_diff": 0.0018783390364621455,
+        "max_prob_diff": 0.03942696551080674,
+        "worse_loglike": false,
+        "params": {
+          "B_COST": -0.0116825498539909,
+          "B_IVT": -0.015784328967229207,
+          "B_OVT": -0.029027246896793295,
+          "B_FREQ": 0.02874042103313131,
+          "SIGMA_B_COST": 7.85048657081679E-26,
+          "SIGMA_B_IVT": 0.0043111230748607236,
+          "SIGMA_B_OVT": 0.00000563094294236152,
+          "SIGMA_B_FREQ": 8.278802238185048E-9
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable); successful_estimation=True; iterations=15; max_abs_gradient=0.4238353603359428; convergence_warning=large gradient after relative-function convergence"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_nox",
+    "dataset_id": "mlogit_nox",
+    "source": "R mlogit::nox",
+    "model_name": "mlogit::nox mixed logit",
+    "n_obs": 632,
+    "n_rows": 9480,
+    "n_alternatives": 15,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_POST",
+      "B_VCOST",
+      "B_KCOST"
+    ],
+    "random_coefficients": [
+      "B_POST",
+      "B_VCOST",
+      "B_KCOST"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_POST": -1.163043561518178,
+        "B_VCOST": -0.062473497502604225,
+        "B_KCOST": 0.033379566901338205
+      },
+      "random_scales": {
+        "B_POST": 1.5811388300841895,
+        "B_VCOST": 0.16934184718105394,
+        "B_KCOST": 0.10839868958059745
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -1106.0106492450957,
+      "mnl_gradient_norm": 0.005547880512054296
+    },
+    "specification": {
+      "alternatives": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ],
+      "availability": {
+        "1": "avail_alt_1_1",
+        "2": "avail_alt_2_2",
+        "3": "avail_alt_3_3",
+        "4": "avail_alt_4_4",
+        "5": "avail_alt_5_5",
+        "6": "avail_alt_6_6",
+        "7": "avail_alt_7_7",
+        "8": "avail_alt_8_8",
+        "9": "avail_alt_9_9",
+        "10": "avail_alt_10_10",
+        "11": "avail_alt_11_11",
+        "12": "avail_alt_12_12",
+        "13": "avail_alt_13_13",
+        "14": "avail_alt_14_14",
+        "15": "avail_alt_15_15"
+      },
+      "utilities": {
+        "1": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_1_1",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_1_1",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_1_1",
+            "random": true
+          }
+        ],
+        "2": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_2_2",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_2_2",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_2_2",
+            "random": true
+          }
+        ],
+        "3": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_3_3",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_3_3",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_3_3",
+            "random": true
+          }
+        ],
+        "4": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_4_4",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_4_4",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_4_4",
+            "random": true
+          }
+        ],
+        "5": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_5_5",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_5_5",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_5_5",
+            "random": true
+          }
+        ],
+        "6": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_6_6",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_6_6",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_6_6",
+            "random": true
+          }
+        ],
+        "7": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_7_7",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_7_7",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_7_7",
+            "random": true
+          }
+        ],
+        "8": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_8_8",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_8_8",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_8_8",
+            "random": true
+          }
+        ],
+        "9": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_9_9",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_9_9",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_9_9",
+            "random": true
+          }
+        ],
+        "10": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_10_10",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_10_10",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_10_10",
+            "random": true
+          }
+        ],
+        "11": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_11_11",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_11_11",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_11_11",
+            "random": true
+          }
+        ],
+        "12": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_12_12",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_12_12",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_12_12",
+            "random": true
+          }
+        ],
+        "13": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_13_13",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_13_13",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_13_13",
+            "random": true
+          }
+        ],
+        "14": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_14_14",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_14_14",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_14_14",
+            "random": true
+          }
+        ],
+        "15": [
+          {
+            "parameter": "B_POST",
+            "variable": "post_alt_15_15",
+            "random": true
+          },
+          {
+            "parameter": "B_VCOST",
+            "variable": "vcost_alt_15_15",
+            "random": true
+          },
+          {
+            "parameter": "B_KCOST",
+            "variable": "kcost_alt_15_15",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.15147538110613823,
+        "estimate_s": 0.11378182307817042,
+        "covariance_s": 0.03769355802796781,
+        "loglike": -996.216750551908,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_POST": -0.5429482178298879,
+          "B_VCOST": -0.7013147244073298,
+          "B_KCOST": -0.7588614508399448,
+          "SIGMA_B_POST": 1.3001928214747036,
+          "SIGMA_B_VCOST": 2.5328858644712384,
+          "SIGMA_B_KCOST": 0.5648599010759997
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.00023226062948607657; scaled_gradient_norm=2.3314266634987142e-07; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 282.476967197028,
+        "estimate_s": 282.4769033669727,
+        "covariance_s": 0.00006383005529642105,
+        "loglike": -996.2167506055606,
+        "ll_diff": -5.365257038647542E-8,
+        "max_param_diff": 0.00004942137380181677,
+        "max_prob_diff": 0.000047096748842595515,
+        "params": {
+          "B_POST": -0.5429860710642743,
+          "B_VCOST": -0.7013261862913688,
+          "B_KCOST": -0.7588519077167915,
+          "SIGMA_B_POST": 1.3002316886747134,
+          "SIGMA_B_VCOST": 2.5329352858450402,
+          "SIGMA_B_KCOST": 0.5648543422520442
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 2.137,
+        "estimate_s": 2.137,
+        "covariance_s": 0,
+        "loglike": -1023.2898573113395,
+        "ll_diff": -27.073106759431425,
+        "max_param_diff": 1.300192821474697,
+        "max_prob_diff": 0.11201088224880684,
+        "worse_loglike": true,
+        "params": {
+          "B_POST": -0.3578774771317359,
+          "B_VCOST": -0.36561358265758603,
+          "B_KCOST": -0.42301839907699246,
+          "SIGMA_B_POST": 6.720073272585574E-15,
+          "SIGMA_B_VCOST": 2.941633530283733,
+          "SIGMA_B_KCOST": 0.3230576579452168
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_risky_transport",
+    "dataset_id": "mlogit_risky_transport",
+    "source": "R mlogit::risky_transport",
+    "model_name": "mlogit::risky_transport mixed logit",
+    "n_obs": 1793,
+    "n_rows": 5405,
+    "n_alternatives": 4,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_COST",
+      "B_RISK",
+      "B_SEATS",
+      "B_NOISE",
+      "B_CROWDNESS",
+      "B_CONVLOC",
+      "B_CLIENTELE"
+    ],
+    "random_coefficients": [
+      "B_COST",
+      "B_RISK",
+      "B_SEATS",
+      "B_NOISE"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_COST": -0.00852915733033686,
+        "B_RISK": -0.11535521472816447,
+        "B_SEATS": -0.10649040156753478,
+        "B_NOISE": 0.033185192437830933,
+        "B_CROWDNESS": -0.6433009720714685,
+        "B_CONVLOC": 0.3476605338040247,
+        "B_CLIENTELE": 0.21370738959266075
+      },
+      "random_scales": {
+        "B_COST": 0.009155440961383973,
+        "B_RISK": 0.12846962482862495,
+        "B_SEATS": 1.2946162792263434,
+        "B_NOISE": 1.3581546093032537
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -1716.0467301337903,
+      "mnl_gradient_norm": 0.00030013856886791033
+    },
+    "specification": {
+      "alternatives": [
+        "WaterTaxi",
+        "Ferry",
+        "Hovercraft",
+        "Helicopter"
+      ],
+      "availability": {
+        "WaterTaxi": "avail_watertaxi_1",
+        "Ferry": "avail_ferry_2",
+        "Hovercraft": "avail_hovercraft_3",
+        "Helicopter": "avail_helicopter_4"
+      },
+      "utilities": {
+        "WaterTaxi": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_watertaxi_1",
+            "random": true
+          },
+          {
+            "parameter": "B_RISK",
+            "variable": "risk_watertaxi_1",
+            "random": true
+          },
+          {
+            "parameter": "B_SEATS",
+            "variable": "seats_watertaxi_1",
+            "random": true
+          },
+          {
+            "parameter": "B_NOISE",
+            "variable": "noise_watertaxi_1",
+            "random": true
+          },
+          {
+            "parameter": "B_CROWDNESS",
+            "variable": "crowdness_watertaxi_1",
+            "random": false
+          },
+          {
+            "parameter": "B_CONVLOC",
+            "variable": "convloc_watertaxi_1",
+            "random": false
+          },
+          {
+            "parameter": "B_CLIENTELE",
+            "variable": "clientele_watertaxi_1",
+            "random": false
+          }
+        ],
+        "Ferry": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_ferry_2",
+            "random": true
+          },
+          {
+            "parameter": "B_RISK",
+            "variable": "risk_ferry_2",
+            "random": true
+          },
+          {
+            "parameter": "B_SEATS",
+            "variable": "seats_ferry_2",
+            "random": true
+          },
+          {
+            "parameter": "B_NOISE",
+            "variable": "noise_ferry_2",
+            "random": true
+          },
+          {
+            "parameter": "B_CROWDNESS",
+            "variable": "crowdness_ferry_2",
+            "random": false
+          },
+          {
+            "parameter": "B_CONVLOC",
+            "variable": "convloc_ferry_2",
+            "random": false
+          },
+          {
+            "parameter": "B_CLIENTELE",
+            "variable": "clientele_ferry_2",
+            "random": false
+          }
+        ],
+        "Hovercraft": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_hovercraft_3",
+            "random": true
+          },
+          {
+            "parameter": "B_RISK",
+            "variable": "risk_hovercraft_3",
+            "random": true
+          },
+          {
+            "parameter": "B_SEATS",
+            "variable": "seats_hovercraft_3",
+            "random": true
+          },
+          {
+            "parameter": "B_NOISE",
+            "variable": "noise_hovercraft_3",
+            "random": true
+          },
+          {
+            "parameter": "B_CROWDNESS",
+            "variable": "crowdness_hovercraft_3",
+            "random": false
+          },
+          {
+            "parameter": "B_CONVLOC",
+            "variable": "convloc_hovercraft_3",
+            "random": false
+          },
+          {
+            "parameter": "B_CLIENTELE",
+            "variable": "clientele_hovercraft_3",
+            "random": false
+          }
+        ],
+        "Helicopter": [
+          {
+            "parameter": "B_COST",
+            "variable": "cost_helicopter_4",
+            "random": true
+          },
+          {
+            "parameter": "B_RISK",
+            "variable": "risk_helicopter_4",
+            "random": true
+          },
+          {
+            "parameter": "B_SEATS",
+            "variable": "seats_helicopter_4",
+            "random": true
+          },
+          {
+            "parameter": "B_NOISE",
+            "variable": "noise_helicopter_4",
+            "random": true
+          },
+          {
+            "parameter": "B_CROWDNESS",
+            "variable": "crowdness_helicopter_4",
+            "random": false
+          },
+          {
+            "parameter": "B_CONVLOC",
+            "variable": "convloc_helicopter_4",
+            "random": false
+          },
+          {
+            "parameter": "B_CLIENTELE",
+            "variable": "clientele_helicopter_4",
+            "random": false
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 17.061211482970975,
+        "estimate_s": 12.939897764008492,
+        "covariance_s": 4.121313718962483,
+        "loglike": -1679.697130937192,
+        "ll_diff": 0.0,
+        "worse_loglike": false,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_COST": -0.02226816478127255,
+          "B_RISK": -0.512977984457634,
+          "B_SEATS": 0.20192369207903696,
+          "B_NOISE": -0.03950243706982984,
+          "B_CROWDNESS": -0.7514787869437913,
+          "B_CONVLOC": 0.04851030468541284,
+          "B_CLIENTELE": -0.028921934725092028,
+          "SIGMA_B_COST": 0.03209919816404386,
+          "SIGMA_B_RISK": 0.2519838513169735,
+          "SIGMA_B_SEATS": 3.3608648488025885E-9,
+          "SIGMA_B_NOISE": 2.913843618685399
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=7.489774185329532e-05; scaled_gradient_norm=4.4590027853120106e-08; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 84.3479233419057,
+        "estimate_s": 84.34784649091307,
+        "covariance_s": 0.00007685099262744188,
+        "loglike": -1679.6980542561864,
+        "ll_diff": -0.000923318994409783,
+        "worse_loglike": false,
+        "max_param_diff": 0.0036686706054358553,
+        "max_prob_diff": 0.000026137917713331404,
+        "params": {
+          "B_COST": -0.0222679311287693,
+          "B_RISK": -0.5130051189745835,
+          "B_SEATS": 0.20201194344311704,
+          "B_NOISE": -0.03953225363278086,
+          "B_CROWDNESS": -0.7514951345022682,
+          "B_CONVLOC": 0.0483818561407546,
+          "B_CLIENTELE": -0.028891909662110048,
+          "SIGMA_B_COST": 0.032098831704470844,
+          "SIGMA_B_RISK": 0.25199424951444627,
+          "SIGMA_B_SEATS": 0.0036686739663007043,
+          "SIGMA_B_NOISE": 2.914093712396067
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 7.132,
+        "estimate_s": 7.132,
+        "covariance_s": 0,
+        "loglike": -1673.9689666545748,
+        "ll_diff": 5.728164282617172,
+        "max_param_diff": 3.2251404545187685,
+        "max_prob_diff": 0.09056506843986889,
+        "params": {
+          "B_COST": -0.023266096648624196,
+          "B_RISK": -0.6129602251024551,
+          "B_SEATS": 0.24116295329545537,
+          "B_NOISE": -0.0432584148040646,
+          "B_CROWDNESS": -0.9299595590006082,
+          "B_CONVLOC": 0.02632458786137449,
+          "B_CLIENTELE": -0.025685998438274727,
+          "SIGMA_B_COST": 0.039039408042333454,
+          "SIGMA_B_RISK": 0.47784797685917024,
+          "SIGMA_B_SEATS": 3.2251404578796334,
+          "SIGMA_B_NOISE": 2.8142902599002486
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  },
+  {
+    "case": "mlogit_train",
+    "dataset_id": "mlogit_train",
+    "source": "R mlogit::train",
+    "model_name": "mlogit::train mixed logit",
+    "n_obs": 2929,
+    "n_rows": 5858,
+    "n_alternatives": 2,
+    "n_draws": 32,
+    "device_policy": "CPU for all cross-estimator comparisons; CUDA only for torch-only profiles.",
+    "runtime_policy": {
+      "cpu_policy": "single-logical-core",
+      "logical_cpu_affinity": [
+        0
+      ],
+      "timing_scope": "estimation-plus-covariance",
+      "thread_environment": {
+        "OMP_NUM_THREADS": "1",
+        "MKL_NUM_THREADS": "1",
+        "OPENBLAS_NUM_THREADS": "1",
+        "NUMEXPR_NUM_THREADS": "1",
+        "BLIS_NUM_THREADS": "1",
+        "VECLIB_MAXIMUM_THREADS": "1"
+      },
+      "xla_flags": "--xla_cpu_multi_thread_eigen=false intra_op_parallelism_threads=1",
+      "torch_intraop_threads": 1,
+      "torch_interop_threads": 1,
+      "threadpools": [
+        {
+          "user_api": "openmp",
+          "internal_api": "openmp",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        },
+        {
+          "user_api": "blas",
+          "internal_api": "openblas",
+          "num_threads": 1
+        }
+      ]
+    },
+    "parameter_names": [
+      "B_PRICE",
+      "B_TIME",
+      "B_CHANGE",
+      "B_COMFORT"
+    ],
+    "random_coefficients": [
+      "B_PRICE",
+      "B_TIME",
+      "B_CHANGE",
+      "B_COMFORT"
+    ],
+    "starting_values": {
+      "method": "MNL coefficient warm start with random scales set to sigma_scale / RMS(X_k)",
+      "mean_coefficients": {
+        "B_PRICE": -0.0014843753405376534,
+        "B_TIME": -0.028675868404152437,
+        "B_CHANGE": -0.32634134394303865,
+        "B_COMFORT": -0.945726504738212
+      },
+      "random_scales": {
+        "B_PRICE": 0.0002774309250226195,
+        "B_TIME": 0.007663756158523646,
+        "B_CHANGE": 1.0017972542207985,
+        "B_COMFORT": 0.9260459591352276
+      },
+      "sigma_scale": 1.0,
+      "mnl_loglike": -1724.1500271596988,
+      "mnl_gradient_norm": 0.35773447877545095
+    },
+    "specification": {
+      "alternatives": [
+        "A",
+        "B"
+      ],
+      "availability": {
+        "A": "avail_a_1",
+        "B": "avail_b_2"
+      },
+      "utilities": {
+        "A": [
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_a_1",
+            "random": true
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_a_1",
+            "random": true
+          },
+          {
+            "parameter": "B_CHANGE",
+            "variable": "change_a_1",
+            "random": true
+          },
+          {
+            "parameter": "B_COMFORT",
+            "variable": "comfort_a_1",
+            "random": true
+          }
+        ],
+        "B": [
+          {
+            "parameter": "B_PRICE",
+            "variable": "price_b_2",
+            "random": true
+          },
+          {
+            "parameter": "B_TIME",
+            "variable": "time_b_2",
+            "random": true
+          },
+          {
+            "parameter": "B_CHANGE",
+            "variable": "change_b_2",
+            "random": true
+          },
+          {
+            "parameter": "B_COMFORT",
+            "variable": "comfort_b_2",
+            "random": true
+          }
+        ]
+      }
+    },
+    "consistent": "Yes",
+    "backends": [
+      {
+        "backend": "torchdcm",
+        "available": true,
+        "total_s": 0.4738041500095278,
+        "estimate_s": 0.43407809699419886,
+        "covariance_s": 0.039726053015328944,
+        "loglike": -1662.0258567287544,
+        "ll_diff": 0.0,
+        "max_param_diff": 0.0,
+        "max_prob_diff": 0.0,
+        "params": {
+          "B_PRICE": -0.01975255360727588,
+          "B_TIME": -0.3127931617450888,
+          "B_CHANGE": -4.138231267834428,
+          "B_COMFORT": -9.473871477617484,
+          "SIGMA_B_PRICE": 0.017623029405912073,
+          "SIGMA_B_TIME": 0.08381118046303423,
+          "SIGMA_B_CHANGE": 4.837290195423506,
+          "SIGMA_B_COMFORT": 18.67359561101007
+        },
+        "message": "success=True; Gradient convergence criterion satisfied.; internal_gradient_norm=0.0003366987784037461; scaled_gradient_norm=2.0258335755765317e-07; nonfinite_evaluations=0"
+      },
+      {
+        "backend": "biogeme",
+        "available": true,
+        "total_s": 40.85062376689166,
+        "estimate_s": 40.85055296693463,
+        "covariance_s": 0.00007079995702952147,
+        "loglike": -1662.0258576151896,
+        "ll_diff": -8.86435145730502E-7,
+        "max_param_diff": 0.008926366160082466,
+        "max_prob_diff": 0.00006784742049290027,
+        "params": {
+          "B_PRICE": -0.01974226051591133,
+          "B_TIME": -0.3126295344802363,
+          "B_CHANGE": -4.135903810727576,
+          "B_COMFORT": -9.468872973182547,
+          "SIGMA_B_PRICE": 0.017613733642101594,
+          "SIGMA_B_TIME": 0.08376514696845572,
+          "SIGMA_B_CHANGE": 4.834182425897778,
+          "SIGMA_B_COMFORT": 18.66466924484999
+        },
+        "message": ""
+      },
+      {
+        "backend": "apollo",
+        "available": true,
+        "total_s": 1.276,
+        "estimate_s": 1.276,
+        "covariance_s": 0,
+        "loglike": -1669.8592857025646,
+        "ll_diff": -7.833428973810214,
+        "max_param_diff": 13.169095162302199,
+        "max_prob_diff": 0.18362996682203525,
+        "worse_loglike": false,
+        "params": {
+          "B_PRICE": -0.006817548609585795,
+          "B_TIME": -0.11458703098482154,
+          "B_CHANGE": -1.4492482407219491,
+          "B_COMFORT": -3.721806240572563,
+          "SIGMA_B_PRICE": 0.0065136568045732375,
+          "SIGMA_B_TIME": 1.1080782148437247E-24,
+          "SIGMA_B_CHANGE": 2.1314299864332534E-17,
+          "SIGMA_B_COMFORT": 5.504500448707872
+        },
+        "message": "apollo_version=0.3.8; apollo_halton_draws=32; convergence_status=4; convergence_message=Relative function convergence (favorable)"
+      }
+    ]
+  }
+]

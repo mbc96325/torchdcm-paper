@@ -7,9 +7,9 @@ from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-SUITE_JSON = ROOT / "validation" / "generated" / "estimator_benchmark_suite_full.json"
-PUBLIC_MNL_JSON = ROOT / "validation" / "generated" / "public_mnl_battery_full.json"
-OUTPUT = ROOT / "docs" / "model-family-benchmark-comparison.md"
+SUITE_JSON = ROOT / "generated" / "estimator_benchmark_suite_full.json"
+PUBLIC_MNL_JSON = ROOT / "generated" / "public_mnl_battery_full.json"
+OUTPUT = ROOT / "generated" / "model-family-benchmark-comparison.md"
 
 BACKEND_RE = re.compile(
     r"^(torchdcm|torchdcm_fit|torchdcm_fixed|scipy_bfgs|biogeme|biogeme_fixed|apollo|apollo_r_fixed|mlogit|gmnl|xlogit)\s+"
@@ -31,8 +31,8 @@ def main() -> None:
         "",
         "Source result files:",
         "",
-        "- `validation/generated/estimator_benchmark_suite_full.json`",
-        "- `validation/generated/public_mnl_battery_full.json`",
+        "- `generated/estimator_benchmark_suite_full.json`",
+        "- `generated/public_mnl_battery_full.json`",
         "",
         "## Cross-Model Summary",
         "",
